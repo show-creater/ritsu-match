@@ -1,3 +1,5 @@
+ナビゲータの階層構造(このREADMEを編集モードにしたら見やすくなります)
+
 StackNavigator(App.js)
 |
 └── Home (Screen)
