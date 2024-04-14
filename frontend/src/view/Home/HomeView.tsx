@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
 
-const HomeView = () => {
+const HomeView = ({navigation}) => {
     const a=0;
     const styles=StyleSheet.create({
         header: {
@@ -23,9 +23,9 @@ const HomeView = () => {
         icon: {
             backgroundColor: 'black',
             borderRadius: 100,
-            height: 50,
-            width: 50,
-            marginLeft: 20,
+            height: 60,
+            width: 60,
+            marginLeft: 40,
             marginRight: 10
         },
         informations:{
@@ -34,7 +34,7 @@ const HomeView = () => {
         NameHeart: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            width: '85%',
+            width: '75%',
             paddingLeft: '5%',
             paddingBottom: 5
             
@@ -55,20 +55,25 @@ const HomeView = () => {
         FucilityDate: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            width: '80%',
+            width: '70%',
             paddingLeft: '3%'
+        },
+        body: {
+
         },
         footer: {
             position: 'absolute',
             bottom: 0,
             height: '10%',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            // paddingLeft: '10%',
+            width: '100%'
         }
         
     });
     return (
-        <View style={{flex: 1, alignItems: 'center'}}>
+        <ScrollView contentContainerStyle={{flex: 1, alignItems: 'center'}}>
             <View style={styles.header}>
                 <View style={styles.icon}></View>
                 <View style={styles.informations}>
@@ -91,12 +96,13 @@ const HomeView = () => {
                     </View>
                 </View>
             </View>
-            <View>
+            <View style={styles.body}>
+
             </View>
             <View style={styles.footer}>
-                <HomeFooter/>
+                <HomeFooter navigation={navigation}/>
             </View>   
-        </View>
+        </ScrollView>
     )
 };
 export default HomeView;

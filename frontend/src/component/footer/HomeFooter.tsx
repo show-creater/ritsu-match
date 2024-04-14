@@ -1,74 +1,39 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const HomeFooter = () => {
+const HomeFooter = ({navigation}) => {
     const a=0;
     const styles=StyleSheet.create({
-        header: {
+        footer: {
             flexDirection: 'row',
-            margin: 10,
-            height: '100%',
+            justifyContent: 'center',
             alignItems: 'center',
+            backgroundColor: '#F8F8F8',
+            height: '100%'
         },
         icon: {
-            backgroundColor: 'black',
-            borderRadius: 100,
-            height: 50,
-            width: 50,
-            marginLeft: 20,
-            marginRight: 10
+            width: '25%',
+            height: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
         },
-        informations:{
-            flexDirection: 'column',
-        },
-        NameHeart: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '85%',
-            paddingLeft: '5%',
-            
-        },
-        heart: {
-            flexDirection: 'row',
-            justifyContent: 'flex-end'
-        },
-        heartCount: {
-            backgroundColor: 'silver',
-            width: '50%',
-            borderRadius: 20,
-            justifyContent: 'center'
-        },
-        FucilityDate: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '80%',
-            paddingLeft: '3%'
-        }
         
     });
     return (
-        <View style={styles.header}>
-            <View style={styles.icon}></View>
-            <View style={styles.informations}>
-                <View style={styles.NameHeart}>
-                    <Text style={{fontSize: 20, color: '#30CB89'}}>{'山田太郎'}</Text>
-                    <View style={styles.heart}>
-                        <Ionicons name="heart" size={24} color="deeppink" />
-                        <View style={styles.heartCount}>
-                            <Text style={{paddingLeft: '10%', color: 'white'}}>{`×${a}`}</Text>
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.FucilityDate}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Ionicons name="pencil" size={24} color= '#30CB89' />                            
-                        <Text style={{color: '#30CB89'}}>{'薬学部'}</Text>                            
-                    </View>
-
-                    <Text style={{color: '#30CB89'}}>{'2日 12:05'}</Text>
-                </View>
-            </View>
+        <View style={styles.footer}>
+            <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('Home')}}>
+                <Ionicons name="notifications-outline" size={40} color='#30CB89' />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('Friends')}}>
+                <Ionicons name="person-outline" size={40} color='#30CB89' />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('Talk')}}>
+                <Ionicons name="chatbubble-ellipses-outline" size={40} color='#30CB89' />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('MyPage')}}>
+            <Ionicons name="person-circle-outline" size={40} color='#30CB89' />
+            </TouchableOpacity>
         </View> 
     )
 };

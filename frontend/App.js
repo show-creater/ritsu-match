@@ -9,7 +9,10 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Home"
+        screenOptions={{
+          cardStyle: { backgroundColor: 'white' },
+        }}>
         <Stack.Screen
           name="HomeView"
           component={Home}
