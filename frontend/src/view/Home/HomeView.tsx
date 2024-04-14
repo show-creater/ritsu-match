@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, ImageBackground, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
@@ -18,7 +18,9 @@ const HomeView = ({navigation}) => {
             justifyContent: 'center',
             position: 'absolute',
             width: '95%',
-            top: 25
+            top: 50,
+            backgroundColor: 'white',
+            zIndex: 1
         },
         icon: {
             backgroundColor: 'black',
@@ -45,7 +47,7 @@ const HomeView = ({navigation}) => {
         },
         heartCount: {
             backgroundColor: 'silver',
-            width: '50%',
+            width: '60%',
             borderRadius: 20,
             alignItems: 'center',
             flexDirection: 'row',
@@ -58,8 +60,69 @@ const HomeView = ({navigation}) => {
             width: '70%',
             paddingLeft: '3%'
         },
-        body: {
+        personlist: {
+            width: '100%',
+            height: 800,
+            marginTop: 160,
+            alignItems: 'center',
+            flexDirection: 'column',
+            marginBottom: 900
+        },
+        personInformation: {
+            height: '65%',
+            width: '90%',
+            borderRadius: 20,
+            borderWidth: 1.5,
+            borderColor: '#30CB89',
+            flexDirection: 'column',
+            backgroundColor: '#30CB89',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: '5%',
+            paddingBottom: '0.5%'
+        },
+        personImage: {
+            display: 'flex',
+            backgroundColor: 'white',
+            height: '64.5%',
+            borderRadius: 20,
+            width: '99%',
+            marginBottom: '1%',
+            flex: 1,
+            justifyContent: "center",
+            alignItems: 'center',
+            marginTop: '0.5%',
+        },
+        personProfile: {
+            backgroundColor: 'white',
+            height: '34%',
+            borderRadius: 20,
+            width: '99%',
+            paddingTop: '2%',
+            paddingRight: '5%',
+            paddingLeft: '5%',
+            flexDirection: 'column'
+        },
+        ProfileTop: {
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            // height: '70%',
+        },
+        NameFucility: {
+            flexDirection: 'column',
 
+        },
+        heartBookmark: {
+            flexDirection: 'row',
+        },
+        clickheart: {
+            flexDirection: 'column',
+            alignItems: 'center'
+        },
+        ProfileBottom: {
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            height: '60%',
         },
         footer: {
             position: 'absolute',
@@ -67,13 +130,15 @@ const HomeView = ({navigation}) => {
             height: '10%',
             justifyContent: 'center',
             alignItems: 'center',
-            // paddingLeft: '10%',
             width: '100%'
-        }
+        },
+
+
         
     });
     return (
-        <ScrollView contentContainerStyle={{flex: 1, alignItems: 'center'}}>
+        // <ScrollView style={{backgroundColor: 'blue'}}>
+        <View style={{flex: 1, alignItems: 'center', height: 1000}}>
             <View style={styles.header}>
                 <View style={styles.icon}></View>
                 <View style={styles.informations}>
@@ -82,7 +147,7 @@ const HomeView = ({navigation}) => {
                         <View style={styles.heart}>
                             <Ionicons name="heart" size={24} color="deeppink" />
                             <View style={styles.heartCount}>
-                                <Text style={{fontSize: 18, paddingLeft: '10%', color: 'white'}}>{`× ${a}`}</Text>
+                                <Text style={{fontSize: 18, paddingLeft: '10%', color: 'white'}}>{`× ${a}　`}</Text>
                                 <AntDesign name="plus" size={15} color="dodgerblue" />
                             </View>
                         </View>
@@ -96,13 +161,124 @@ const HomeView = ({navigation}) => {
                     </View>
                 </View>
             </View>
-            <View style={styles.body}>
-
-            </View>
+            <ScrollView style={{width: '100%'}}>
+                <View style={styles.personlist}>
+                    <View style={styles.personInformation}>
+                        <View style={styles.personImage}>
+                            <Image style={{width: '100%', height: '100%', borderRadius: 20, zIndex: -1}}
+                            source={require('../../component/photo/ディカプリオ.webp')}
+                            resizeMode='cover'
+                            />
+                        </View>
+                        <View style={styles.personProfile}>
+                            <View style={styles.ProfileTop}>
+                                <View style={styles.NameFucility}>
+                                    <Text numberOfLines={1} ellipsizeMode="tail" style={{fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%'}}>レオナルドディカプリオ</Text>
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <Ionicons name="pencil" size={24} color= '#30CB89' />
+                                        <Text style={{fontSize: 15, color: '#30CB89'}}>理工学部</Text>
+                                    </View>
+                                </View> 
+                                <View style={styles.heartBookmark}>
+                                    <View style={styles.clickheart}>
+                                    <Ionicons name="heart-outline" size={50} color="deeppink" /> 
+                                    <Text style={{color: 'deeppink'}}>2</Text>
+                                    </View>
+                                    <Ionicons name="bookmark" size={50} color="#30CB89" />
+                                </View>
+                            </View>
+                            <Text numberOfLines={3} ellipsizeMode="tail" style={{fontSize: 18, width: '100%',marginTop: 10}}>私がギャッツビーです</Text>
+                        </View>
+                    </View>
+                    <View style={styles.personInformation}>
+                        <View style={styles.personImage}>
+                            <Image style={{width: '100%', height: '100%', borderRadius: 20, zIndex: -1}}
+                            source={require('../../component/photo/ブラットピット.jpg')}
+                            resizeMode='cover'
+                            />
+                        </View>
+                        <View style={styles.personProfile}>
+                            <View style={styles.ProfileTop}>
+                                <View style={styles.NameFucility}>
+                                    <Text numberOfLines={1} ellipsizeMode="tail" style={{fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%'}}>ブラットピット</Text>
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <Ionicons name="pencil" size={24} color= '#30CB89' />
+                                        <Text style={{fontSize: 15, color: '#30CB89'}}>理工学部</Text>
+                                    </View>
+                                </View> 
+                                <View style={styles.heartBookmark}>
+                                    <View style={styles.clickheart}>
+                                    <Ionicons name="heart-outline" size={50} color="deeppink" /> 
+                                    <Text style={{color: 'deeppink'}}>2</Text>
+                                    </View>
+                                    <Ionicons name="bookmark" size={50} color="#30CB89" />
+                                </View>
+                            </View>
+                            <Text numberOfLines={3} ellipsizeMode="tail" style={{fontSize: 18, width: '100%',marginTop: 10}}>彼女募集中です</Text>
+                        </View>
+                    </View>
+                    <View style={styles.personInformation}>
+                        <View style={styles.personImage}>
+                            <Image style={{width: '100%', height: '100%', borderRadius: 20, zIndex: -1}}
+                            source={require('../../component/photo/クリスチャン.jpg')}
+                            resizeMode='cover'
+                            />
+                        </View>
+                        <View style={styles.personProfile}>
+                            <View style={styles.ProfileTop}>
+                                <View style={styles.NameFucility}>
+                                    <Text numberOfLines={1} ellipsizeMode="tail" style={{fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%'}}>クリスチャンベイル</Text>
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <Ionicons name="pencil" size={24} color= '#30CB89' />
+                                        <Text style={{fontSize: 15, color: '#30CB89'}}>理工学部</Text>
+                                    </View>
+                                </View> 
+                                <View style={styles.heartBookmark}>
+                                    <View style={styles.clickheart}>
+                                    <Ionicons name="heart-outline" size={50} color="deeppink" /> 
+                                    <Text style={{color: 'deeppink'}}>2</Text>
+                                    </View>
+                                    <Ionicons name="bookmark" size={50} color="#30CB89" />
+                                </View>
+                            </View>
+                            <Text numberOfLines={3} ellipsizeMode="tail" style={{fontSize: 18, width: '100%',marginTop: 10}}>普段はバットマンやってます</Text>
+                        </View>
+                    </View>
+                    <View style={styles.personInformation}>
+                        <View style={styles.personImage}>
+                            <Image style={{width: '100%', height: '100%', borderRadius: 20, zIndex: -1}}
+                            source={require('../../component/photo/ブラットピット.jpg')}
+                            resizeMode='cover'
+                            />
+                        </View>
+                        <View style={styles.personProfile}>
+                            <View style={styles.ProfileTop}>
+                                <View style={styles.NameFucility}>
+                                    <Text numberOfLines={1} ellipsizeMode="tail" style={{fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%'}}>ブラットピットお</Text>
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <Ionicons name="pencil" size={24} color= '#30CB89' />
+                                        <Text style={{fontSize: 15, color: '#30CB89'}}>理工学部</Text>
+                                    </View>
+                                </View> 
+                                <View style={styles.heartBookmark}>
+                                    <View style={styles.clickheart}>
+                                    <Ionicons name="heart-outline" size={50} color="deeppink" /> 
+                                    <Text style={{color: 'deeppink'}}>2</Text>
+                                    </View>
+                                    <Ionicons name="bookmark" size={50} color="#30CB89" />
+                                </View>
+                            </View>
+                            <Text numberOfLines={3} ellipsizeMode="tail" style={{fontSize: 18, width: '100%',marginTop: 10}}>彼女募集中です</Text>
+                        </View>
+                    </View>
+                </View>
+            </ScrollView>
             <View style={styles.footer}>
                 <HomeFooter navigation={navigation}/>
             </View>   
-        </ScrollView>
+        </View>
+        
+        // </ScrollView>
     )
 };
 export default HomeView;
