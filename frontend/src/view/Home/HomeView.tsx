@@ -134,7 +134,7 @@ const HomeView = ({ navigation }) => {
             height: '10%',
             justifyContent: 'center',
             alignItems: 'center',
-            width: '100%'
+            width: '100%',
         },
 
 
@@ -164,7 +164,7 @@ const HomeView = ({ navigation }) => {
                     </View>
                 </View>
             </View>
-            <ScrollView style={{ width: '100%' }} pagingEnabled={true} showsHorizontalScrollIndicator={false}>
+            <ScrollView style={{ width: '100%' }} pagingEnabled={true} showsVerticalScrollIndicator={false}>
                 <View style={styles.personlist}>
                     <View style={styles.InfoOutside}>
                         <View style={styles.personInformation}>

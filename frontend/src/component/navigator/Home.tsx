@@ -1,7 +1,8 @@
 import React from 'react'; // Reactをインポート
 import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import HomeView from '../../view/Home/HomeView'
+import HomeView from '../../view/Home/HomeView';
+import MyPage from '../../view/Home/MyPage';
 
 const Tab = createBottomTabNavigator();
 const Home = () => {
@@ -33,7 +34,7 @@ const Home = () => {
                 ),
             }}>
             </Tab.Screen>
-            <Tab.Screen  name='MyPage' component={HomeView}
+            <Tab.Screen  name='MyPage' component={MyPage}
                 options={{
                     headerShown:false,
                     tabBarIcon: ({focused}) => (<Ionicons name="person-circle-outline" size={24} color='#30CB89' />

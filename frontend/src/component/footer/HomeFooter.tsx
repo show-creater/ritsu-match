@@ -10,7 +10,8 @@ const HomeFooter = ({navigation}) => {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#F8F8F8',
-            height: '100%'
+            height: '100%',
+            paddingBottom: '5%'
         },
         icon: {
             width: '25%',
@@ -23,16 +24,16 @@ const HomeFooter = ({navigation}) => {
     return (
         <View style={styles.footer}>
             <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('Home')}}>
-                <Ionicons name="notifications-outline" size={40} color='#30CB89' />
+                <Ionicons name="notifications-outline" size={30} color='#30CB89' />
             </TouchableOpacity>
             <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('Friends')}}>
-                <Ionicons name="person-outline" size={40} color='#30CB89' />
+                <Ionicons name="person-outline" size={30} color='#30CB89' />
             </TouchableOpacity>
             <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('Talk')}}>
-                <Ionicons name="chatbubble-ellipses-outline" size={40} color='#30CB89' />
+                <Ionicons name="chatbubble-ellipses-outline" size={30} color='#30CB89' />
             </TouchableOpacity>
             <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('MyPage')}}>
-            <Ionicons name="person-circle-outline" size={40} color='#30CB89' />
+            <Ionicons name="person-circle-outline" size={30} color='#30CB89' />
             </TouchableOpacity>
         </View> 
     )
