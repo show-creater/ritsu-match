@@ -3,6 +3,7 @@ import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import HomeView from '../../view/Home/HomeView';
 import MyPage from '../../view/Home/MyPage';
+import Friends from '../../view/Home/Friends';
 
 const Tab = createBottomTabNavigator();
 const Home = () => {
@@ -20,7 +21,7 @@ const Home = () => {
                 ),
             }}>
             </Tab.Screen>
-            <Tab.Screen  name='Friends' component={HomeView}
+            <Tab.Screen  name='Friends' component={Friends}
                 options={{
                     headerShown:false,
                     tabBarIcon: ({focused}) => (<Ionicons name="person-outline" size={24} color='#30CB89' />
