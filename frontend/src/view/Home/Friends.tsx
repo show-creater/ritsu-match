@@ -18,7 +18,7 @@ const Friends = ({navigation}) => {
             paddingTop:'20%',
             },
         container: {
-            height:windowHeight,
+            height:windowHeight,//これが悪い
             flexDirection:'row',
             padding:'auto',
             flexWrap:'wrap',
