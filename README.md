@@ -10,10 +10,3 @@ StackNavigator(App.js)
           └── MyPage (Tab Screen)
 
 
-
-
-
-
-Cannot use JSX unless the '--jsx' flag is provided.ts(17004)
-(alias) class View
-import View
