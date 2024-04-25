@@ -14,18 +14,18 @@ const Friends = ({navigation}) => {
             width: '100%',
         },
         main: {
-            height:1420, //ちょうど５列要素が入る高さ
-            paddingTop:'20%',
+            paddingTop:'18%',
+            paddingBottom:'23%',
+            //backgroundColor:'red',
             },
         container: {
-            height:windowHeight,//これが悪い
             flexDirection:'row',
             padding:'auto',
             flexWrap:'wrap',
         },
         containerBox: {
             width:'47%',
-            height:'28%',
+            height:240,//ちょうどいい要素の高さ
             borderRadius:15,
             shadowColor:"#333",
             shadowOpacity:0.30,
