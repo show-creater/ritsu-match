@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import HomeView from '../../view/Home/HomeView';
 import MyPage from '../../view/Home/MyPage';
 import Friends from '../../view/Home/Friends';
+import Talk from '../../view/Home/Talk';
 
 const Tab = createBottomTabNavigator();
 const Home = () => {
@@ -28,7 +29,7 @@ const Home = () => {
                 ),
             }}>
             </Tab.Screen>
-            <Tab.Screen  name='Talk' component={HomeView}
+            <Tab.Screen  name='Talk' component={Talk}
                 options={{
                     headerShown:false,
                     tabBarIcon: ({focused}) => (<Ionicons name="chatbubble-ellipses-outline" size={24} color='#30CB89' />
