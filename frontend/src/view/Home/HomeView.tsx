@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image } from 'react-native';
+import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
@@ -148,7 +148,9 @@ const HomeView = ({ navigation }) => {
                     <View style={styles.NameHeart}>
                         <Text style={{ fontSize: 20, color: '#30CB89' }}>{'山田太郎'}</Text>
                         <View style={styles.heart}>
-                            <Ionicons name="heart" size={24} color="deeppink" />
+                            <TouchableOpacity onPress={()=>{navigation.navigate('SignUpScreen')}}>
+                                <Ionicons name="heart" size={24} color="deeppink" />
+                            </TouchableOpacity>
                             <View style={styles.heartCount}>
                                 <Text style={{ fontSize: 18, paddingLeft: '10%', color: 'white' }}>{`× ${a}　`}</Text>
                                 <AntDesign name="plus" size={15} color="dodgerblue" />

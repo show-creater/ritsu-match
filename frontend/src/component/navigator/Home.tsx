@@ -5,6 +5,7 @@ import HomeView from '../../view/Home/HomeView';
 import MyPage from '../../view/Home/MyPage';
 import Friends from '../../view/Home/Friends';
 import Talk from '../../view/Home/Talk';
+import SignUpScreen from '../../view/login/SignUpScreen';
 
 const Tab = createBottomTabNavigator();
 const Home = () => {
@@ -42,6 +43,9 @@ const Home = () => {
                     tabBarIcon: ({focused}) => (<Ionicons name="person-circle-outline" size={24} color='#30CB89' />
                 ),
             }}>
+            </Tab.Screen>
+            <Tab.Screen name='SignUpScreen' component={SignUpScreen}>
+
             </Tab.Screen>
         </Tab.Navigator>
     )
