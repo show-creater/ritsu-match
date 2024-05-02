@@ -44,7 +44,15 @@ const app = initializeApp(firebaseConfig);
 //   auth = getAuth(app);
 //   console.log('no');
 // }
-const auth = getAuth(app);
+// const auth = getAuth(app);
+let auth;
+try {
+  auth = getAuth(app);
+} catch (error) {
+  auth = initializeAuth(app, {
+    persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+  });
+}
 const db = getFirestore(app);
 const firebaseApp = getApp();
 const storage = getStorage();
