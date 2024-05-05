@@ -6,6 +6,7 @@ import MyPage from '../../view/Home/MyPage';
 import Friends from '../../view/Home/Friends';
 import Talk from '../../view/Home/Talk';
 import SignUpScreen from '../../view/login/SignUpScreen';
+import SendEmail from '../../view/login/SendEmail';
 
 const Tab = createBottomTabNavigator();
 const Home = () => {
@@ -45,6 +46,9 @@ const Home = () => {
             }}>
             </Tab.Screen>
             <Tab.Screen name='SignUpScreen' component={SignUpScreen}>
+
+            </Tab.Screen>
+            <Tab.Screen name='SendEmail' component={SendEmail}>
 
             </Tab.Screen>
         </Tab.Navigator>

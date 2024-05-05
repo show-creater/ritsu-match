@@ -7,17 +7,50 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth } from '../../../firebaseConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 //
-const SignUpScreen = () => {
+const SignUpScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleRegister = async () => {
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(user);
+        try {
+          await sendEmailVerification(user.user);
+
+          const saveemail = async () => {
+            try {
+              const stringValue = JSON.stringify(email);
+              await AsyncStorage.setItem('useremail', stringValue);
+              //console.log('保存が実行されました');
+              //console.log(`メッセージが${currentUserId}さんのローカルに保存されました`);
+            } catch (e) {
+              console.log(e);
+            }
+          };
+          saveemail();
+
+          const savepassword = async () => {
+            try {
+              const stringValue = JSON.stringify(password);
+              await AsyncStorage.setItem('userpassword', stringValue);
+              //console.log('保存が実行されました');
+              //console.log(`メッセージが${currentUserId}さんのローカルに保存されました`);
+            } catch (e) {
+              console.log(e);
+            }
+          };
+          savepassword();
+
+          alert('E-mailをおくりました');
+        } catch (e) {
+          console.error(e)
+          alert('なんか失敗したようですね');
+        }
+        navigation.navigate('SendEmail');
     } catch (error) {
       console.log(error.message);
     }

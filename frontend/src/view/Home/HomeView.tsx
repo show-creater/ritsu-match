@@ -3,10 +3,70 @@ import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image,
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
+import { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { auth } from '../../../firebaseConfig';
+import {signInWithEmailAndPassword, browserLocalPersistence} from 'firebase/auth';
 
 const HomeView = ({ navigation }) => {
     const windowHeight = Dimensions.get('window').height;
     const a = 0;
+    useEffect(()=>{
+        const loademail = async () => {
+            let useremail='';
+            try {
+              const stringValue = await AsyncStorage.getItem('useremail');
+              if(stringValue != null){
+                const value = JSON.parse(stringValue);
+                console.log('email');
+                useremail=value;
+            }
+            } catch (e) {
+              console.log(e);
+            }
+            return useremail;
+          };
+
+          const loadpassword = async () => {
+            let userpassword='';
+            try {
+              const stringValue = await AsyncStorage.getItem('userpassword');
+              if(stringValue != null){
+                const value = JSON.parse(stringValue);
+                console.log('password');
+                userpassword=value;
+            }
+            } catch (e) {
+              console.log(e);
+            }
+            return userpassword;
+          };
+
+          const handleLogin = async (email, password) => {
+            try {
+                // メールアドレスとパスワードでログイン
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+            
+                // ログインが成功した場合の処理
+                console.log('User logged in:', user);
+            } catch (error) {
+              // エラー処理
+              console.error('Login failed:', error.message);
+            }
+          };
+
+          const login=async()=>{
+            let usemail='';
+            let uspassword='';
+            usemail= await loademail();
+            uspassword=await loadpassword();
+            handleLogin(usemail, uspassword);
+          };
+
+          login();
+    },[]);
+    
     const styles = StyleSheet.create({
         header: {
             flexDirection: 'row',
@@ -148,7 +208,7 @@ const HomeView = ({ navigation }) => {
                     <View style={styles.NameHeart}>
                         <Text style={{ fontSize: 20, color: '#30CB89' }}>{'山田太郎'}</Text>
                         <View style={styles.heart}>
-                            <TouchableOpacity onPress={()=>{navigation.navigate('SignUpScreen')}}>
+                            <TouchableOpacity>
                                 <Ionicons name="heart" size={24} color="deeppink" />
                             </TouchableOpacity>
                             <View style={styles.heartCount}>
