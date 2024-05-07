@@ -1,12 +1,31 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
+import { Animated, PanResponder } from 'react-native';
+
 
 const MyPage=({navigation})=>{
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
+    const pan = useRef(new Animated.ValueXY()).current;
+
+    // PanResponderを設定し、ユーザーのドラッグ操作を管理する
+    const panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: Animated.event(
+        [null, { dx: pan.x, dy: pan.y }], // ドラッグによる位置の変更をpanに直接反映
+        { useNativeDriver: false }
+      ),
+      onPanResponderRelease: () => {
+        // ドラッグ終了時にアニメーションで元の位置に戻す
+        Animated.spring(pan, {
+          toValue: { x: 0, y: 100 },
+          useNativeDriver: false
+        }).start();
+      }
+    });
     const styles=StyleSheet.create({
         body: {
             flexDirection: 'column',
