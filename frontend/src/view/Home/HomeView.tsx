@@ -7,12 +7,13 @@ import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from '../../../firebaseConfig';
 import {signInWithEmailAndPassword, browserLocalPersistence} from 'firebase/auth';
+import { useHome } from '../../component/context/HomeContext'
 
 const HomeView = ({ navigation }) => {
     const windowHeight = Dimensions.get('window').height;
     const a = 0;
     useEffect(()=>{
-        const loademail = async () => {
+        const loademail = async () => { //ローカルのログイン情報から自動ログイン
             let useremail='';
             try {
               const stringValue = await AsyncStorage.getItem('useremail');
