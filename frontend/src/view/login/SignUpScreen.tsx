@@ -21,30 +21,6 @@ const SignUpScreen = ({navigation}) => {
         try {
           await sendEmailVerification(user.user);
 
-          const saveemail = async () => {
-            try {
-              const stringValue = JSON.stringify(email);
-              await AsyncStorage.setItem('useremail', stringValue);
-              //console.log('保存が実行されました');
-              //console.log(`メッセージが${currentUserId}さんのローカルに保存されました`);
-            } catch (e) {
-              console.log(e);
-            }
-          };
-          saveemail();
-
-          const savepassword = async () => {
-            try {
-              const stringValue = JSON.stringify(password);
-              await AsyncStorage.setItem('userpassword', stringValue);
-              //console.log('保存が実行されました');
-              //console.log(`メッセージが${currentUserId}さんのローカルに保存されました`);
-            } catch (e) {
-              console.log(e);
-            }
-          };
-          savepassword();
-
           alert('E-mailをおくりました');
         } catch (e) {
           console.error(e)

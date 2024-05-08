@@ -10,8 +10,10 @@ import {signInWithEmailAndPassword, browserLocalPersistence} from 'firebase/auth
 import { useHome } from '../../component/context/HomeContext'
 
 const HomeView = ({ navigation }) => {
+    const {isLogin, setIsLogin}=useHome();
     const windowHeight = Dimensions.get('window').height;
     const a = 0;
+
     useEffect(()=>{
         const loademail = async () => { //ローカルのログイン情報から自動ログイン
             let useremail='';
@@ -48,6 +50,7 @@ const HomeView = ({ navigation }) => {
                 // メールアドレスとパスワードでログイン
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
+                setIsLogin(true);
             
                 // ログインが成功した場合の処理
                 console.log('User logged in:', user);
@@ -243,7 +246,7 @@ const HomeView = ({ navigation }) => {
                                         <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <Ionicons name="pencil" size={24} color='#30CB89' />
-                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>理工学部</Text>
+                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>fucility</Text>
                                         </View>
                                     </View>
                                     <View style={styles.heartBookmark}>

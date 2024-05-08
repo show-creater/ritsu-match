@@ -4,9 +4,12 @@ import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
 import { Animated, PanResponder } from 'react-native';
+import { useHome } from '../../component/context/HomeContext';
+import Login from '../login/Login';
 
 
 const MyPage=({navigation})=>{
+    const {isLogin, setIsLogin}=useHome();
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
     const pan = useRef(new Animated.ValueXY()).current;
@@ -89,6 +92,7 @@ const MyPage=({navigation})=>{
     });
     return (
             <View style={styles.body}>
+                {isLogin ? //ログインしてたらマイページを表示
                 <ScrollView style={{width: '100%', height: '100%'}}>
                     <View style={styles.imageContainer}>
                         <Image style={{ width: windowWidth, height: windowHeight}}
@@ -139,9 +143,12 @@ const MyPage=({navigation})=>{
                         </View>
                     </View>
                 </ScrollView>
+                : 
+                <Login/>
+                }
                 <View style={styles.footer}>
                     <HomeFooter navigation={navigation} />
-                </View>                                     
+                </View>                                    
             </View>            
         
 
