@@ -50,10 +50,12 @@ const HomeView = ({ navigation }) => {
                 // メールアドレスとパスワードでログイン
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
-                setIsLogin(true);
+                if (user.emailVerified){
+                    setIsLogin(true);
+                }
             
                 // ログインが成功した場合の処理
-                console.log('User logged in:', user);
+                // console.log('User logged in:', user);
             } catch (error) {
               // エラー処理
               console.error('Login failed:', error.message);
@@ -246,7 +248,7 @@ const HomeView = ({ navigation }) => {
                                         <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <Ionicons name="pencil" size={24} color='#30CB89' />
-                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>fucility</Text>
+                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>fuculity</Text>
                                         </View>
                                     </View>
                                     <View style={styles.heartBookmark}>

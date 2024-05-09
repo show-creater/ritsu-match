@@ -11,6 +11,7 @@ import {
   updateDoc,
   docRef,
   deleteDoc,
+  setDoc
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import 'firebase/firestore';
@@ -47,6 +48,7 @@ export {
   uploadBytes,
   getDocs,
   doc,
+  setDoc,
   updateDoc,
   docRef,
   deleteDoc,

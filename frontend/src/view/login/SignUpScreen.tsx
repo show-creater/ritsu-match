@@ -5,22 +5,24 @@ import {
   Text,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Button
 } from 'react-native';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
-import { auth } from '../../../firebaseConfig';
+import { auth, db, setDoc, doc } from '../../../firebaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 //
 const SignUpScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showLogin, setShowLogin] = useState(false);
 
   const handleRegister = async () => {
     try {
-      const user = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
         try {
-          await sendEmailVerification(user.user);
-
+          await sendEmailVerification(user);
           alert('E-mailをおくりました');
         } catch (e) {
           console.error(e)
@@ -82,6 +84,12 @@ const SignUpScreen = ({navigation}) => {
         disabled={!email || !password}
       >
         <Text style={{ color: 'white' }}>登録する</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{marginTop: 20, borderBottomWidth: 1}}
+        onPress={()=> navigation.navigate('Login')}
+      >
+        <Text>すでにアカウントをお持ちの方</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
   );

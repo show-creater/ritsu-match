@@ -9,7 +9,7 @@ import { auth } from '../../../firebaseConfig';
 import {signInWithEmailAndPassword, browserLocalPersistence} from 'firebase/auth';
 import { useHome } from '../../component/context/HomeContext';
 
-const Login=()=>{
+const Login=({navigation})=>{
     const {isLogin, setIsLogin}=useHome();
     const [email, setEmail]=useState('');
     const [password, setPassword]=useState('');
@@ -22,13 +22,11 @@ const Login=()=>{
             //ログイン状態管理
             setIsLogin(true);
 
-            //入力されたemailをローカルに保存
+            //初回ログイン時にユーザー情報をasyncstorageに保存
             const saveemail = async () => {
                 try {
                   const stringValue = JSON.stringify(email);
                   await AsyncStorage.setItem('useremail', stringValue);
-                  //console.log('保存が実行されました');
-                  //console.log(`メッセージが${currentUserId}さんのローカルに保存されました`);
                 } catch (e) {
                   console.log(e);
                 }
@@ -39,8 +37,6 @@ const Login=()=>{
                 try {
                   const stringValue = JSON.stringify(password);
                   await AsyncStorage.setItem('userpassword', stringValue);
-                  //console.log('保存が実行されました');
-                  //console.log(`メッセージが${currentUserId}さんのローカルに保存されました`);
                 } catch (e) {
                   console.log(e);
                 }
@@ -49,11 +45,27 @@ const Login=()=>{
         
             // ログインが成功した場合の処理
             console.log('User logged in:', user);
+            navigation.navigate('MyPage');
         } catch (error) {
           // エラー処理
           console.error('Login failed:', error.message);
         }
       };
+
+      const styles = StyleSheet.create({
+        footer: {
+            position: 'absolute',
+            bottom: 0,
+            height: '10%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+        },
+
+
+
+    });
+
     return (
         <KeyboardAvoidingView
         behavior="padding"
@@ -103,8 +115,17 @@ const Login=()=>{
           onPress={handleLogin}
           disabled={!email || !password}
         >
-          <Text style={{ color: 'white' }}>ログインする</Text>
+          <Text style={{ color: 'white' }}>ログイン</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={{marginTop: 20, borderBottomWidth: 1}}
+          onPress={()=> navigation.navigate('SignUpScreen')}
+        >
+          <Text>まだアカウントをお持ちでない方</Text>
+        </TouchableOpacity>
+        <View style={styles.footer}>
+          <HomeFooter navigation={navigation} />
+        </View>
       </KeyboardAvoidingView>
     );
 };

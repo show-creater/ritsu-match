@@ -5,7 +5,7 @@ import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
 import { Animated, PanResponder } from 'react-native';
 import { useHome } from '../../component/context/HomeContext';
-import Login from '../login/Login';
+import SignUpScreen from '../login/SignUpScreen';
 
 
 const MyPage=({navigation})=>{
@@ -144,7 +144,7 @@ const MyPage=({navigation})=>{
                     </View>
                 </ScrollView>
                 : 
-                <Login/>
+                <SignUpScreen navigation={navigation}/>
                 }
                 <View style={styles.footer}>
                     <HomeFooter navigation={navigation} />

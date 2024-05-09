@@ -8,6 +8,7 @@ import Talk from '../../view/Home/Talk';
 import SignUpScreen from '../../view/login/SignUpScreen';
 import SendEmail from '../../view/login/SendEmail';
 import { HomeProvider } from '../context/HomeContext';
+import Login from '../../view/login/Login';
 
 const Tab = createBottomTabNavigator();
 const Home = () => {
@@ -51,6 +52,9 @@ const Home = () => {
 
                 </Tab.Screen>
                 <Tab.Screen name='SendEmail' component={SendEmail}>
+
+                </Tab.Screen>
+                <Tab.Screen name='Login' component={Login}>
 
                 </Tab.Screen>
             </Tab.Navigator>
