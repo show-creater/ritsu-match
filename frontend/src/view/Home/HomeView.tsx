@@ -1,5 +1,5 @@
-import React from 'react';
-import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
@@ -8,6 +8,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from '../../../firebaseConfig';
 import {signInWithEmailAndPassword, browserLocalPersistence} from 'firebase/auth';
 import { useHome } from '../../component/context/HomeContext'
+import { collection, getDocs } from "firebase/firestore";
+import { db } from '../../../firebaseConfig';
 
 const HomeView = ({ navigation }) => {
     const {isLogin, setIsLogin}=useHome();
@@ -30,20 +32,15 @@ const HomeView = ({ navigation }) => {
             return useremail;
           };
 
-          const loadpassword = async () => {
-            let userpassword='';
-            try {
-              const stringValue = await AsyncStorage.getItem('userpassword');
-              if(stringValue != null){
-                const value = JSON.parse(stringValue);
-                console.log('password');
-                userpassword=value;
-            }
-            } catch (e) {
-              console.log(e);
-            }
-            return userpassword;
-          };
+    //     getDocs(collection(db, "matching")).forEach((doc) => {
+    //   // doc.data() is never undefined for query doc snapshots
+    //   console.log(doc.id, " => ", doc.data());
+    // });
+    const [persondata, setPersondata] = useState([{name: '', faculty: '', heart: '', image:'', age: 0, comment: ''}]);
+        const test = async () => {
+            const querySnapshot = await getDocs(collection(db, "matching"));
+            let persons=[]
+            querySnapshot.forEach((doc) => {
 
           const handleLogin = async (email, password) => {
             try {
@@ -61,18 +58,25 @@ const HomeView = ({ navigation }) => {
               console.error('Login failed:', error.message);
             }
           };
-
-          const login=async()=>{
-            let usemail='';
-            let uspassword='';
-            usemail= await loademail();
-            uspassword=await loadpassword();
-            handleLogin(usemail, uspassword);
-          };
-
-          login();
+                // doc.data() is never undefined for query doc snapshots
+                //console.log(doc.data(),",");
+                //console.log(persondata);
+                persons.push(doc.data());
+            });
+            setPersondata(persons);
+        };
+    useEffect(()=>{
+        test()
     },[]);
-    
+
+    // const [number,setNumber] = useState(3);
+    // useEffect(()=>{
+    //     setNumber(5)
+    //     console.log(number);
+    // },[]);
+        
+
+    const a = 0;
     const styles = StyleSheet.create({
         header: {
             flexDirection: 'row',
@@ -129,7 +133,7 @@ const HomeView = ({ navigation }) => {
         },
         personlist: {
             width: '100%',
-            height: 16000,
+            height: 16000,//?個分の高さ
             marginTop: 160,
             alignItems: 'center',
             flexDirection: 'column',
@@ -208,15 +212,14 @@ const HomeView = ({ navigation }) => {
     });
     return (
         <View style={{ flex: 1, alignItems: 'center', height: 1000 }}>
+            {/* <View><Text>{`${number}`}</Text></View> */}
             <View style={styles.header}>
                 <View style={styles.icon}></View>
                 <View style={styles.informations}>
                     <View style={styles.NameHeart}>
                         <Text style={{ fontSize: 20, color: '#30CB89' }}>{'山田太郎'}</Text>
                         <View style={styles.heart}>
-                            <TouchableOpacity>
-                                <Ionicons name="heart" size={24} color="deeppink" />
-                            </TouchableOpacity>
+                            <Ionicons name="heart" size={24} color="deeppink" />
                             <View style={styles.heartCount}>
                                 <Text style={{ fontSize: 18, paddingLeft: '10%', color: 'white' }}>{`× ${a}　`}</Text>
                                 <AntDesign name="plus" size={15} color="dodgerblue" />
@@ -234,7 +237,8 @@ const HomeView = ({ navigation }) => {
             </View>
             <ScrollView style={{ width: '100%' }} pagingEnabled={true} showsVerticalScrollIndicator={false}>
                 <View style={styles.personlist}>
-                    <View style={styles.InfoOutside}>
+                    {persondata.map((data,index) => 
+                        <View style={styles.InfoOutside}>
                         <View style={styles.personInformation}>
                             <View style={styles.personImage}>
                                 <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
@@ -245,6 +249,38 @@ const HomeView = ({ navigation }) => {
                             <View style={styles.personProfile}>
                                 <View style={styles.ProfileTop}>
                                     <View style={styles.NameFucility}>
+
+                                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>{`${data.name}`}</Text>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <Ionicons name="pencil" size={24} color='#30CB89' />
+                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>{`${data.faculty}`}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.heartBookmark}>
+                                        <View style={styles.clickheart}>
+                                            <Ionicons name="heart-outline" size={50} color="deeppink" />
+                                            <Text style={{ color: 'deeppink' }}>{`${data.heart}`}</Text>
+                                        </View>
+                                        <Ionicons name="bookmark" size={50} color="#30CB89" />
+                                    </View>
+                                </View>
+                                <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>{`${data.comment}`}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    )}
+                    {/* <View style={styles.InfoOutside}>
+                        <View style={styles.personInformation}>
+                            <View style={styles.personImage}>
+                                <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
+                                    source={require('../../component/photo/ディカプリオ.webp')}
+                                    resizeMode='cover'
+                                />
+                            </View>
+                            <View style={styles.personProfile}>
+                                <View style={styles.ProfileTop}>
+                                    <View style={styles.NameFucility}>
+
                                         <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <Ionicons name="pencil" size={24} color='#30CB89' />
@@ -261,7 +297,36 @@ const HomeView = ({ navigation }) => {
                                 </View>
                                 <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
                             </View>
-                        </View>                        
+                        </View>
+                    </View> */}
+                    {/* <View style={styles.InfoOutside}>
+                        <View style={styles.personInformation}>
+                            <View style={styles.personImage}>
+                                <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
+                                    source={require('../../component/photo/ディカプリオ.webp')}
+                                    resizeMode='cover'
+                                />
+                            </View>
+                            <View style={styles.personProfile}>
+                                <View style={styles.ProfileTop}>
+                                    <View style={styles.NameFucility}>
+                                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <Ionicons name="pencil" size={24} color='#30CB89' />
+                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>理工学部</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.heartBookmark}>
+                                        <View style={styles.clickheart}>
+                                            <Ionicons name="heart-outline" size={50} color="deeppink" />
+                                            <Text style={{ color: 'deeppink' }}>2</Text>
+                                        </View>
+                                        <Ionicons name="bookmark" size={50} color="#30CB89" />
+                                    </View>
+                                </View>
+                                <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
+                            </View>
+                        </View>
                     </View>
                     <View style={styles.InfoOutside}>
                         <View style={styles.personInformation}>
@@ -290,7 +355,7 @@ const HomeView = ({ navigation }) => {
                                 </View>
                                 <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
                             </View>
-                        </View>                        
+                        </View>
                     </View>
                     <View style={styles.InfoOutside}>
                         <View style={styles.personInformation}>
@@ -319,7 +384,7 @@ const HomeView = ({ navigation }) => {
                                 </View>
                                 <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
                             </View>
-                        </View>                        
+                        </View>
                     </View>
                     <View style={styles.InfoOutside}>
                         <View style={styles.personInformation}>
@@ -348,7 +413,7 @@ const HomeView = ({ navigation }) => {
                                 </View>
                                 <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
                             </View>
-                        </View>                        
+                        </View>
                     </View>
                     <View style={styles.InfoOutside}>
                         <View style={styles.personInformation}>
@@ -377,7 +442,7 @@ const HomeView = ({ navigation }) => {
                                 </View>
                                 <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
                             </View>
-                        </View>                        
+                        </View>
                     </View>
                     <View style={styles.InfoOutside}>
                         <View style={styles.personInformation}>
@@ -406,7 +471,7 @@ const HomeView = ({ navigation }) => {
                                 </View>
                                 <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
                             </View>
-                        </View>                        
+                        </View>
                     </View>
                     <View style={styles.InfoOutside}>
                         <View style={styles.personInformation}>
@@ -435,7 +500,7 @@ const HomeView = ({ navigation }) => {
                                 </View>
                                 <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
                             </View>
-                        </View>                        
+                        </View>
                     </View>
                     <View style={styles.InfoOutside}>
                         <View style={styles.personInformation}>
@@ -464,7 +529,7 @@ const HomeView = ({ navigation }) => {
                                 </View>
                                 <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
                             </View>
-                        </View>                        
+                        </View>
                     </View>
                     <View style={styles.InfoOutside}>
                         <View style={styles.personInformation}>
@@ -493,37 +558,8 @@ const HomeView = ({ navigation }) => {
                                 </View>
                                 <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
                             </View>
-                        </View>                        
-                    </View>
-                    <View style={styles.InfoOutside}>
-                        <View style={styles.personInformation}>
-                            <View style={styles.personImage}>
-                                <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
-                                    source={require('../../component/photo/ディカプリオ.webp')}
-                                    resizeMode='cover'
-                                />
-                            </View>
-                            <View style={styles.personProfile}>
-                                <View style={styles.ProfileTop}>
-                                    <View style={styles.NameFucility}>
-                                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Ionicons name="pencil" size={24} color='#30CB89' />
-                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>理工学部</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.heartBookmark}>
-                                        <View style={styles.clickheart}>
-                                            <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                            <Text style={{ color: 'deeppink' }}>2</Text>
-                                        </View>
-                                        <Ionicons name="bookmark" size={50} color="#30CB89" />
-                                    </View>
-                                </View>
-                                <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
-                            </View>
-                        </View>                        
-                    </View>
+                        </View>
+                    </View> */}
                 </View>
             </ScrollView>
             <View style={styles.footer}>

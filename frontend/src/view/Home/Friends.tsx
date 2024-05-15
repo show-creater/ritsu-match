@@ -39,7 +39,7 @@ const Friends = ({navigation}) => {
         containerTextTime:{
             position:'absolute',
             zIndex:1,
-            top:123,
+            top:123,//アイフォン１５ではちょうどいい高さ、パーセントが使えない
             width:'100%',
             height:'15%',
             backgroundColor:'rgba(0,0,0,0.5)',
