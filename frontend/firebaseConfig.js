@@ -11,11 +11,12 @@ import {
   updateDoc,
   docRef,
   deleteDoc,
+  setDoc
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import 'firebase/firestore';
 import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
-import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+// import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -47,6 +48,7 @@ export {
   uploadBytes,
   getDocs,
   doc,
+  setDoc,
   updateDoc,
   docRef,
   deleteDoc,

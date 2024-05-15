@@ -3,13 +3,34 @@ import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image 
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
+import { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { auth } from '../../../firebaseConfig';
+import {signInWithEmailAndPassword, browserLocalPersistence} from 'firebase/auth';
+import { useHome } from '../../component/context/HomeContext'
 import { collection, getDocs } from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
 
-
-
 const HomeView = ({ navigation }) => {
+    const {isLogin, setIsLogin}=useHome();
     const windowHeight = Dimensions.get('window').height;
+    const a = 0;
+
+    useEffect(()=>{
+        const loademail = async () => { //ローカルのログイン情報から自動ログイン
+            let useremail='';
+            try {
+              const stringValue = await AsyncStorage.getItem('useremail');
+              if(stringValue != null){
+                const value = JSON.parse(stringValue);
+                console.log('email');
+                useremail=value;
+            }
+            } catch (e) {
+              console.log(e);
+            }
+            return useremail;
+          };
 
     //     getDocs(collection(db, "matching")).forEach((doc) => {
     //   // doc.data() is never undefined for query doc snapshots
@@ -21,6 +42,22 @@ const HomeView = ({ navigation }) => {
             let persons=[]
             querySnapshot.forEach((doc) => {
 
+          const handleLogin = async (email, password) => {
+            try {
+                // メールアドレスとパスワードでログイン
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                if (user.emailVerified){
+                    setIsLogin(true);
+                }
+            
+                // ログインが成功した場合の処理
+                // console.log('User logged in:', user);
+            } catch (error) {
+              // エラー処理
+              console.error('Login failed:', error.message);
+            }
+          };
                 // doc.data() is never undefined for query doc snapshots
                 //console.log(doc.data(),",");
                 //console.log(persondata);
@@ -247,7 +284,7 @@ const HomeView = ({ navigation }) => {
                                         <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <Ionicons name="pencil" size={24} color='#30CB89' />
-                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>理工学部</Text>
+                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>fuculity</Text>
                                         </View>
                                     </View>
                                     <View style={styles.heartBookmark}>
