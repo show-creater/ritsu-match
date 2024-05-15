@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef,useEffect, useState } from 'react';
 import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
@@ -6,10 +6,11 @@ import { AntDesign } from '@expo/vector-icons';
 import { Animated, PanResponder } from 'react-native';
 import { useHome } from '../../component/context/HomeContext';
 import SignUpScreen from '../login/SignUpScreen';
-
+import { collection, getDocs ,getDoc} from "firebase/firestore";
+import { db } from '../../../firebaseConfig';
 
 const MyPage=({navigation})=>{
-    const {isLogin, setIsLogin}=useHome();
+    const {isLogin, setIsLogin, loginUser ,setLoginUser}=useHome();
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
     const pan = useRef(new Animated.ValueXY()).current;
@@ -29,6 +30,24 @@ const MyPage=({navigation})=>{
         }).start();
       }
     });
+
+    const [infor, setInfor] = useState([{name: '', faculty: '', heart: '', image:'', age: '', comment: ''}]);
+        const test = async () => {
+            const querySnapshot = await getDocs(collection(db, "users", "LkW4tsYgDrVi6KTAv8iEGhtuzkB3"));
+            let persons=[]
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                //console.log(doc.data(),",");
+                console.log(infor);
+                persons.push(doc.data());
+                
+            });
+            setInfor(persons);
+        };
+    useEffect(()=>{
+        test()
+        },[]);
+
     const styles=StyleSheet.create({
         body: {
             flexDirection: 'column',
@@ -36,6 +55,7 @@ const MyPage=({navigation})=>{
             // height: 4000
             // backgroundColor: 'red'
         },
+    
         imageContainer: {
             overflow: 'hidden',
             height: '30%',

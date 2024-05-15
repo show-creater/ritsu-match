@@ -3,19 +3,19 @@ import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image 
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
-import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from '../../../firebaseConfig';
 import {signInWithEmailAndPassword, browserLocalPersistence} from 'firebase/auth';
 import { useHome } from '../../component/context/HomeContext'
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs ,getDoc} from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
 
 const HomeView = ({ navigation }) => {
-    const {isLogin, setIsLogin}=useHome();
+    const {isLogin, setIsLogin, loginUser, setLoginUser}=useHome();
     const windowHeight = Dimensions.get('window').height;
     const a = 0;
 
+    
     useEffect(()=>{
         const loademail = async () => { //ローカルのログイン情報から自動ログイン
             let useremail='';
@@ -31,6 +31,48 @@ const HomeView = ({ navigation }) => {
             }
             return useremail;
           };
+          const loadpassword = async () => {
+            let userpassword='';
+            try {
+              const stringValue = await AsyncStorage.getItem('userpassword');
+              if(stringValue != null){
+                const value = JSON.parse(stringValue);
+                console.log('password');
+                userpassword=value;
+            }
+            } catch (e) {
+              console.log(e);
+            }
+            return userpassword;
+          };
+          const handleLogin = async (email, password) => {
+            try {
+                // メールアドレスとパスワードでログイン
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                setIsLogin(true);
+                if (user.emailVerified){
+                    setIsLogin(true);
+                    setLoginUser(user);
+                }
+
+                // ログインが成功した場合の処理
+                console.log('User logged in:', user);
+                // console.log('User logged in:', user);
+            } catch (error) {
+              // エラー処理
+              console.error('Login failed:', error.message);
+            }
+          };
+          const login=async()=>{
+            let usemail='';
+            let uspassword='';
+            usemail= await loademail();
+            uspassword=await loadpassword();
+            handleLogin(usemail, uspassword);
+          };
+          login();
+    },[]);
 
     //     getDocs(collection(db, "matching")).forEach((doc) => {
     //   // doc.data() is never undefined for query doc snapshots
@@ -41,23 +83,6 @@ const HomeView = ({ navigation }) => {
             const querySnapshot = await getDocs(collection(db, "matching"));
             let persons=[]
             querySnapshot.forEach((doc) => {
-
-          const handleLogin = async (email, password) => {
-            try {
-                // メールアドレスとパスワードでログイン
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-                if (user.emailVerified){
-                    setIsLogin(true);
-                }
-            
-                // ログインが成功した場合の処理
-                // console.log('User logged in:', user);
-            } catch (error) {
-              // エラー処理
-              console.error('Login failed:', error.message);
-            }
-          };
                 // doc.data() is never undefined for query doc snapshots
                 //console.log(doc.data(),",");
                 //console.log(persondata);
@@ -76,7 +101,6 @@ const HomeView = ({ navigation }) => {
     // },[]);
         
 
-    const a = 0;
     const styles = StyleSheet.create({
         header: {
             flexDirection: 'row',
