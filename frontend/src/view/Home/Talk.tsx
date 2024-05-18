@@ -1,12 +1,26 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
+import { useHome } from '../../component/context/HomeContext'
+import { auth,db,storage } from '../../../firebaseConfig';
+import { arrayUnion, updateDoc, Timestamp, onSnapshot, orderBy, addDoc, doc, getDoc, setDoc , collection, getDocs, getFirestore, query, where } from '@firebase/firestore';
 
 const Talk = ({ navigation }) => {
+    const {isLogin, setIsLogin}=useHome();
     const windowHeight = Dimensions.get('window').height;
     const a = 0;
+
+    useEffect(()=>{
+        if(isLogin){
+            const currentUserId = auth.currentUser.uid;
+            const query=collection(db, 'chat');
+            
+        }
+    })
+
+
     const styles = StyleSheet.create({
         header: {
             flexDirection: 'row',

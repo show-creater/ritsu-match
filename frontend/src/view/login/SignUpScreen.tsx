@@ -11,7 +11,8 @@ import { useState } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth, db, setDoc, doc } from '../../../firebaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-//
+import LottieView from 'lottie-react-native';
+
 const SignUpScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

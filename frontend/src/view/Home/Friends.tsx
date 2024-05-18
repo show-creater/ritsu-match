@@ -1,10 +1,16 @@
 import React from 'react';
 import {Text,View,StyleSheet,ScrollView,Image,Dimensions} from 'react-native';
 import HomeFooter from '../../component/footer/HomeFooter';
+import LottieView from 'lottie-react-native';
 
 const Friends = ({navigation}) => {
     const windowHeight = Dimensions.get('window').height;
     const styles = StyleSheet.create({ 
+        container1: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
         footer: {
             position: 'absolute',
             bottom: 0,
@@ -60,7 +66,15 @@ const Friends = ({navigation}) => {
     return (
         <View style={{flex:1}}>
             <ScrollView style={{flex:1}}>
-                <View>
+            <View style={styles.container1}>
+                <LottieView
+                    source={require('../../component/animation/Animation - 1716011959161.json')}
+                    autoPlay
+                    loop
+                />                
+            </View>
+
+                {/* <View>
                     <View style={styles.main}>
                         <View style = {styles.container}>
                             <View style = {styles.containerBox}>
@@ -175,7 +189,7 @@ const Friends = ({navigation}) => {
                             </View>
                         </View>
                     </View>
-                </View>
+                </View> */}
 
             </ScrollView>
             <View style={styles.footer}>
