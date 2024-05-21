@@ -66,15 +66,7 @@ const Friends = ({navigation}) => {
     return (
         <View style={{flex:1}}>
             <ScrollView style={{flex:1}}>
-            <View style={styles.container1}>
-                <LottieView
-                    source={require('../../component/animation/Animation - 1716011959161.json')}
-                    autoPlay
-                    loop
-                />                
-            </View>
-
-                {/* <View>
+                <View>
                     <View style={styles.main}>
                         <View style = {styles.container}>
                             <View style = {styles.containerBox}>
@@ -189,7 +181,7 @@ const Friends = ({navigation}) => {
                             </View>
                         </View>
                     </View>
-                </View> */}
+                </View>
 
             </ScrollView>
             <View style={styles.footer}>
