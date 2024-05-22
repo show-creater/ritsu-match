@@ -47,15 +47,18 @@ const HomeView = ({ navigation }) => {
             }
             return userpassword;
           };
+          
           const handleLogin = async (email, password) => {
             try {
                 // メールアドレスとパスワードでログイン
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-                // setIsLogin(true);
+                const user = userCredential.user;             
                 if (user.emailVerified){
                     setIsLogin(true);
                     setLoginUser(user);
+                    const docdata = await getDoc(doc(db, "users", auth.currentUser.uid));
+                    //console.log(docdata.data());
+                    setInfor(docdata.data());
                 }
 
                 // ログインが成功した場合の処理

@@ -7,7 +7,7 @@ import { Animated, PanResponder } from 'react-native';
 import { useHome } from '../../component/context/HomeContext';
 import SignUpScreen from '../login/SignUpScreen';
 import { collection, getDocs ,getDoc ,doc} from "firebase/firestore";
-import { db } from '../../../firebaseConfig';
+import { db, auth } from '../../../firebaseConfig';
 
 const MyPage=({navigation})=>{
     const {isLogin, setIsLogin, loginUser ,setLoginUser}=useHome();
@@ -34,9 +34,10 @@ const MyPage=({navigation})=>{
     });
 
     useEffect(()=>{
-        const docRef = doc(db, "users", "LkW4tsYgDrVi6KTAv8iEGhtuzkB3");
+        const currentuser = auth.currentUser.uid;
+        setLoginUser(currentuser);
         const docSnap = async () =>{
-            const docdata = await getDoc(docRef);
+            const docdata = await getDoc(doc(db, "users", currentuser));
             //console.log(docdata.data());
             setInfor(docdata.data());
         };
