@@ -9,6 +9,7 @@ import {signInWithEmailAndPassword, browserLocalPersistence} from 'firebase/auth
 import { useHome } from '../../component/context/HomeContext'
 import { collection, getDocs ,getDoc,doc} from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
+import LottieView from 'lottie-react-native';
 
 const HomeView = ({ navigation }) => {
     const {isLogin, setIsLogin, loginUser, setLoginUser}=useHome();
@@ -273,36 +274,36 @@ const HomeView = ({ navigation }) => {
             <ScrollView style={{ width: '100%' }} pagingEnabled={true} showsVerticalScrollIndicator={false}>
                 <View style={styles.personlist}>
                     {persondata.map((data,index) => 
-                        <View style={styles.InfoOutside}>
-                        <View style={styles.personInformation}>
-                            <View style={styles.personImage}>
-                                <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
-                                    source={require('../../component/photo/ディカプリオ.webp')}
-                                    resizeMode='cover'
-                                />
-                            </View>
-                            <View style={styles.personProfile}>
-                                <View style={styles.ProfileTop}>
-                                    <View style={styles.NameFucility}>
-
-                                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>{`${data.name}`}</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Ionicons name="pencil" size={24} color='#30CB89' />
-                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>{`${data.faculty}`}</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.heartBookmark}>
-                                        <View style={styles.clickheart}>
-                                            <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                            <Text style={{ color: 'deeppink' }}>{`${data.heart}`}</Text>
-                                        </View>
-                                        <Ionicons name="bookmark" size={50} color="#30CB89" />
-                                    </View>
+                        <View style={styles.InfoOutside} key={index}>
+                            <View style={styles.personInformation}>
+                                <View style={styles.personImage}>
+                                    <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
+                                        source={require('../../component/photo/ディカプリオ.webp')}
+                                        resizeMode='cover'
+                                    />
                                 </View>
-                                <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>{`${data.comment}`}</Text>
+                                <View style={styles.personProfile}>
+                                    <View style={styles.ProfileTop}>
+                                        <View style={styles.NameFucility}>
+
+                                            <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>{`${data.name}`}</Text>
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                <Ionicons name="pencil" size={24} color='#30CB89' />
+                                                <Text style={{ fontSize: 15, color: '#30CB89' }}>{`${data.faculty}`}</Text>
+                                            </View>
+                                        </View>
+                                        <View style={styles.heartBookmark}>
+                                            <View style={styles.clickheart}>
+                                                <Ionicons name="heart-outline" size={50} color="deeppink" />
+                                                <Text style={{ color: 'deeppink' }}>{`${data.heart}`}</Text>
+                                            </View>
+                                            <Ionicons name="bookmark" size={50} color="#30CB89" />
+                                        </View>
+                                    </View>
+                                    <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>{`${data.comment}`}</Text>
+                                </View>
                             </View>
                         </View>
-                    </View>
                     )}
                     {/* <View style={styles.InfoOutside}>
                         <View style={styles.personInformation}>
