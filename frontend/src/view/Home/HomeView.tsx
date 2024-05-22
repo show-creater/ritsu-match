@@ -51,7 +51,7 @@ const HomeView = ({ navigation }) => {
                 // メールアドレスとパスワードでログイン
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
-                setIsLogin(true);
+                // setIsLogin(true);
                 if (user.emailVerified){
                     setIsLogin(true);
                     setLoginUser(user);

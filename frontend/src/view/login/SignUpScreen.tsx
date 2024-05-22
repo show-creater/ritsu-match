@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
-import { auth, db, setDoc, doc } from '../../../firebaseConfig';
+import { auth, db, setDoc, doc, collection } from '../../../firebaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LottieView from 'lottie-react-native';
 import Animation1 from '../../component/animation/animation1';
