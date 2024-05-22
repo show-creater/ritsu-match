@@ -1,16 +1,18 @@
 import React, { useRef,useEffect, useState } from 'react';
-import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image } from 'react-native';
+import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity, TextInput ,Keyboard} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
 import { Animated, PanResponder } from 'react-native';
 import { useHome } from '../../component/context/HomeContext';
 import SignUpScreen from '../login/SignUpScreen';
-import { collection, getDocs ,getDoc} from "firebase/firestore";
+import { collection, getDocs ,getDoc ,doc} from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
 
 const MyPage=({navigation})=>{
     const {isLogin, setIsLogin, loginUser ,setLoginUser}=useHome();
+    const [changeInfor,setChangeInfor] = useState(false);
+    const [infor,setInfor] = useState({name: '', faculty: '', heart: 0, image:'', age: 0, comment: ''});
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
     const pan = useRef(new Animated.ValueXY()).current;
@@ -31,22 +33,48 @@ const MyPage=({navigation})=>{
       }
     });
 
-    const [infor, setInfor] = useState([{name: '', faculty: '', heart: '', image:'', age: '', comment: ''}]);
-        const test = async () => {
-            const querySnapshot = await getDocs(collection(db, "users", "LkW4tsYgDrVi6KTAv8iEGhtuzkB3"));
-            let persons=[]
-            querySnapshot.forEach((doc) => {
-                // doc.data() is never undefined for query doc snapshots
-                //console.log(doc.data(),",");
-                console.log(infor);
-                persons.push(doc.data());
-                
-            });
-            setInfor(persons);
-        };
     useEffect(()=>{
-        test()
-        },[]);
+        const docRef = doc(db, "users", "LkW4tsYgDrVi6KTAv8iEGhtuzkB3");
+        const docSnap = async () =>{
+            const docdata = await getDoc(docRef);
+            //console.log(docdata.data());
+            setInfor(docdata.data());
+        };
+        docSnap();
+
+        // const dog = docSnap();
+
+        // console.log(dog);
+    //     if (dog.exists()) {
+    //     console.log("Document data:", docSnap.data());
+    //     } else {
+    //     // docSnap.data() will be undefined in this case
+    //     console.log("No such document!");
+    //     }        
+    },[]);
+
+
+    // const [infor, setInfor] = useState([{name: '', faculty: '', heart: '', image:'', age: '', comment: ''}]);
+    //     const test = async () => {
+    //         const querySnapshot = await getDocs(collection(db, "users","LkW4tsYgDrVi6KTAv8iEGhtuzkB3"));
+    //         let persons=[]
+    //         querySnapshot.forEach((doc) => {
+    //             // doc.data() is never undefined for query doc snapshots
+    //             //console.log(doc.data(),",");
+    //             //console.log(infor);
+    //             persons.push(doc.data());
+
+    //         });
+    //         setInfor(persons);
+    //     };
+    // useEffect(()=>{
+    //     test()
+    //     console.log(infor);
+    //     },[]);
+
+    const ChangeInfor=()=>{
+        
+    };
 
     const styles=StyleSheet.create({
         body: {
@@ -55,7 +83,7 @@ const MyPage=({navigation})=>{
             // height: 4000
             // backgroundColor: 'red'
         },
-    
+
         imageContainer: {
             overflow: 'hidden',
             height: '30%',
@@ -82,6 +110,10 @@ const MyPage=({navigation})=>{
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center'
+        },
+        nameInfor:{
+            flexDirection:'row',
+            alignItems:'center',
         },
         fucility: {
             justifyContent: 'center',
@@ -121,45 +153,66 @@ const MyPage=({navigation})=>{
                         />
                     </View>
                     <View style={styles.profile}>
-                        <Text style={{fontSize: 35, color: '#30CB89'}}>レオナルドディカプリオ</Text>
+                        <View style={styles.nameInfor}>
+                            {!changeInfor?<Text style={{fontSize: 35, color: '#30CB89'}}>{`${infor.name}`}</Text>:<TextInput style={{borderWidth: 2, fontSize: 35, color: '#30CB89'}} onChangeText={(text)=>{setInfor((prev)=>{prev.name=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}}></TextInput>}
+                            <TouchableOpacity onPress={() => {setChangeInfor(true)}}>
+                                <Ionicons name="pencil" size={24} color='#595959' />
+                            </TouchableOpacity>
+                        </View>
                         <View style={styles.fucility}>
-                            <Text style={{fontSize: 25, color: '#30CB89'}}>理工学部</Text>
+                            <Text style={{fontSize: 25, color: '#30CB89'}}>{`${infor.faculty}`}</Text>
+                            <TouchableOpacity>
                             <Ionicons name="pencil" size={24} color='#595959' />
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>年齢</Text>
-                            <Text style={styles.profileStatus}>23歳</Text>
+                            <Text style={styles.profileStatus}>{`${infor.age}`}</Text>
+                            <TouchableOpacity>
                             <Ionicons name="pencil" size={24} color='#595959' />
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>身長</Text>
                             <Text style={styles.profileStatus}>184cm</Text>
+                            <TouchableOpacity>
                             <Ionicons name="pencil" size={24} color='#595959' />
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>出身地</Text>
                             <Text style={styles.profileStatus}>東京都</Text>
+                            <TouchableOpacity>
                             <Ionicons name="pencil" size={24} color='#595959' />
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>趣味</Text>
                             <Text style={styles.profileStatus}>映画鑑賞</Text>
+                            <TouchableOpacity>
                             <Ionicons name="pencil" size={24} color='#595959' />
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>血液型</Text>
                             <Text style={styles.profileStatus}>B型</Text>
+                            <TouchableOpacity>
                             <Ionicons name="pencil" size={24} color='#595959' />
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>大学</Text>
                             <Text style={styles.profileStatus}>立命館大学</Text>
+                            <TouchableOpacity>
                             <Ionicons name="pencil" size={24} color='#595959' />
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>自己紹介</Text>
-                            <Text style={styles.profileStatus}>私がギャッツビーです</Text>
+                            <Text style={styles.profileStatus}>{`${infor.comment}`}</Text>
+                            <TouchableOpacity>
                             <Ionicons name="pencil" size={24} color='#595959' />
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </ScrollView>
