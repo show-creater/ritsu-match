@@ -7,12 +7,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from '../../../firebaseConfig';
 import {signInWithEmailAndPassword, browserLocalPersistence} from 'firebase/auth';
 import { useHome } from '../../component/context/HomeContext'
-import { collection, getDocs ,getDoc} from "firebase/firestore";
+import { collection, getDocs ,getDoc,doc} from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
 
 const HomeView = ({ navigation }) => {
     const {isLogin, setIsLogin, loginUser, setLoginUser}=useHome();
     const windowHeight = Dimensions.get('window').height;
+    const [infor,setInfor] = useState({name: '', faculty: '', heart: 0, image:'', age: 0, comment: ''});
     const a = 0;
 
     
@@ -84,7 +85,6 @@ const HomeView = ({ navigation }) => {
             let persons=[]
             querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
-                //console.log(doc.data(),",");
                 //console.log(persondata);
                 persons.push(doc.data());
             });
@@ -92,6 +92,8 @@ const HomeView = ({ navigation }) => {
         };
     useEffect(()=>{
         test()
+        console.log(persondata);
+
     },[]);
 
     // const [number,setNumber] = useState(3);
@@ -100,6 +102,15 @@ const HomeView = ({ navigation }) => {
     //     console.log(number);
     // },[]);
         
+    useEffect(()=>{
+        const docRef = doc(db, "users", "LkW4tsYgDrVi6KTAv8iEGhtuzkB3");
+        const docSnap = async () =>{
+            const docdata = await getDoc(docRef);
+            //console.log(docdata.data());
+            setInfor(docdata.data());
+        };
+        docSnap();
+    },[]);
 
     const styles = StyleSheet.create({
         header: {
@@ -241,7 +252,7 @@ const HomeView = ({ navigation }) => {
                 <View style={styles.icon}></View>
                 <View style={styles.informations}>
                     <View style={styles.NameHeart}>
-                        <Text style={{ fontSize: 20, color: '#30CB89' }}>{'山田太郎'}</Text>
+                        <Text style={{ fontSize: 20, color: '#30CB89' }}>{`${infor.name}`}</Text>
                         <View style={styles.heart}>
                             <Ionicons name="heart" size={24} color="deeppink" />
                             <View style={styles.heartCount}>
@@ -253,7 +264,7 @@ const HomeView = ({ navigation }) => {
                     <View style={styles.FucilityDate}>
                         <View style={{ flexDirection: 'row' }}>
                             <Ionicons name="pencil" size={24} color='#30CB89' />
-                            <Text style={{ fontSize: 16, color: '#30CB89' }}>{'薬学部'}</Text>
+                            <Text style={{ fontSize: 16, color: '#30CB89' }}>{`${infor.faculty}`}</Text>
                         </View>
                         <Text style={{ fontSize: 16, color: '#30CB89' }}>{'2日 12:05'}</Text>
                     </View>
