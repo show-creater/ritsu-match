@@ -14,9 +14,10 @@
 
 
 
+## 開発メモ
 
-<<開発メモ>>
-ナビゲータの階層構造(このREADMEを編集モードにしたら見やすくなります)
+### ナビゲータの階層構造
+(このREADMEを編集モードにしたら見やすくなります)
 
 StackNavigator(App.js)
 |
@@ -26,5 +27,8 @@ StackNavigator(App.js)
           ├── Friends (Tab Screen)
           ├── Talk (Tab Screen)
           └── MyPage (Tab Screen)
+
+### firebaseログイン実装についての機能概要
+初回ログイン時にusersコレクション内にドキュメントが作成されるように機能実装中
 
 
