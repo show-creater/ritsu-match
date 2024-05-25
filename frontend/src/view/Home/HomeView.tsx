@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image } from 'react-native';
+import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
@@ -25,7 +25,7 @@ const HomeView = ({ navigation }) => {
               const stringValue = await AsyncStorage.getItem('useremail');
               if(stringValue != null){
                 const value = JSON.parse(stringValue);
-                console.log('email');
+                // console.log('email');
                 useremail=value;
             }
             } catch (e) {
@@ -39,7 +39,7 @@ const HomeView = ({ navigation }) => {
               const stringValue = await AsyncStorage.getItem('userpassword');
               if(stringValue != null){
                 const value = JSON.parse(stringValue);
-                console.log('password');
+                // console.log('password');
                 userpassword=value;
             }
             } catch (e) {
@@ -104,13 +104,16 @@ const HomeView = ({ navigation }) => {
     // },[]);
         
     useEffect(()=>{
-        const docRef = doc(db, "users", "LkW4tsYgDrVi6KTAv8iEGhtuzkB3");
+        if(isLogin==true){
+        const docRef = doc(db, "users", auth.currentUser.uid);
         const docSnap = async () =>{
             const docdata = await getDoc(docRef);
             //console.log(docdata.data());
             setInfor(docdata.data());
         };
         docSnap();
+        console.log(`カレントユーザー${auth.currentUser.uid}`);
+        }
     },[]);
 
     const styles = StyleSheet.create({
@@ -264,7 +267,6 @@ const HomeView = ({ navigation }) => {
                     </View>
                     <View style={styles.FucilityDate}>
                         <View style={{ flexDirection: 'row' }}>
-                            <Ionicons name="pencil" size={24} color='#30CB89' />
                             <Text style={{ fontSize: 16, color: '#30CB89' }}>{`${infor.faculty}`}</Text>
                         </View>
                         <Text style={{ fontSize: 16, color: '#30CB89' }}>{'2日 12:05'}</Text>
@@ -293,10 +295,12 @@ const HomeView = ({ navigation }) => {
                                             </View>
                                         </View>
                                         <View style={styles.heartBookmark}>
-                                            <View style={styles.clickheart}>
+                                            <TouchableOpacity>
+                                                <View style={styles.clickheart}>
                                                 <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                                <Text style={{ color: 'deeppink' }}>{`${data.heart}`}</Text>
-                                            </View>
+                                                    <Text style={{ color: 'deeppink' }}>{`${data.heart}`}</Text>
+                                                </View>
+                                            </TouchableOpacity>
                                             <Ionicons name="bookmark" size={50} color="#30CB89" />
                                         </View>
                                     </View>

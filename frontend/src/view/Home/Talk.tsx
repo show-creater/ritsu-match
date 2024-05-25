@@ -9,6 +9,7 @@ import { arrayUnion, updateDoc, Timestamp, onSnapshot, orderBy, addDoc, doc, get
 
 const Talk = ({ navigation }) => {
     const {isLogin, setIsLogin}=useHome();
+    const [infor,setInfor] = useState({name: '', faculty: '', heart: 0, image:'', age: 0, comment: ''});
     const windowHeight = Dimensions.get('window').height;
     const a = 0;
 
@@ -19,6 +20,18 @@ const Talk = ({ navigation }) => {
             
         }
     })
+
+    useEffect(()=>{
+        if(isLogin==true){
+            const docRef = doc(db, "users", auth.currentUser.uid);
+            const docSnap = async () =>{
+                const docdata = await getDoc(docRef);
+                //console.log(docdata.data());
+                setInfor(docdata.data());
+            };
+            docSnap();
+        }   
+    },[]);
 
 
     const styles = StyleSheet.create({
@@ -111,7 +124,7 @@ const Talk = ({ navigation }) => {
                 <View style={styles.icon}></View>
                 <View style={styles.informations}>
                     <View style={styles.NameHeart}>
-                        <Text style={{ fontSize: 20, color: '#30CB89' }}>{'山田太郎'}</Text>
+                        <Text style={{ fontSize: 20, color: '#30CB89' }}>{`${infor.name}`}</Text>
                         <View style={styles.heart}>
                             <Ionicons name="heart" size={24} color="deeppink" />
                             <View style={styles.heartCount}>
@@ -123,7 +136,7 @@ const Talk = ({ navigation }) => {
                     <View style={styles.FucilityDate}>
                         <View style={{ flexDirection: 'row' }}>
                             <Ionicons name="pencil" size={24} color='#30CB89' />
-                            <Text style={{ fontSize: 16, color: '#30CB89' }}>{'薬学部'}</Text>
+                            <Text style={{ fontSize: 16, color: '#30CB89' }}>{`${infor.faculty}`}</Text>
                         </View>
                         <Text style={{ fontSize: 16, color: '#30CB89' }}>{'2日 12:05'}</Text>
                     </View>

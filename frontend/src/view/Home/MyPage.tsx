@@ -1,57 +1,60 @@
-import React, { useRef,useEffect, useState } from 'react';
-import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity, TextInput ,Keyboard} from 'react-native';
+import React, { useRef, useEffect, useState } from 'react';
+import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity, TextInput, Keyboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
 import { Animated, PanResponder } from 'react-native';
 import { useHome } from '../../component/context/HomeContext';
 import SignUpScreen from '../login/SignUpScreen';
-import { collection, getDocs ,getDoc ,doc} from "firebase/firestore";
-import { db } from '../../../firebaseConfig';
+import { collection, getDocs, getDoc, doc , setDoc } from "firebase/firestore";
+import { db , auth } from '../../../firebaseConfig';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-const MyPage=({navigation})=>{
-    const {isLogin, setIsLogin, loginUser ,setLoginUser}=useHome();
-    const [changeInfor,setChangeInfor] = useState(false);
-    const [infor,setInfor] = useState({name: '', faculty: '', heart: 0, image:'', age: 0, comment: ''});
+const MyPage = ({ navigation }) => {
+    const { isLogin, setIsLogin, loginUser, setLoginUser } = useHome();
+    const [changeInfor, setChangeInfor] = useState(false);
+    const [infor, setInfor] = useState({ name: '', faculty: '', heart: 0, image: '', age: 0, comment: '', height: '', from: '',hobby: '',blood: '',school: '',});
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
     const pan = useRef(new Animated.ValueXY()).current;
 
     // PanResponderを設定し、ユーザーのドラッグ操作を管理する
     const panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: Animated.event(
-        [null, { dx: pan.x, dy: pan.y }], // ドラッグによる位置の変更をpanに直接反映
-        { useNativeDriver: false }
-      ),
-      onPanResponderRelease: () => {
-        // ドラッグ終了時にアニメーションで元の位置に戻す
-        Animated.spring(pan, {
-          toValue: { x: 0, y: 100 },
-          useNativeDriver: false
-        }).start();
-      }
+        onStartShouldSetPanResponder: () => true,
+        onPanResponderMove: Animated.event(
+            [null, { dx: pan.x, dy: pan.y }], // ドラッグによる位置の変更をpanに直接反映
+            { useNativeDriver: false }
+        ),
+        onPanResponderRelease: () => {
+            // ドラッグ終了時にアニメーションで元の位置に戻す
+            Animated.spring(pan, {
+                toValue: { x: 0, y: 100 },
+                useNativeDriver: false
+            }).start();
+        }
     });
 
-    useEffect(()=>{
-        const docRef = doc(db, "users", "LkW4tsYgDrVi6KTAv8iEGhtuzkB3");
-        const docSnap = async () =>{
-            const docdata = await getDoc(docRef);
-            //console.log(docdata.data());
-            setInfor(docdata.data());
-        };
-        docSnap();
-
+    useEffect(() => {
+        console.log(isLogin);
+        // if(isLogin==true){
+        //     const docRef = doc(db, "users", auth.currentUser.uid);
+        //     const docSnap = async () => {
+        //         const docdata = await getDoc(docRef);
+        //         //console.log(docdata.data());
+        //         setInfor(docdata.data());
+        //     };
+        //     docSnap();
+        // }   
         // const dog = docSnap();
 
         // console.log(dog);
-    //     if (dog.exists()) {
-    //     console.log("Document data:", docSnap.data());
-    //     } else {
-    //     // docSnap.data() will be undefined in this case
-    //     console.log("No such document!");
-    //     }        
-    },[]);
+        //     if (dog.exists()) {
+        //     console.log("Document data:", docSnap.data());
+        //     } else {
+        //     // docSnap.data() will be undefined in this case
+        //     console.log("No such document!");
+        //     }        
+    }, []);
 
 
     // const [infor, setInfor] = useState([{name: '', faculty: '', heart: '', image:'', age: '', comment: ''}]);
@@ -72,11 +75,19 @@ const MyPage=({navigation})=>{
     //     console.log(infor);
     //     },[]);
 
-    const ChangeInfor=()=>{
-        
+    const Change = async() => {
+        await setDoc(doc(db, "users", auth.currentUser.uid), {
+            name: infor.name,
+            height: infor.height,
+            from: infor.from,
+            hobby: infor.hobby,
+            blood: infor.blood,
+            school: infor.school,
+            comment: infor.comment
+          });
     };
 
-    const styles=StyleSheet.create({
+    const styles = StyleSheet.create({
         body: {
             flexDirection: 'column',
             flex: 1,
@@ -111,9 +122,9 @@ const MyPage=({navigation})=>{
             justifyContent: 'center',
             alignItems: 'center'
         },
-        nameInfor:{
-            flexDirection:'row',
-            alignItems:'center',
+        nameInfor: {
+            flexDirection: 'row',
+            alignItems: 'center',
         },
         fucility: {
             justifyContent: 'center',
@@ -139,91 +150,109 @@ const MyPage=({navigation})=>{
             fontWeight: 'bold'
         },
         profileStatus: {
-            fontSize: 18
-        }
+            fontSize: 18,
+        },
+        changeButton: {
+            width: 100,
+            height: 50,
+            alignItems: 'center',
+            backgroundColor: '#30CB89',
+            justifyContent: 'center',
+            marginTop: 10,
+        },
+        bottonText: {
+            color: 'white',
+        },
+
     });
     return (
-            <View style={styles.body}>
-                {isLogin ? //ログインしてたらマイページを表示
-                <ScrollView style={{width: '100%', height: '100%'}}>
+        <View style={styles.body}>
+            {isLogin ? //ログインしてたらマイページを表示
+                <ScrollView style={{ width: '100%', height: '100%' }}>
                     <View style={styles.imageContainer}>
-                        <Image style={{ width: windowWidth, height: windowHeight}}
+                        <Image style={{ width: windowWidth, height: windowHeight }}
                             source={require('../../component/photo/ディカプリオ.webp')}
                             resizeMode='cover'
                         />
                     </View>
                     <View style={styles.profile}>
                         <View style={styles.nameInfor}>
-                            {!changeInfor?<Text style={{fontSize: 35, color: '#30CB89'}}>{`${infor.name}`}</Text>:<TextInput style={{borderWidth: 2, fontSize: 35, color: '#30CB89'}} onChangeText={(text)=>{setInfor((prev)=>{prev.name=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}}></TextInput>}
-                            <TouchableOpacity onPress={() => {setChangeInfor(true)}}>
+                            {!changeInfor ? <Text style={{ fontSize: 35, color: '#30CB89' }}>{`${infor.name}`}</Text> : <TextInput style={{ borderWidth: 2, fontSize: 35, color: '#30CB89' }} onChangeText={(text) => { setInfor((prev) => { prev.name = text; return prev }) }} onSubmitEditing={() => { Keyboard.dismiss(); }}></TextInput>}
+                            <TouchableOpacity onPress={() => { setChangeInfor(true) }}>
                                 <Ionicons name="pencil" size={24} color='#595959' />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.fucility}>
-                            <Text style={{fontSize: 25, color: '#30CB89'}}>{`${infor.faculty}`}</Text>
+                            {!changeInfor ? <Text style={{ fontSize: 25, color: '#30CB89' }}>{`${infor.faculty}`}</Text> : <TextInput style={{ borderWidth: 2, fontSize: 35, color: '#30CB89' }} onChangeText={(text) => { setInfor((prev) => { prev.faculty = text; return prev }) }} onSubmitEditing={() => { Keyboard.dismiss(); }}></TextInput>}
                             <TouchableOpacity>
-                            <Ionicons name="pencil" size={24} color='#595959' />
+                                <Ionicons name="pencil" size={24} color='#595959' />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>年齢</Text>
-                            <Text style={styles.profileStatus}>{`${infor.age}`}</Text>
+                            {/* nameのところをageに変える */}
+                            {!changeInfor ? <Text style={styles.profileStatus}>{`${infor.age}`}</Text> : <TextInput style={{ borderWidth: 2, fontSize: 35, color: '#30CB89' }} onChangeText={(text) => { setInfor((prev) => { prev.age = text; return prev }) }} onSubmitEditing={() => { Keyboard.dismiss(); }}></TextInput>}
                             <TouchableOpacity>
-                            <Ionicons name="pencil" size={24} color='#595959' />
+                                <Ionicons name="pencil" size={24} color='#595959' />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>身長</Text>
-                            <Text style={styles.profileStatus}>184cm</Text>
+                            {!changeInfor ? <Text style={styles.profileStatus}>{`${infor.height}`}</Text> : <TextInput style={{ borderWidth: 2, fontSize: 35, color: '#30CB89' }} onChangeText={(text) => { setInfor((prev) => { prev.height = text; return prev }) }} onSubmitEditing={() => { Keyboard.dismiss(); }}></TextInput>}
                             <TouchableOpacity>
-                            <Ionicons name="pencil" size={24} color='#595959' />
+                                <Ionicons name="pencil" size={24} color='#595959' />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>出身地</Text>
-                            <Text style={styles.profileStatus}>東京都</Text>
+                            {!changeInfor ? <Text style={styles.profileStatus}>{`${infor.from}`}</Text> : <TextInput style={{ borderWidth: 2, fontSize: 35, color: '#30CB89' }} onChangeText={(text) => { setInfor((prev) => { prev.from = text; return prev }) }} onSubmitEditing={() => { Keyboard.dismiss(); }}></TextInput>}
                             <TouchableOpacity>
-                            <Ionicons name="pencil" size={24} color='#595959' />
+                                <Ionicons name="pencil" size={24} color='#595959' />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>趣味</Text>
-                            <Text style={styles.profileStatus}>映画鑑賞</Text>
+                            {!changeInfor ? <Text style={styles.profileStatus}>{`${infor.hobby}`}</Text> : <TextInput style={{ borderWidth: 2, fontSize: 35, color: '#30CB89' }} onChangeText={(text) => { setInfor((prev) => { prev.hobby = text; return prev }) }} onSubmitEditing={() => { Keyboard.dismiss(); }}></TextInput>}
                             <TouchableOpacity>
-                            <Ionicons name="pencil" size={24} color='#595959' />
+                                <Ionicons name="pencil" size={24} color='#595959' />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>血液型</Text>
-                            <Text style={styles.profileStatus}>B型</Text>
+                            {!changeInfor ? <Text style={styles.profileStatus}>{`${infor.blood}`}</Text> : <TextInput style={{ borderWidth: 2, fontSize: 35, color: '#30CB89' }} onChangeText={(text) => { setInfor((prev) => { prev.blood = text; return prev }) }} onSubmitEditing={() => { Keyboard.dismiss(); }}></TextInput>}
                             <TouchableOpacity>
-                            <Ionicons name="pencil" size={24} color='#595959' />
+                                <Ionicons name="pencil" size={24} color='#595959' />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>大学</Text>
-                            <Text style={styles.profileStatus}>立命館大学</Text>
+                            {!changeInfor ? <Text style={styles.profileStatus}>{`${infor.school}`}</Text> : <TextInput style={{ borderWidth: 2, fontSize: 35, color: '#30CB89' }} onChangeText={(text) => { setInfor((prev) => { prev.school = text; return prev }) }} onSubmitEditing={() => { Keyboard.dismiss(); }}></TextInput>}
                             <TouchableOpacity>
-                            <Ionicons name="pencil" size={24} color='#595959' />
+                                <Ionicons name="pencil" size={24} color='#595959' />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>自己紹介</Text>
-                            <Text style={styles.profileStatus}>{`${infor.comment}`}</Text>
+                            {!changeInfor ? <Text style={styles.profileStatus}>{`${infor.comment}`}</Text> : <TextInput style={{ borderWidth: 2, fontSize: 35, color: '#30CB89' }} onChangeText={(text) => { setInfor((prev) => { prev.comment = text; return prev }) }} onSubmitEditing={() => { Keyboard.dismiss(); }}></TextInput>}
                             <TouchableOpacity>
-                            <Ionicons name="pencil" size={24} color='#595959' />
+                                <Ionicons name="pencil" size={24} color='#595959' />
                             </TouchableOpacity>
                         </View>
+                        <TouchableOpacity onPress={() => { setChangeInfor(false); Change() }}>
+                            <View style={styles.changeButton}>
+                                <Text style={{ color: 'white', }}>変更決定</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </ScrollView>
-                : 
-                <SignUpScreen navigation={navigation}/>
-                }
-                <View style={styles.footer}>
-                    <HomeFooter navigation={navigation} />
-                </View>                                    
-            </View>            
-        
+                :
+                <SignUpScreen navigation={navigation} />
+            }
+            <View style={styles.footer}>
+                <HomeFooter navigation={navigation} />
+            </View>
+        </View>
+
 
     );
 };
