@@ -39,8 +39,8 @@ const MyPage=({navigation})=>{
             setLoginUser(currentuser);
             const docSnap = async () =>{
                 const docdata = await getDoc(doc(db, "users", currentuser));
-                console.log(`こんにちは：${docdata.data()}`);
-                if (docdata.data() == undefined){
+                console.log(docdata.data());
+                if (docdata.data() != undefined){
                     setInfor(docdata.data());
                 }
             };

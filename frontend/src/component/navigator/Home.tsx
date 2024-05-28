@@ -13,6 +13,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import 'react-native-gesture-handler';
 import { useHome } from '../context/HomeContext';
 import HomeNavigator from './MyPageNavigator';
+import TalkMatchingNavigator from './TalkMatching'; //横スクロールのアニメーションを実装するとき、Talkコンポーネントをこのコンポーネントに置き換える
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -40,7 +41,7 @@ const Home = () => {
                     ),
                 }}>
                 </Tab.Screen>
-                <Tab.Screen  name='Talk' component={Talk}
+                <Tab.Screen  name='Talk' component={TalkMatchingNavigator}
                     options={{
                         headerShown:false,
                         tabBarIcon: ({focused}) => (<Ionicons name="chatbubble-ellipses-outline" size={24} color='#30CB89' />

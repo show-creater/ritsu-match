@@ -10,20 +10,24 @@ import {signInWithEmailAndPassword, browserLocalPersistence, signOut} from 'fire
 import { useHome } from '../../component/context/HomeContext';
 import { collection, getDocs ,getDoc ,doc, setDoc, addDoc} from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
+import Animation1 from '../../component/animation/animation1';
 
 const Login=({navigation})=>{
     const {isLogin, setIsLogin}=useHome();
     const [email, setEmail]=useState('');
     const [password, setPassword]=useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [roading, setRoading] = useState(false);
     
     const handleLogin = async () => {
         try {
+            setRoading(true);
             // メールアドレスとパスワードでログイン
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
             //ログイン状態管理
             if (user.emailVerified){ //メール認証が完了していた場合
+              setRoading(false);
               setIsLogin(true);
               const currentuser = auth.currentUser.uid;
               const randomNum=Math.random();
@@ -55,6 +59,7 @@ const Login=({navigation})=>{
               navigation.navigate('MyPage');              
             }else{
               setErrorMessage('このアカウントはメール認証が完了していません');
+              setRoading(false);
               signOut(auth);
             }
 
@@ -63,6 +68,10 @@ const Login=({navigation})=>{
           console.error('Login failed:', error.message);
           if (error.message == 'Firebase: Error (auth/invalid-credential).'){
             setErrorMessage('メールアドレス、もしくはパスワードが間違っています');
+            setRoading(false);
+          }else if (error.message == 'Firebase: Error (auth/invalid-email).'){
+            setErrorMessage('アカウントが存在しません');
+            setRoading(false);
           }
         }
       };
@@ -82,12 +91,18 @@ const Login=({navigation})=>{
     });
 
     return (
+      <View style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+        // backgroundColor: roading ? '#a9a9a9' : 'white'
+      }}>{roading && <Animation1/>}
         <KeyboardAvoidingView
         behavior="padding"
         style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          flex: 1,
+          position: 'absolute',
+          alignItems: 'center'
+
         }}
       >
         <Text style={{ fontSize: 20, marginBottom: 20 }}>ログイン画面</Text>
@@ -131,7 +146,7 @@ const Login=({navigation})=>{
           onPress={handleLogin}
           disabled={!email || !password}
         >
-          <Text style={{ color: 'white' }}>ログイン</Text>
+          <Text style={{ color: roading ? '#a9a9a9' : 'white'  }}>ログイン</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{marginTop: 20, borderBottomWidth: 1}}
@@ -139,10 +154,11 @@ const Login=({navigation})=>{
         >
           <Text>まだアカウントをお持ちでない方</Text>
         </TouchableOpacity>
-        <View style={styles.footer}>
-          <HomeFooter navigation={navigation} />
-        </View>
+        { isLogin && <View style={styles.footer}>
+                    <HomeFooter navigation={navigation} />
+                </View>} 
       </KeyboardAvoidingView>
+    </View>
     );
 };
 export default Login;
