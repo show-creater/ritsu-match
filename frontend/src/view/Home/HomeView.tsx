@@ -57,7 +57,7 @@ const HomeView = ({ navigation }) => {
                     setIsLogin(true);
                     setLoginUser(user);
                     const docdata = await getDoc(doc(db, "users", auth.currentUser.uid));
-                    //console.log(docdata.data());
+                    console.log(docdata.data());
                     setInfor(docdata.data());
                 }
 

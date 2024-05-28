@@ -34,14 +34,17 @@ const MyPage=({navigation})=>{
     });
 
     useEffect(()=>{
-        const currentuser = auth.currentUser.uid;
-        setLoginUser(currentuser);
-        const docSnap = async () =>{
-            const docdata = await getDoc(doc(db, "users", currentuser));
-            //console.log(docdata.data());
-            setInfor(docdata.data());
-        };
-        docSnap();
+        if (isLogin){
+            const currentuser = auth.currentUser.uid;
+            setLoginUser(currentuser);
+            const docSnap = async () =>{
+                const docdata = await getDoc(doc(db, "users", currentuser));
+                //console.log(docdata.data());
+                setInfor(docdata.data());
+            };
+            docSnap();            
+        }
+
 
         // const dog = docSnap();
 

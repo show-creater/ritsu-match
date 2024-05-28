@@ -52,7 +52,7 @@ const SignUpScreen = ({navigation}) => {
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    backgroundColor: check ? '#a9a9a9' : 'white'
+    // backgroundColor: check ? '#a9a9a9' : 'white'
   }}>{check && <Animation1/>}
   <KeyboardAvoidingView
       behavior="padding"

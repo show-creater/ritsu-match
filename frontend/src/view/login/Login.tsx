@@ -6,7 +6,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from '../../../firebaseConfig';
-import {signInWithEmailAndPassword, browserLocalPersistence} from 'firebase/auth';
+import {signInWithEmailAndPassword, browserLocalPersistence, signOut} from 'firebase/auth';
 import { useHome } from '../../component/context/HomeContext';
 import { collection, getDocs ,getDoc ,doc, setDoc, addDoc} from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
@@ -15,6 +15,7 @@ const Login=({navigation})=>{
     const {isLogin, setIsLogin}=useHome();
     const [email, setEmail]=useState('');
     const [password, setPassword]=useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     
     const handleLogin = async () => {
         try {
@@ -22,38 +23,47 @@ const Login=({navigation})=>{
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
             //ログイン状態管理
-            setIsLogin(true);
-            const currentuser = auth.currentUser.uid;
-            const randomNum=Math.random();
-            await setDoc(doc(db, 'users', currentuser), {randomField: randomNum, userid: currentuser, name: '', age: 0, comment: '', faculty: '', heart: 0, image: ''})
+            if (user.emailVerified){ //メール認証が完了していた場合
+              setIsLogin(true);
+              const currentuser = auth.currentUser.uid;
+              const randomNum=Math.random();
+              await setDoc(doc(db, 'users', currentuser), {randomField: randomNum, userid: currentuser, name: '', age: 0, comment: '', faculty: '', heart: 0, image: ''})
 
-            //初回ログイン時にユーザー情報をasyncstorageに保存
-            const saveemail = async () => {
-                try {
-                  const stringValue = JSON.stringify(email);
-                  await AsyncStorage.setItem('useremail', stringValue);
-                } catch (e) {
-                  console.log(e);
-                }
-              };
-              saveemail();
-    
-              const savepassword = async () => {
-                try {
-                  const stringValue = JSON.stringify(password);
-                  await AsyncStorage.setItem('userpassword', stringValue);
-                } catch (e) {
-                  console.log(e);
-                }
-              };
-              savepassword();
-        
-            // ログインが成功した場合の処理
-            console.log('User logged in:', user);
-            navigation.navigate('MyPage');
+              //初回ログイン時にユーザー情報をasyncstorageに保存
+              const saveemail = async () => {
+                  try {
+                    const stringValue = JSON.stringify(email);
+                    await AsyncStorage.setItem('useremail', stringValue);
+                  } catch (e) {
+                    console.log(e);
+                  }
+                };
+                saveemail();
+      
+                const savepassword = async () => {
+                  try {
+                    const stringValue = JSON.stringify(password);
+                    await AsyncStorage.setItem('userpassword', stringValue);
+                  } catch (e) {
+                    console.log(e);
+                  }
+                };
+                savepassword();
+          
+              // ログインが成功した場合の処理
+              console.log('User logged in:', user);
+              navigation.navigate('MyPage');              
+            }else{
+              setErrorMessage('このアカウントはメール認証が完了していません');
+              signOut(auth);
+            }
+
         } catch (error) {
           // エラー処理
           console.error('Login failed:', error.message);
+          if (error.message == 'Firebase: Error (auth/invalid-credential).'){
+            setErrorMessage('メールアドレス、もしくはパスワードが間違っています');
+          }
         }
       };
 
@@ -81,6 +91,7 @@ const Login=({navigation})=>{
         }}
       >
         <Text style={{ fontSize: 20, marginBottom: 20 }}>ログイン画面</Text>
+        { errorMessage != '' && <Text style={{ fontSize: 15, marginBottom: 20, color: 'red' }}>{`${errorMessage}`}</Text> }
         <View style={{ marginBottom: 20 }}>
           <TextInput
             style={{
