@@ -57,8 +57,10 @@ const HomeView = ({ navigation }) => {
                     setIsLogin(true);
                     setLoginUser(user);
                     const docdata = await getDoc(doc(db, "users", auth.currentUser.uid));
-                    console.log(docdata.data());
-                    setInfor(docdata.data());
+                    console.log(`こんにちはあ${docdata.data()}`);
+                    if (docdata().data() == undefined){
+                        setInfor(docdata.data());
+                    }
                 }
 
                 // ログインが成功した場合の処理
@@ -106,15 +108,15 @@ const HomeView = ({ navigation }) => {
     //     console.log(number);
     // },[]);
         
-    useEffect(()=>{
-        const docRef = doc(db, "users", "LkW4tsYgDrVi6KTAv8iEGhtuzkB3");
-        const docSnap = async () =>{
-            const docdata = await getDoc(docRef);
-            //console.log(docdata.data());
-            setInfor(docdata.data());
-        };
-        docSnap();
-    },[]);
+    // useEffect(()=>{
+    //     const docRef = doc(db, "users", "LkW4tsYgDrVi6KTAv8iEGhtuzkB3");
+    //     const docSnap = async () =>{
+    //         const docdata = await getDoc(docRef);
+    //         //console.log(docdata.data());
+    //         // setInfor(docdata.data());
+    //     };
+    //     docSnap();
+    // },[]);
 
     const styles = StyleSheet.create({
         header: {
