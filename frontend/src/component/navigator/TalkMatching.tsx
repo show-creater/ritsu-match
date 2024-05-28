@@ -17,13 +17,13 @@ const TalkMatchingNavigator = () => {
     },[]);
 
     return (
-            <Stack.Navigator initialRouteName="Home"
+            <Stack.Navigator initialRouteName="TalkSlide"
                 screenOptions={({route}) => ({
-                    animation: route.name === 'Talk' ? 'slide_from_left' : 'slide_from_right', // 特定のスクリーンに上から下へのスライドアニメーションを適用
+                    animation: route.name === 'TalkSlide' ? 'slide_from_left' : 'slide_from_right', // 特定のスクリーンに上から下へのスライドアニメーションを適用
             })}>
                 {talkPage ? 
                 <Stack.Screen
-                    name="Talk"
+                    name="TalkSlide"
                     component={Talk}
                     options={{ headerShown: false }}
                 /> :

@@ -68,7 +68,7 @@ const HomeView = ({ navigation }) => {
                 // console.log('User logged in:', user);
             } catch (error) {
               // エラー処理
-              console.error('Login failed:', error.message);
+            //   console.error('Login failed:', error.message);
             }
           };
           const login=async()=>{
