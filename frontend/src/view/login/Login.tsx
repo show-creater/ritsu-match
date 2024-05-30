@@ -5,7 +5,7 @@ import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { auth } from '../../../firebaseConfig';
+import { auth, docRef } from '../../../firebaseConfig';
 import {signInWithEmailAndPassword, browserLocalPersistence, signOut} from 'firebase/auth';
 import { useHome } from '../../component/context/HomeContext';
 import { collection, getDocs ,getDoc ,doc, setDoc, addDoc} from "firebase/firestore";
@@ -31,7 +31,10 @@ const Login=({navigation})=>{
               setIsLogin(true);
               const currentuser = auth.currentUser.uid;
               const randomNum=Math.random();
-              await setDoc(doc(db, 'users', currentuser), {randomField: randomNum, userid: currentuser, name: '', age: 0, comment: '', faculty: '', heart: 0, image: ''})
+              const UserDoc = await getDoc(doc(db, 'users', currentuser));
+              if (!UserDoc.exists()){
+                await setDoc(UserDoc, {randomField: randomNum, userid: currentuser, name: '', age: 0, comment: '', faculty: '', heart: 0, image: ''})
+              }
 
               //初回ログイン時にユーザー情報をasyncstorageに保存
               const saveemail = async () => {
