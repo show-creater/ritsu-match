@@ -8,6 +8,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from '../../../firebaseConfig';
 import {signInWithEmailAndPassword, browserLocalPersistence} from 'firebase/auth';
 import { useHome } from '../../component/context/HomeContext';
+import { collection, getDocs ,getDoc ,doc, setDoc, addDoc} from "firebase/firestore";
+import { db } from '../../../firebaseConfig';
 
 const Login=({navigation})=>{
     const {isLogin, setIsLogin}=useHome();
@@ -20,7 +22,15 @@ const Login=({navigation})=>{
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
             //ログイン状態管理
-            setIsLogin(true);
+            if (user.emailVerified) {
+              setIsLogin(true);              
+            }else{
+              
+            }
+
+            const currentuser = auth.currentUser.uid;
+            const randomNum=Math.random();
+            await setDoc(doc(db, 'users', currentuser), {randomField: randomNum, userid: currentuser, name: '', age: 0, comment: '', faculty: '', heart: 0, image: ''})
 
             //初回ログイン時にユーザー情報をasyncstorageに保存
             const saveemail = async () => {
