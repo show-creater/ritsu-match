@@ -10,6 +10,7 @@ import { useHome } from '../../component/context/HomeContext'
 import { collection, getDocs ,getDoc,doc} from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
 import LottieView from 'lottie-react-native';
+import Animation1 from '../../component/animation/animation1';
 
 const HomeView = ({ navigation }) => {
     const {isLogin, setIsLogin, loginUser, setLoginUser}=useHome();
@@ -276,8 +277,9 @@ const HomeView = ({ navigation }) => {
                     </View>
                 </View>
             </View>
+            {!isLogin && <Animation1/>}
             <ScrollView style={{ width: '100%' }} pagingEnabled={true} showsVerticalScrollIndicator={false}>
-                <View style={styles.personlist}>
+   { isLogin && <View style={styles.personlist}>
                     {persondata.map((data,index) => 
                         <View style={styles.InfoOutside} key={index}>
                             <View style={styles.personInformation}>
@@ -310,7 +312,7 @@ const HomeView = ({ navigation }) => {
                             </View>
                         </View>
                     )}
-                </View>
+                </View>}
             </ScrollView>
             <View style={styles.footer}>
                 <HomeFooter navigation={navigation} />

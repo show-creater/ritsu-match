@@ -13,7 +13,7 @@ const HomeNavigator = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsTimeout(true);
-          }, 2000);
+          }, 4000);
     },[]);
 
     return (
