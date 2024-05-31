@@ -15,9 +15,12 @@ const Talk = ({ navigation }) => {
 
     useEffect(()=>{
         if(isLogin){
-            const currentUserId = auth.currentUser.uid;
-            const query=collection(db, 'chat');
-            
+            const currentuserid = auth.currentUser.uid;
+            const TalkRoomQuery = query(collection(db, 'chat'), where("userid", "array-contains", currentuserid),orderBy("creationTime", "desc"));
+            const unsubscribe = onSnapshot(TalkRoomQuery, (querySnapShot) => {
+
+            });
+            return () => unsubscribe();
         }
     },[]);
 
