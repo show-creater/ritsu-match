@@ -14,6 +14,7 @@ import 'react-native-gesture-handler';
 import { useHome } from '../context/HomeContext';
 import HomeNavigator from './MyPageNavigator';
 import TalkMatchingNavigator from './TalkMatching'; //横スクロールのアニメーションを実装するとき、Talkコンポーネントをこのコンポーネントに置き換える
+import ChatPeer from '../../view/Home/peer';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -41,7 +42,7 @@ const Home = () => {
                     ),
                 }}>
                 </Tab.Screen>
-                <Tab.Screen  name='Talk' component={TalkMatchingNavigator}
+                <Tab.Screen  name='Talk' component={ChatPeer}
                     options={{
                         headerShown:false,
                         tabBarIcon: ({focused}) => (<Ionicons name="chatbubble-ellipses-outline" size={24} color='#30CB89' />

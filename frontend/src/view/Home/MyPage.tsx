@@ -91,7 +91,6 @@ const MyPage=({navigation})=>{
             height: '30%',
             width: '100%',
             display: 'flex',
-            backgroundColor: 'red',
             alignItems: 'center'
         },
         image: {
