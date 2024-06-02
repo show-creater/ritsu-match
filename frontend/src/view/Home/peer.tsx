@@ -1,77 +1,72 @@
-import { useEffect, useState } from 'react';
-import Peer from 'skyway-js';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Button, TextInput, Text, FlatList } from 'react-native';
+import io from 'socket.io-client';
 
-const peer = new Peer({
-  key: 'YOUR_SKYWAY_API_KEY',
-  debug: 3,
-});
+const SOCKET_SERVER_URL = 'http://192.168.113.1:5000';  // 自分のローカルIPに置き換えてください
 
-const ChatPeer = () => {
-  const [peerId, setPeerId] = useState('');
-  const [remoteId, setRemoteId] = useState('');
-  const [connection, setConnection] = useState(null);
-  const [messages, setMessages] = useState([]);
+export default function App() {
+  const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    peer.on('open', id => {
-      setPeerId(id);
+    const newSocket = io(SOCKET_SERVER_URL);
+    setSocket(newSocket);
+
+    newSocket.on('message', (msg) => {
+      setMessages((prevMessages) => [...prevMessages, msg]);
     });
 
-    peer.on('connection', conn => {
-      setConnection(conn);
-      conn.on('data', data => {
-        setMessages(prevMessages => [...prevMessages, data]);
-      });
-    });
+    return () => {
+      newSocket.close();
+    };
   }, []);
 
-  const connectToPeer = () => {
-    const conn = peer.connect(remoteId);
-    setConnection(conn);
-    conn.on('data', data => {
-      setMessages(prevMessages => [...prevMessages, data]);
-    });
-  };
-
   const sendMessage = () => {
-    if (connection) {
-      connection.send(message);
-      setMessages(prevMessages => [...prevMessages, message]);
-      setMessage('');
-    }
+    const msg = { from: 'user1', to: 'user2', message };
+    socket.emit('message', msg);
+    setMessages((prevMessages) => [...prevMessages, msg]);
+    setMessage('');
   };
 
   return (
-    <div>
-      <div>
-        <span>Your ID: {peerId}</span>
-      </div>
-      <input
-        type="text"
-        value={remoteId}
-        onChange={e => setRemoteId(e.target.value)}
-        placeholder="Enter remote peer ID"
+    <View style={styles.container}>
+      <FlatList
+        data={messages}
+        renderItem={({ item }) => (
+          <View style={styles.message}>
+            <Text>{item.from}: {item.message}</Text>
+          </View>
+        )}
+        keyExtractor={(item, index) => index.toString()}
       />
-      <button onClick={connectToPeer}>Connect</button>
-      <div>
-        <input
-          type="text"
-          value={message}
-          onChange={e => setMessage(e.target.value)}
-          placeholder="Enter your message"
-        />
-        <button onClick={sendMessage}>Send</button>
-      </div>
-      <div>
-        <ul>
-          {messages.map((msg, index) => (
-            <li key={index}>{msg}</li>
-          ))}
-        </ul>
-      </div>
-    </div>
+      <TextInput
+        style={styles.input}
+        value={message}
+        onChangeText={setMessage}
+        placeholder="Type a message"
+      />
+      <Button title="Send Message" onPress={sendMessage} />
+    </View>
   );
-};
+}
 
-export default ChatPeer;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 16,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+  },
+  message: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+});
