@@ -9,8 +9,15 @@ import SignUpScreen from '../../view/login/SignUpScreen';
 import SendEmail from '../../view/login/SendEmail';
 import { HomeProvider } from '../context/HomeContext';
 import Login from '../../view/login/Login';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import 'react-native-gesture-handler';
+import { useHome } from '../context/HomeContext';
+import HomeNavigator from './MyPageNavigator';
+import TalkMatchingNavigator from './TalkMatching'; //横スクロールのアニメーションを実装するとき、Talkコンポーネントをこのコンポーネントに置き換える
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
 const Home = () => {
     return (
         <HomeProvider>
@@ -20,7 +27,7 @@ const Home = () => {
                     tabBarStyle: { display: 'none' } // ここでタブバーを非表示に設定
                 }}
             >
-                <Tab.Screen  name='Home' component={HomeView}
+                <Tab.Screen  name='Home' component={HomeNavigator}
                     options={{
                         headerShown:false,
                         tabBarIcon: ({focused}) => (<Ionicons name="notifications-outline" size={24} color='#30CB89' />
@@ -34,7 +41,7 @@ const Home = () => {
                     ),
                 }}>
                 </Tab.Screen>
-                <Tab.Screen  name='Talk' component={Talk}
+                <Tab.Screen  name='Talk' component={TalkMatchingNavigator}
                     options={{
                         headerShown:false,
                         tabBarIcon: ({focused}) => (<Ionicons name="chatbubble-ellipses-outline" size={24} color='#30CB89' />
@@ -48,9 +55,11 @@ const Home = () => {
                     ),
                 }}>
                 </Tab.Screen>
+
                 <Tab.Screen name='SignUpScreen' component={SignUpScreen}>
 
                 </Tab.Screen>
+
                 <Tab.Screen name='SendEmail' component={SendEmail}>
 
                 </Tab.Screen>
@@ -62,3 +71,15 @@ const Home = () => {
     )
 };
 export default Home;
+
+function SignUpScreenStack() {
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          animation: 'slide_from_bottom', // 特定のスクリーンに上から下へのスライドアニメーションを適用
+        }}
+      >
+        <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+      </Stack.Navigator>
+    );
+}

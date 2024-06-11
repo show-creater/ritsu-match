@@ -57,8 +57,10 @@ const HomeView = ({ navigation }) => {
                     setIsLogin(true);
                     setLoginUser(user);
                     const docdata = await getDoc(doc(db, "users", auth.currentUser.uid));
-                    //console.log(docdata.data());
-                    setInfor(docdata.data());
+                    console.log(docdata.data());
+                    if (docdata().data() != undefined){
+                        setInfor(docdata.data());
+                    }
                 }
 
                 // ログインが成功した場合の処理
@@ -66,7 +68,7 @@ const HomeView = ({ navigation }) => {
                 // console.log('User logged in:', user);
             } catch (error) {
               // エラー処理
-              console.error('Login failed:', error.message);
+            //   console.error('Login failed:', error.message);
             }
           };
           const login=async()=>{
@@ -106,15 +108,15 @@ const HomeView = ({ navigation }) => {
     //     console.log(number);
     // },[]);
         
-    useEffect(()=>{
-        const docRef = doc(db, "users", "LkW4tsYgDrVi6KTAv8iEGhtuzkB3");
-        const docSnap = async () =>{
-            const docdata = await getDoc(docRef);
-            //console.log(docdata.data());
-            setInfor(docdata.data());
-        };
-        docSnap();
-    },[]);
+    // useEffect(()=>{
+    //     const docRef = doc(db, "users", "LkW4tsYgDrVi6KTAv8iEGhtuzkB3");
+    //     const docSnap = async () =>{
+    //         const docdata = await getDoc(docRef);
+    //         //console.log(docdata.data());
+    //         // setInfor(docdata.data());
+    //     };
+    //     docSnap();
+    // },[]);
 
     const styles = StyleSheet.create({
         header: {
@@ -308,297 +310,6 @@ const HomeView = ({ navigation }) => {
                             </View>
                         </View>
                     )}
-                    {/* <View style={styles.InfoOutside}>
-                        <View style={styles.personInformation}>
-                            <View style={styles.personImage}>
-                                <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
-                                    source={require('../../component/photo/ディカプリオ.webp')}
-                                    resizeMode='cover'
-                                />
-                            </View>
-                            <View style={styles.personProfile}>
-                                <View style={styles.ProfileTop}>
-                                    <View style={styles.NameFucility}>
-
-                                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Ionicons name="pencil" size={24} color='#30CB89' />
-                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>fuculity</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.heartBookmark}>
-                                        <View style={styles.clickheart}>
-                                            <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                            <Text style={{ color: 'deeppink' }}>2</Text>
-                                        </View>
-                                        <Ionicons name="bookmark" size={50} color="#30CB89" />
-                                    </View>
-                                </View>
-                                <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
-                            </View>
-                        </View>
-                    </View> */}
-                    {/* <View style={styles.InfoOutside}>
-                        <View style={styles.personInformation}>
-                            <View style={styles.personImage}>
-                                <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
-                                    source={require('../../component/photo/ディカプリオ.webp')}
-                                    resizeMode='cover'
-                                />
-                            </View>
-                            <View style={styles.personProfile}>
-                                <View style={styles.ProfileTop}>
-                                    <View style={styles.NameFucility}>
-                                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Ionicons name="pencil" size={24} color='#30CB89' />
-                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>理工学部</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.heartBookmark}>
-                                        <View style={styles.clickheart}>
-                                            <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                            <Text style={{ color: 'deeppink' }}>2</Text>
-                                        </View>
-                                        <Ionicons name="bookmark" size={50} color="#30CB89" />
-                                    </View>
-                                </View>
-                                <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.InfoOutside}>
-                        <View style={styles.personInformation}>
-                            <View style={styles.personImage}>
-                                <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
-                                    source={require('../../component/photo/ディカプリオ.webp')}
-                                    resizeMode='cover'
-                                />
-                            </View>
-                            <View style={styles.personProfile}>
-                                <View style={styles.ProfileTop}>
-                                    <View style={styles.NameFucility}>
-                                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Ionicons name="pencil" size={24} color='#30CB89' />
-                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>理工学部</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.heartBookmark}>
-                                        <View style={styles.clickheart}>
-                                            <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                            <Text style={{ color: 'deeppink' }}>2</Text>
-                                        </View>
-                                        <Ionicons name="bookmark" size={50} color="#30CB89" />
-                                    </View>
-                                </View>
-                                <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.InfoOutside}>
-                        <View style={styles.personInformation}>
-                            <View style={styles.personImage}>
-                                <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
-                                    source={require('../../component/photo/ディカプリオ.webp')}
-                                    resizeMode='cover'
-                                />
-                            </View>
-                            <View style={styles.personProfile}>
-                                <View style={styles.ProfileTop}>
-                                    <View style={styles.NameFucility}>
-                                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Ionicons name="pencil" size={24} color='#30CB89' />
-                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>理工学部</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.heartBookmark}>
-                                        <View style={styles.clickheart}>
-                                            <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                            <Text style={{ color: 'deeppink' }}>2</Text>
-                                        </View>
-                                        <Ionicons name="bookmark" size={50} color="#30CB89" />
-                                    </View>
-                                </View>
-                                <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.InfoOutside}>
-                        <View style={styles.personInformation}>
-                            <View style={styles.personImage}>
-                                <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
-                                    source={require('../../component/photo/ディカプリオ.webp')}
-                                    resizeMode='cover'
-                                />
-                            </View>
-                            <View style={styles.personProfile}>
-                                <View style={styles.ProfileTop}>
-                                    <View style={styles.NameFucility}>
-                                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Ionicons name="pencil" size={24} color='#30CB89' />
-                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>理工学部</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.heartBookmark}>
-                                        <View style={styles.clickheart}>
-                                            <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                            <Text style={{ color: 'deeppink' }}>2</Text>
-                                        </View>
-                                        <Ionicons name="bookmark" size={50} color="#30CB89" />
-                                    </View>
-                                </View>
-                                <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.InfoOutside}>
-                        <View style={styles.personInformation}>
-                            <View style={styles.personImage}>
-                                <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
-                                    source={require('../../component/photo/ディカプリオ.webp')}
-                                    resizeMode='cover'
-                                />
-                            </View>
-                            <View style={styles.personProfile}>
-                                <View style={styles.ProfileTop}>
-                                    <View style={styles.NameFucility}>
-                                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Ionicons name="pencil" size={24} color='#30CB89' />
-                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>理工学部</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.heartBookmark}>
-                                        <View style={styles.clickheart}>
-                                            <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                            <Text style={{ color: 'deeppink' }}>2</Text>
-                                        </View>
-                                        <Ionicons name="bookmark" size={50} color="#30CB89" />
-                                    </View>
-                                </View>
-                                <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.InfoOutside}>
-                        <View style={styles.personInformation}>
-                            <View style={styles.personImage}>
-                                <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
-                                    source={require('../../component/photo/ディカプリオ.webp')}
-                                    resizeMode='cover'
-                                />
-                            </View>
-                            <View style={styles.personProfile}>
-                                <View style={styles.ProfileTop}>
-                                    <View style={styles.NameFucility}>
-                                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Ionicons name="pencil" size={24} color='#30CB89' />
-                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>理工学部</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.heartBookmark}>
-                                        <View style={styles.clickheart}>
-                                            <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                            <Text style={{ color: 'deeppink' }}>2</Text>
-                                        </View>
-                                        <Ionicons name="bookmark" size={50} color="#30CB89" />
-                                    </View>
-                                </View>
-                                <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.InfoOutside}>
-                        <View style={styles.personInformation}>
-                            <View style={styles.personImage}>
-                                <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
-                                    source={require('../../component/photo/ディカプリオ.webp')}
-                                    resizeMode='cover'
-                                />
-                            </View>
-                            <View style={styles.personProfile}>
-                                <View style={styles.ProfileTop}>
-                                    <View style={styles.NameFucility}>
-                                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Ionicons name="pencil" size={24} color='#30CB89' />
-                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>理工学部</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.heartBookmark}>
-                                        <View style={styles.clickheart}>
-                                            <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                            <Text style={{ color: 'deeppink' }}>2</Text>
-                                        </View>
-                                        <Ionicons name="bookmark" size={50} color="#30CB89" />
-                                    </View>
-                                </View>
-                                <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.InfoOutside}>
-                        <View style={styles.personInformation}>
-                            <View style={styles.personImage}>
-                                <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
-                                    source={require('../../component/photo/ディカプリオ.webp')}
-                                    resizeMode='cover'
-                                />
-                            </View>
-                            <View style={styles.personProfile}>
-                                <View style={styles.ProfileTop}>
-                                    <View style={styles.NameFucility}>
-                                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Ionicons name="pencil" size={24} color='#30CB89' />
-                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>理工学部</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.heartBookmark}>
-                                        <View style={styles.clickheart}>
-                                            <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                            <Text style={{ color: 'deeppink' }}>2</Text>
-                                        </View>
-                                        <Ionicons name="bookmark" size={50} color="#30CB89" />
-                                    </View>
-                                </View>
-                                <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.InfoOutside}>
-                        <View style={styles.personInformation}>
-                            <View style={styles.personImage}>
-                                <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
-                                    source={require('../../component/photo/ディカプリオ.webp')}
-                                    resizeMode='cover'
-                                />
-                            </View>
-                            <View style={styles.personProfile}>
-                                <View style={styles.ProfileTop}>
-                                    <View style={styles.NameFucility}>
-                                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>レオナルドディカプリオ</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Ionicons name="pencil" size={24} color='#30CB89' />
-                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>理工学部</Text>
-                                        </View>
-                                    </View>
-                                    <View style={styles.heartBookmark}>
-                                        <View style={styles.clickheart}>
-                                            <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                            <Text style={{ color: 'deeppink' }}>2</Text>
-                                        </View>
-                                        <Ionicons name="bookmark" size={50} color="#30CB89" />
-                                    </View>
-                                </View>
-                                <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>私がギャッツビーです</Text>
-                            </View>
-                        </View>
-                    </View> */}
                 </View>
             </ScrollView>
             <View style={styles.footer}>

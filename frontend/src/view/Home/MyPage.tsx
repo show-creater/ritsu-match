@@ -34,14 +34,19 @@ const MyPage=({navigation})=>{
     });
 
     useEffect(()=>{
-        const currentuser = auth.currentUser.uid;
-        setLoginUser(currentuser);
-        const docSnap = async () =>{
-            const docdata = await getDoc(doc(db, "users", currentuser));
-            //console.log(docdata.data());
-            setInfor(docdata.data());
-        };
-        docSnap();
+        if (isLogin){
+            const currentuser = auth.currentUser.uid;
+            setLoginUser(currentuser);
+            const docSnap = async () =>{
+                const docdata = await getDoc(doc(db, "users", currentuser));
+                console.log(docdata.data());
+                if (docdata.data() != undefined){
+                    setInfor(docdata.data());
+                }
+            };
+            docSnap();
+        }
+
 
         // const dog = docSnap();
 
@@ -72,10 +77,6 @@ const MyPage=({navigation})=>{
     //     test()
     //     console.log(infor);
     //     },[]);
-
-    const ChangeInfor=()=>{
-        
-    };
 
     const styles=StyleSheet.create({
         body: {
@@ -220,9 +221,9 @@ const MyPage=({navigation})=>{
                 : 
                 <SignUpScreen navigation={navigation}/>
                 }
-                <View style={styles.footer}>
+                { isLogin && <View style={styles.footer}>
                     <HomeFooter navigation={navigation} />
-                </View>                                    
+                </View>}                                    
             </View>            
         
 

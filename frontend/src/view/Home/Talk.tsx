@@ -6,19 +6,23 @@ import { AntDesign } from '@expo/vector-icons';
 import { useHome } from '../../component/context/HomeContext'
 import { auth,db,storage } from '../../../firebaseConfig';
 import { arrayUnion, updateDoc, Timestamp, onSnapshot, orderBy, addDoc, doc, getDoc, setDoc , collection, getDocs, getFirestore, query, where } from '@firebase/firestore';
+import { TouchableOpacity } from 'react-native';
 
 const Talk = ({ navigation }) => {
-    const {isLogin, setIsLogin}=useHome();
+    const {isLogin, setIsLogin, talkPage, setTalkPage}=useHome();
     const windowHeight = Dimensions.get('window').height;
     const a = 0;
 
     useEffect(()=>{
         if(isLogin){
-            const currentUserId = auth.currentUser.uid;
-            const query=collection(db, 'chat');
-            
+            const currentuserid = auth.currentUser.uid;
+            const TalkRoomQuery = query(collection(db, 'chat'), where("userid", "array-contains", currentuserid),orderBy("creationTime", "desc"));
+            const unsubscribe = onSnapshot(TalkRoomQuery, (querySnapShot) => {
+
+            });
+            return () => unsubscribe();
         }
-    })
+    },[]);
 
 
     const styles = StyleSheet.create({
@@ -78,10 +82,11 @@ const Talk = ({ navigation }) => {
         personlist: {
             width: '100%',
             height: 16000,
-            marginTop: 160,
+            marginTop: '45%',
             alignItems: 'center',
             flexDirection: 'column',
-            marginBottom: 900
+            marginBottom: 900,
+            // backgroundColor: 'red'
         },
         footer: {
             position: 'absolute',
@@ -100,12 +105,35 @@ const Talk = ({ navigation }) => {
             paddingLeft: '2%',
             alignItems: 'center',
             paddingVertical: '4%'
-        }
-
-
+        },
+        buttonContainer: {
+            width: '100%',
+            justifyContent: 'space-around',
+            paddingHorizontal: '1%',
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingVertical: '4%',
+        },
+        TalkButton: {
+            height: '100%',
+            width: '40%',
+            alignItems: 'center',
+            marginVertical: '1%',
+            borderRadius: 10,
+            backgroundColor: talkPage  ? '#30CB89' : 'gray',
+        },
+        MatchingButton: {
+            height: '100%',
+            width: '40%',
+            alignItems: 'center',
+            marginVertical: '1%',
+            borderRadius: 10,
+            backgroundColor: talkPage  ? 'gray' : '#30CB89',
+        },
 
     });
     return (
+        //ヘッダー
         <View style={{ flex: 1, alignItems: 'center', height: 1000 }}>
             <View style={styles.header}>
                 <View style={styles.icon}></View>
@@ -129,8 +157,17 @@ const Talk = ({ navigation }) => {
                     </View>
                 </View>
             </View>
+
             <ScrollView style={{ width: '100%' }}>
                 <View style={styles.personlist}>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.TalkButton} onPress={()=>{setTalkPage(true)}}>
+                            <Text style={{color: 'white', fontWeight: 'bold'}}>トーク</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.MatchingButton} onPress={()=>{setTalkPage(false)}}>
+                            <Text style={{color: 'white', fontWeight: 'bold'}}>マッチング</Text>
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.personInfo}>
                         <View style={{paddingRight: '2%'}}>
                             <Ionicons name="person-circle-outline" size={50} color="#30CB89" />

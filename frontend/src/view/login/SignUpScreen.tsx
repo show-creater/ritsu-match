@@ -14,8 +14,11 @@ import { auth, db, setDoc, doc, collection } from '../../../firebaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LottieView from 'lottie-react-native';
 import Animation1 from '../../component/animation/animation1';
+import HomeFooter from '../../component/footer/HomeFooter';
+import { useHome } from '../../component/context/HomeContext';
 
 const SignUpScreen = ({navigation}) => {
+  const {isLogin, setIsLogin, loginUser ,setLoginUser}=useHome();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showLogin, setShowLogin] = useState(false);
@@ -45,6 +48,14 @@ const SignUpScreen = ({navigation}) => {
         justifyContent: 'center',
         alignItems: 'center',
     },
+      footer: {
+        position: 'absolute',
+        bottom: 0,
+        height: '10%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+    },
   });
 
   return (
@@ -52,7 +63,7 @@ const SignUpScreen = ({navigation}) => {
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    backgroundColor: check ? '#a9a9a9' : 'white'
+    // backgroundColor: check ? '#a9a9a9' : 'white'
   }}>{check && <Animation1/>}
   <KeyboardAvoidingView
       behavior="padding"
@@ -109,6 +120,9 @@ const SignUpScreen = ({navigation}) => {
       >
         <Text>すでにアカウントをお持ちの方</Text>
       </TouchableOpacity>
+      { isLogin && <View style={styles.footer}>
+                    <HomeFooter navigation={navigation} />
+                </View>} 
     </KeyboardAvoidingView>
     </View>
   );
