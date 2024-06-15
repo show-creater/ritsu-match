@@ -15,6 +15,8 @@ const HomeView = ({ navigation }) => {
     const {isLogin, setIsLogin, loginUser, setLoginUser}=useHome();
     const windowHeight = Dimensions.get('window').height;
     const [infor,setInfor] = useState({name: '', faculty: '', heart: 0, image:'', age: 0, comment: ''});
+    const [persondata, setPersondata] = useState([{name: '', faculty: '', heart: '', image:'', age: 0, comment: '', heart_pushed:[]}]);
+    const [heart_pushed,setHeart_pushed] = useState([]);
     const a = 0;
 
     
@@ -85,22 +87,23 @@ const HomeView = ({ navigation }) => {
     //   // doc.data() is never undefined for query doc snapshots
     //   console.log(doc.id, " => ", doc.data());
     // });
-    const [persondata, setPersondata] = useState([{name: '', faculty: '', heart: '', image:'', age: 0, comment: ''}]);
-        const test = async () => {
-            const querySnapshot = await getDocs(collection(db, "matching"));
-            let persons=[]
-            querySnapshot.forEach((doc) => {
-                // doc.data() is never undefined for query doc snapshots
-                //console.log(persondata);
-                persons.push(doc.data());
-            });
-            setPersondata(persons);
-        };
-    useEffect(()=>{
-        test()
-        console.log(persondata);
+    // const test = async () => {
+    //     const querySnapshot = await getDocs(collection(db, "matching"));
+    //     let persons=[]
+    //     querySnapshot.forEach((doc) => {
+    //         // doc.data() is never undefined for query doc snapshots
+    //         //console.log(persondata);
+    //         persons.push(doc.data());
+    //     });
+    //     setPersondata(persons);
+    // };
+    // useEffect(()=>{
+    //     test()
+    //     //console.log(persondata.heart_pushed);
+    //     //console.log(heart_pushed);
+    //     console.log(infor);
 
-    },[]);
+    // },[]);
 
     // const [number,setNumber] = useState(3);
     // useEffect(()=>{
@@ -117,6 +120,35 @@ const HomeView = ({ navigation }) => {
     //     };
     //     docSnap();
     // },[]);
+
+    const heartP = async () => {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        let users=[]
+        querySnapshot.forEach((doc) => {
+            users.push(doc.data());
+        });
+        setPersondata(users);
+        let heartarray=[]
+        for(let i = 0; i < persondata.length; i++){
+            heartarray[i] = persondata[i].heart_pushed;
+        };
+        setHeart_pushed(heartarray);
+    };
+    useEffect(()=>{
+        heartP()
+        //console.log(persondata.heart_pushed);
+        //console.log(heart_pushed);
+        //console.log(persondata);
+        console.log(persondata.length);
+        console.log(heart_pushed);
+        heart_check(23);
+    },[]);
+
+    const heart_check = (index) => {
+        console.log(heart_pushed[index]);
+    }
+
+
 
     const styles = StyleSheet.create({
         header: {
