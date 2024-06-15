@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image } from 'react-native';
+import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from '../../../firebaseConfig';
 import {signInWithEmailAndPassword, browserLocalPersistence} from 'firebase/auth';
 import { useHome } from '../../component/context/HomeContext'
-import { collection, getDocs ,getDoc,doc} from "firebase/firestore";
+import { collection, getDocs ,getDoc, doc, setDoc, where, query, limit, QuerySnapshot } from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
 import LottieView from 'lottie-react-native';
 
@@ -15,6 +15,7 @@ const HomeView = ({ navigation }) => {
     const {isLogin, setIsLogin, loginUser, setLoginUser}=useHome();
     const windowHeight = Dimensions.get('window').height;
     const [infor,setInfor] = useState({name: '', faculty: '', heart: 0, image:'', age: 0, comment: ''});
+    const [persondata, setPersondata] = useState([{name: '', faculty: '', heart: '', image:'', age: 0, comment: ''}]);
     const a = 0;
 
     
@@ -85,22 +86,118 @@ const HomeView = ({ navigation }) => {
     //   // doc.data() is never undefined for query doc snapshots
     //   console.log(doc.id, " => ", doc.data());
     // });
-    const [persondata, setPersondata] = useState([{name: '', faculty: '', heart: '', image:'', age: 0, comment: ''}]);
+
         const test = async () => {
-            const querySnapshot = await getDocs(collection(db, "matching"));
+            const getDocument = () => {
+                const usercollection = collection(db, "users");
+                const randomNum=Math.random();
+                const q = query(usercollection, where('randomField', '<=', randomNum), where('randomField', '>=', randomNum-0.1), limit(1));
+                console.log(randomNum);
+                return getDocs(q)
+            };
             let persons=[]
-            querySnapshot.forEach((doc) => {
-                // doc.data() is never undefined for query doc snapshots
-                //console.log(persondata);
-                persons.push(doc.data());
-            });
-            setPersondata(persons);
+            getDocument().then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());
+                })
+                return getDocument();
+            }).then(() => {
+                console.log('hellooooo')
+                console.log(persons);
+                setPersondata(persons); 
+            })
+
         };
+
     useEffect(()=>{
         test()
         console.log(persondata);
 
     },[]);
+
+    // const makedoc = async() =>{
+    //     const currentuser = auth.currentUser.uid;
+    //     const randomNum=Math.random();
+    //     try {
+    //         await setDoc(doc(db, 'users', `${randomNum}`), {randomField: randomNum, userid: randomNum, name: `${randomNum}`, age: 0, comment: '', faculty: '', heart: 0, image: ''})
+    //         console.log('起動中');
+    //     }catch(e){
+    //         console.log(e);
+    //     }
+
+    // };
 
     // const [number,setNumber] = useState(3);
     // useEffect(()=>{
@@ -298,10 +395,10 @@ const HomeView = ({ navigation }) => {
                                             </View>
                                         </View>
                                         <View style={styles.heartBookmark}>
-                                            <View style={styles.clickheart}>
+                                            <TouchableOpacity style={styles.clickheart} onPress={()=>{makedoc();}}>
                                                 <Ionicons name="heart-outline" size={50} color="deeppink" />
                                                 <Text style={{ color: 'deeppink' }}>{`${data.heart}`}</Text>
-                                            </View>
+                                            </TouchableOpacity>
                                             <Ionicons name="bookmark" size={50} color="#30CB89" />
                                         </View>
                                     </View>
