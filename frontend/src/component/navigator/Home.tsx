@@ -48,7 +48,7 @@ const Home = () => {
                     ),
                 }}>
                 </Tab.Screen>
-                <Tab.Screen  name='MyPage' component={SendEmail}
+                <Tab.Screen  name='MyPage' component={MyPage}
                     options={{
                         headerShown:false,
                         tabBarIcon: ({focused}) => (<Ionicons name="person-circle-outline" size={24} color='#30CB89' />
