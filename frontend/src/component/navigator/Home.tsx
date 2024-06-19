@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import HomeView from '../../view/Home/HomeView';
 import MyPage from '../../view/Home/MyPage';
 import Friends from '../../view/Home/Friends';
-import Talk from '../../view/Home/Talk';
+import TalkMatching from '../../view/Home/TalkMatching';
 import SignUpScreen from '../../view/login/SignUpScreen';
 import SendEmail from '../../view/login/SendEmail';
 import { HomeProvider } from '../context/HomeContext';
@@ -41,7 +41,7 @@ const Home = () => {
                     ),
                 }}>
                 </Tab.Screen>
-                <Tab.Screen  name='Talk' component={TalkMatchingNavigator}
+                <Tab.Screen  name='Talk' component={TalkMatching}
                     options={{
                         headerShown:false,
                         tabBarIcon: ({focused}) => (<Ionicons name="chatbubble-ellipses-outline" size={24} color='#30CB89' />

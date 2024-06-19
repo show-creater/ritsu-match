@@ -179,7 +179,7 @@ const HomeView = ({ navigation }) => {
         };
 
     useEffect(()=>{
-        test()
+        // test()
         console.log(persondata);
 
     },[]);
