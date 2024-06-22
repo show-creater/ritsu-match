@@ -19,6 +19,7 @@ const HomeView = ({ navigation }) => {
     const [persondata, setPersondata] = useState([{ name: '', faculty: '', heart: '', image: '', age: 0, comment: '', heart_pushed: [], userid: '', randomField: '' }]);
     const [heartTF, setHeartTF] = useState([]);
     const [heartnum, setHeartnum] = useState([]);
+    const [scrollcheck, setScrollcheck] = useState(false);
     const a = 0;
 
 
@@ -91,160 +92,91 @@ const HomeView = ({ navigation }) => {
     //   console.log(doc.id, " => ", doc.data());
     // });
   
-        const test = async () => {
-            const getDocument = () => {
-                const usercollection = collection(db, "users");
-                const randomNum=Math.random();
-                const q = query(usercollection, where('randomField', '<=', randomNum), where('randomField', '>=', randomNum-0.1), limit(1));
-                console.log(randomNum);
-                return getDocs(q)
-            };
-            let persons=[]
-            getDocument().then((querySnapShot)=>{
-                console.log(1);
-                querySnapShot.forEach((doc)=>{
-                    console.log(doc.data());
-                    persons.push(doc.data());                        
-                })
-                return getDocument();
-            }).then((querySnapShot)=>{
-                console.log(1);
-                querySnapShot.forEach((doc)=>{
-                    console.log(doc.data());
-                    persons.push(doc.data());                        
-                })
-                return getDocument();
-            }).then((querySnapShot)=>{
-                console.log(1);
-                querySnapShot.forEach((doc)=>{
-                    console.log(doc.data());
-                    persons.push(doc.data());                        
-                })
-                return getDocument();
-            }).then((querySnapShot)=>{
-                console.log(1);
-                querySnapShot.forEach((doc)=>{
-                    console.log(doc.data());
-                    persons.push(doc.data());                        
-                })
-                return getDocument();
-            }).then((querySnapShot)=>{
-                console.log(1);
-                querySnapShot.forEach((doc)=>{
-                    console.log(doc.data());
-                    persons.push(doc.data());                        
-                })
-                return getDocument();
-            }).then((querySnapShot)=>{
-                console.log(1);
-                querySnapShot.forEach((doc)=>{
-                    console.log(doc.data());
-                    persons.push(doc.data());                        
-                })
-                return getDocument();
-            }).then((querySnapShot)=>{
-                console.log(1);
-                querySnapShot.forEach((doc)=>{
-                    console.log(doc.data());
-                    persons.push(doc.data());                        
-                })
-                return getDocument();
-            }).then((querySnapShot)=>{
-                console.log(1);
-                querySnapShot.forEach((doc)=>{
-                    console.log(doc.data());
-                    persons.push(doc.data());                        
-                })
-                return getDocument();
-            }).then((querySnapShot)=>{
-                console.log(1);
-                querySnapShot.forEach((doc)=>{
-                    console.log(doc.data());
-                    persons.push(doc.data());                        
-                })
-                return getDocument();
-            }).then((querySnapShot)=>{
-                console.log(1);
-                querySnapShot.forEach((doc)=>{
-                    console.log(doc.data());
-                    persons.push(doc.data());                        
-                })
-                return getDocument();
-            }).then(() => {
-                console.log('hellooooo')
-                console.log(persons);
-                setPersondata([...persondata, ...persons]); 
-            }).then(() => {
-                setScrollcheck(false);
+    const test = async () => {
+        const getDocument = () => {
+            const usercollection = collection(db, "users");
+            const randomNum=Math.random();
+            const q = query(usercollection, where('randomField', '<=', randomNum), where('randomField', '>=', randomNum-0.1), limit(1));
+            console.log(randomNum);
+            return getDocs(q)
+        };
+        let persons=[]
+        getDocument().then((querySnapShot)=>{
+            console.log(1);
+            querySnapShot.forEach((doc)=>{
+                console.log(doc.data());
+                persons.push(doc.data());                        
             })
             return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
+        }).then((querySnapShot)=>{
+            console.log(1);
+            querySnapShot.forEach((doc)=>{
+                console.log(doc.data());
+                persons.push(doc.data());                        
             })
             return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
+        }).then((querySnapShot)=>{
+            console.log(1);
+            querySnapShot.forEach((doc)=>{
+                console.log(doc.data());
+                persons.push(doc.data());                        
             })
             return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
+        }).then((querySnapShot)=>{
+            console.log(1);
+            querySnapShot.forEach((doc)=>{
+                console.log(doc.data());
+                persons.push(doc.data());                        
             })
             return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
+        }).then((querySnapShot)=>{
+            console.log(1);
+            querySnapShot.forEach((doc)=>{
+                console.log(doc.data());
+                persons.push(doc.data());                        
             })
             return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
+        }).then((querySnapShot)=>{
+            console.log(1);
+            querySnapShot.forEach((doc)=>{
+                console.log(doc.data());
+                persons.push(doc.data());                        
             })
             return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
+        }).then((querySnapShot)=>{
+            console.log(1);
+            querySnapShot.forEach((doc)=>{
+                console.log(doc.data());
+                persons.push(doc.data());                        
             })
             return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
+        }).then((querySnapShot)=>{
+            console.log(1);
+            querySnapShot.forEach((doc)=>{
+                console.log(doc.data());
+                persons.push(doc.data());                        
             })
             return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
+        }).then((querySnapShot)=>{
+            console.log(1);
+            querySnapShot.forEach((doc)=>{
+                console.log(doc.data());
+                persons.push(doc.data());                        
             })
             return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
+        }).then((querySnapShot)=>{
+            console.log(1);
+            querySnapShot.forEach((doc)=>{
+                console.log(doc.data());
+                persons.push(doc.data());                        
             })
             return getDocument();
         }).then(() => {
-            //console.log('hellooooo')
-            //console.log(persons);
-            setPersondata(persons);
+            console.log('hellooooo')
+            console.log(persons);
+            setPersondata([...persondata, ...persons]); 
+        }).then(() => {
+            setScrollcheck(false);
         })
 
     };
