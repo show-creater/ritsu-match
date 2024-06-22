@@ -18,9 +18,9 @@ const Talk = ({ navigation }) => {
     useEffect(() => {
         if (talkPage && scrollViewRef.current) {
             scrollViewRef.current.scrollTo({ x: 0, animated: true });
-        }else{
-            scrollViewRef.current.scrollTo({ x: 1000, animated: true });
         }
+        //     scrollViewRef.current.scrollTo({ x: 1000, animated: true });
+        // }
     },[talkPage]);
 
     // useEffect(()=>{
