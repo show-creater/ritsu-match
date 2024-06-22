@@ -6,12 +6,17 @@ const SendEmail=()=>{
             // justifyContent: 'center',
             alignItems: 'center',
             flex: 1,
-            paddingTop: '20%'
-        }
+            paddingTop: '30%',
+            justifyContent: 'center',
+        },
+
       });
     return (
         <View style={styles.title}>
-            <Text>確認メールを送信しました。本文に記載されているURLにアクセスした後、アプリを再起動してください。</Text>
+            <View style={styles.message}>
+                <Text>確認メールを送信しました。</Text>
+                <Text>確認リンクにアクセスした後、アプリを再起動してください。</Text>
+            </View>
         </View>
     )
 };

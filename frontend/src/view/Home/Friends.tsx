@@ -10,6 +10,7 @@ import { AntDesign } from '@expo/vector-icons';
 const Friends = ({navigation}) => {
     const {isLogin, setIsLogin, talkPage, setTalkPage}=useHome();
     const windowHeight = Dimensions.get('window').height;
+    const windowWidth = Dimensions.get('window').width;
     const a = 0;
     const styles = StyleSheet.create({ 
         container1: {
@@ -26,14 +27,16 @@ const Friends = ({navigation}) => {
             width: '100%',
         },
         main: {
-            height:1420, //ちょうど５列要素が入る高さ
+            height:1420*10, //ちょうど５列要素が入る高さ
             paddingTop:'10%',
+            width: windowWidth
             },
         container: {
             height:windowHeight,//これが悪い
             flexDirection:'row',
             padding:'auto',
             flexWrap:'wrap',
+            width: windowWidth
         },
         containerBox: {
             width:'47%',
@@ -163,8 +166,8 @@ const Friends = ({navigation}) => {
         },
     });
     return (
-        <View style={{ flex: 1, alignItems: 'center', height: 1000,  }}>  
-            <View style={styles.header}>
+        <View style={{ flex: 1, alignItems: 'center',width: windowWidth}}>  
+            {/* <View style={styles.header}>
                 <View style={styles.icon}></View>
                 <View style={styles.informations}>
                     <View style={styles.NameHeart}>
@@ -185,9 +188,9 @@ const Friends = ({navigation}) => {
                         <Text style={{ fontSize: 16, color: '#30CB89' }}>{'2日 12:05'}</Text>
                     </View>
                 </View>
-            </View>
-            <ScrollView style={{flex:1}}>
-                <View style={styles.personlist}>
+            </View> */}
+            <ScrollView style={{width: windowWidth}}>
+                {/* <View style={styles.personlist}>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.TalkButton} onPress={()=>{setTalkPage(true)}}>
                             <Text style={{color: 'white', fontWeight: 'bold'}}>トーク</Text>
@@ -196,7 +199,7 @@ const Friends = ({navigation}) => {
                             <Text style={{color: 'white', fontWeight: 'bold'}}>マッチング</Text>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </View> */}
                     <View style={styles.main}>
                         <View style = {styles.container}>
                             <View style = {styles.containerBox}>
@@ -312,9 +315,9 @@ const Friends = ({navigation}) => {
                         </View>
                     </View>
                 </ScrollView>
-            <View style={styles.footer}>
+            {/* <View style={styles.footer}>
                 <HomeFooter navigation={navigation}/>
-            </View>
+            </View> */}
         </View>
     )
 };

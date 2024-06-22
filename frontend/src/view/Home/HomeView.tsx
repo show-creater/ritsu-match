@@ -10,6 +10,7 @@ import { useHome } from '../../component/context/HomeContext'
 import { collection, getDocs, getDoc, doc, setDoc, where, query, limit, QuerySnapshot, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
 import LottieView from 'lottie-react-native';
+import Animation1 from '../../component/animation/animation1';
 
 const HomeView = ({ navigation }) => {
     const { isLogin, setIsLogin, loginUser, setLoginUser } = useHome();
@@ -89,28 +90,92 @@ const HomeView = ({ navigation }) => {
     //   // doc.data() is never undefined for query doc snapshots
     //   console.log(doc.id, " => ", doc.data());
     // });
-
-    const test = async () => {
-        const getDocument = () => {
-            const usercollection = collection(db, "users");
-            const randomNum = Math.random();
-            const q = query(usercollection, where('randomField', '<=', randomNum), where('randomField', '>=', randomNum - 0.1), limit(1));
-            //console.log(randomNum);
-            return getDocs(q)
-        };
-        let persons = []
-        getDocument().then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
-            })
-            return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
+  
+        const test = async () => {
+            const getDocument = () => {
+                const usercollection = collection(db, "users");
+                const randomNum=Math.random();
+                const q = query(usercollection, where('randomField', '<=', randomNum), where('randomField', '>=', randomNum-0.1), limit(1));
+                console.log(randomNum);
+                return getDocs(q)
+            };
+            let persons=[]
+            getDocument().then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());                        
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());                        
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());                        
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());                        
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());                        
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());                        
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());                        
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());                        
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());                        
+                })
+                return getDocument();
+            }).then((querySnapShot)=>{
+                console.log(1);
+                querySnapShot.forEach((doc)=>{
+                    console.log(doc.data());
+                    persons.push(doc.data());                        
+                })
+                return getDocument();
+            }).then(() => {
+                console.log('hellooooo')
+                console.log(persons);
+                setPersondata([...persondata, ...persons]); 
+            }).then(() => {
+                setScrollcheck(false);
             })
             return getDocument();
         }).then((querySnapShot) => {
@@ -188,6 +253,18 @@ const HomeView = ({ navigation }) => {
         test()
         //console.log(persondata);
     }, []);
+
+    const handleScroll = (event) => {
+        const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
+        const isBottom = contentOffset.y + layoutMeasurement.height >= contentSize.height - 20;
+
+        if (isBottom && !scrollcheck) {
+            console.log('Reached the bottom!');
+            test();
+            setScrollcheck(true);
+            
+        }
+    };
 
     // const makedoc = async() =>{
     //     const currentuser = auth.currentUser.uid;
@@ -416,7 +493,7 @@ const HomeView = ({ navigation }) => {
         },
         personlist: {
             width: '100%',
-            height: 16000,//?個分の高さk
+            height: windowHeight*(persondata.length-1),//?個分の高さ
             marginTop: 160,
             alignItems: 'center',
             flexDirection: 'column',
@@ -518,8 +595,7 @@ const HomeView = ({ navigation }) => {
                     </View>
                 </View>
             </View>
-
-            <ScrollView style={{ width: '100%' }} pagingEnabled={true} showsVerticalScrollIndicator={false}>
+            <ScrollView style={{ width: '100%' }} pagingEnabled={true} showsVerticalScrollIndicator={false} onScroll={handleScroll} scrollEventThrottle={1000}>
                 <View style={styles.personlist}>
                     {persondata.map((data, index) =>
                         <View style={styles.InfoOutside} key={index}>
@@ -561,7 +637,9 @@ const HomeView = ({ navigation }) => {
                         </View>
                     )}
                 </View>
+
             </ScrollView>
+                {scrollcheck &&<Animation1/>}
             <View style={styles.footer}>
                 <HomeFooter navigation={navigation} />
             </View>

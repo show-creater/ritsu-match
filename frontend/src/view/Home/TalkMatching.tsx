@@ -8,20 +8,36 @@ import { auth,db,storage } from '../../../firebaseConfig';
 import { arrayUnion, updateDoc, Timestamp, onSnapshot, orderBy, addDoc, doc, getDoc, setDoc , collection, getDocs, getFirestore, query, where } from '@firebase/firestore';
 import { TouchableOpacity } from 'react-native';
 import Friends from './Friends';
+import Talk from './Talk';
 
-const Talk = ({ navigation }) => {
+const TalkMatching = ({ navigation }) => {
     const {isLogin, setIsLogin, talkPage, setTalkPage}=useHome();
     const windowWidth = Dimensions.get('window').width;
     const a = 0;
     const scrollViewRef = useRef(null);
+    const [scrollX, setScrollX] = useState(true);
+
+    // useEffect(() => {
+    //     if (talkPage) {
+    //         scrollViewRef.current.scrollTo({ x: 0, animated: true });
+    //     }else{
+    //         scrollViewRef.current.scrollTo({ x: 450, animated: true });
+    //     }
+    //     console.log(talkPage);
+    // },[talkPage]);
+    
+    // useEffect(() => {
+    //     if(scrollViewRef.current.scrollTo.x >= windowWidth/2){
+    //         setTalkPage(true);
+    //     }else{
+    //         setTalkPage(false);
+    //     }
+    // })
 
     useEffect(() => {
-        if (talkPage && scrollViewRef.current) {
-            scrollViewRef.current.scrollTo({ x: 0, animated: true });
-        }
-        //     scrollViewRef.current.scrollTo({ x: 1000, animated: true });
-        // }
-    },[talkPage]);
+        console.log(scrollViewRef.current.scrollTo);
+
+    },[scrollViewRef])
 
     // useEffect(()=>{
     //     if(isLogin){
@@ -33,6 +49,18 @@ const Talk = ({ navigation }) => {
     //         return () => unsubscribe();
     //     }
     // },[]);
+
+    const handleScroll = (event) => {
+        const x = event.nativeEvent.contentOffset.x;
+        if (x > 225){
+            setScrollX(false);
+            console.log('false');
+        }else if (x < 225){
+            setScrollX(true);
+            console.log('true');
+        }
+        // console.log('hello');
+      };
 
 
     const styles = StyleSheet.create({
@@ -131,7 +159,7 @@ const Talk = ({ navigation }) => {
             alignItems: 'center',
             marginVertical: '1%',
             borderRadius: 10,
-            backgroundColor: talkPage  ? '#30CB89' : 'gray',
+            backgroundColor: (talkPage && scrollX) ? '#30CB89' : 'gray',
         },
         MatchingButton: {
             height: '100%',
@@ -139,14 +167,14 @@ const Talk = ({ navigation }) => {
             alignItems: 'center',
             marginVertical: '1%',
             borderRadius: 10,
-            backgroundColor: talkPage  ? 'gray' : '#30CB89',
+            backgroundColor: (talkPage && scrollX) ? 'gray' : '#30CB89',
         },
 
     });
     return (
         //ヘッダー
         <View style={{ flex: 1, alignItems: 'center', height: 1000 }}>
-            {/* <View style={styles.header}>
+            <View style={styles.header}>
                 <View style={styles.icon}></View>
                 <View style={styles.informations}>
                     <View style={styles.NameHeart}>
@@ -167,71 +195,28 @@ const Talk = ({ navigation }) => {
                         <Text style={{ fontSize: 16, color: '#30CB89' }}>{'2日 12:05'}</Text>
                     </View>
                 </View>
-            </View> */}
+            </View>
 
-            {/* <ScrollView style={{ width: '100%' }}>
-                <View style={styles.personlist}> */}
-                    {/* <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.TalkButton} onPress={()=>{setTalkPage(true)}}>
+            <ScrollView style={{ width: '100%' }}>
+                <View style={styles.personlist}>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.TalkButton} onPress={()=>{setTalkPage(true); scrollViewRef.current.scrollTo({ x: 0, animated: true });}}>
                             <Text style={{color: 'white', fontWeight: 'bold'}}>トーク</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.MatchingButton} onPress={()=>{setTalkPage(false)}}>
+                        <TouchableOpacity style={styles.MatchingButton} onPress={()=>{setTalkPage(false); scrollViewRef.current.scrollTo({ x: 450, animated: true });}}>
                             <Text style={{color: 'white', fontWeight: 'bold'}}>マッチング</Text>
                         </TouchableOpacity>
-                    </View> */}
-                    <ScrollView pagingEnabled={true} horizontal={true} ref={scrollViewRef} style={{width: windowWidth, paddingTop: '10%'}}>
-                        <View style={{width: windowWidth}}>
-                            <View style={styles.personInfo}>
-                                <View style={{paddingRight: '2%'}}>
-                                    <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
-                                </View>
-                                <Text style={{fontSize: 20}}>ディカプリオ</Text>
-                            </View>
-                            <View style={styles.personInfo}>
-                                <View style={{paddingRight: '2%'}}>
-                                    <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
-                                </View>
-                                <Text style={{fontSize: 20}}>ディカプリオ</Text>
-                            </View>
-                            <View style={styles.personInfo}>
-                                <View style={{paddingRight: '2%'}}>
-                                    <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
-                                </View>
-                                <Text style={{fontSize: 20}}>ディカプリオ</Text>
-                            </View>
-                            <View style={styles.personInfo}>
-                                <View style={{paddingRight: '2%'}}>
-                                    <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
-                                </View>
-                                <Text style={{fontSize: 20}}>ディカプリオ</Text>
-                            </View>
-                            <View style={styles.personInfo}>
-                                <View style={{paddingRight: '2%'}}>
-                                    <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
-                                </View>
-                                <Text style={{fontSize: 20}}>ディカプリオ</Text>
-                            </View>
-                            <View style={styles.personInfo}>
-                                <View style={{paddingRight: '2%'}}>
-                                    <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
-                                </View>
-                                <Text style={{fontSize: 20}}>ディカプリオ</Text>
-                            </View>
-                            <View style={styles.personInfo}>
-                                <View style={{paddingRight: '2%'}}>
-                                    <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
-                                </View>
-                                <Text style={{fontSize: 20}}>ディカプリオ</Text>
-                            </View>                        
-                        </View>
+                    </View>
+                    <ScrollView pagingEnabled={true} horizontal={true} ref={scrollViewRef} style={{width: windowWidth}} onScroll={handleScroll} scrollEventThrottle={16}>
+                        <Talk navigation={navigation}/>
                         <Friends navigation={navigation}/>
                     </ScrollView>
-                {/* </View> */}
-            {/* </ScrollView> */}
-            {/* <View style={styles.footer}>
+                </View>
+            </ScrollView>
+            <View style={styles.footer}>
                 <HomeFooter navigation={navigation} />
-            </View> */}
+            </View>
         </View>
     )
 };
-export default Talk;
+export default TalkMatching;
