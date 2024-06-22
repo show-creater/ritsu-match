@@ -14,16 +14,10 @@ import LottieView from 'lottie-react-native';
 const HomeView = ({ navigation }) => {
     const { isLogin, setIsLogin, loginUser, setLoginUser } = useHome();
     const windowHeight = Dimensions.get('window').height;
-<<<<<<< HEAD
     const [infor, setInfor] = useState({ name: '', faculty: '', heart: 0, image: '', age: 0, comment: '' });
     const [persondata, setPersondata] = useState([{ name: '', faculty: '', heart: '', image: '', age: 0, comment: '', heart_pushed: [], userid: '', randomField: '' }]);
     const [heartTF, setHeartTF] = useState([]);
     const [heartnum, setHeartnum] = useState([]);
-=======
-    const [infor,setInfor] = useState({name: '', faculty: '', heart: 0, image:'', age: 0, comment: ''});
-    const [persondata, setPersondata] = useState([{name: '', faculty: '', heart: '', image:'', age: 0, comment: '', heart_pushed:[]}]);
-    const [heart_pushed,setHeart_pushed] = useState([]);
->>>>>>> b42087eb0c20028f479060aeffbee39d231e5f0e
     const a = 0;
 
 
@@ -95,7 +89,6 @@ const HomeView = ({ navigation }) => {
     //   // doc.data() is never undefined for query doc snapshots
     //   console.log(doc.id, " => ", doc.data());
     // });
-<<<<<<< HEAD
 
     const test = async () => {
         const getDocument = () => {
@@ -207,25 +200,6 @@ const HomeView = ({ navigation }) => {
     //     }
 
     // };
-=======
-    // const test = async () => {
-    //     const querySnapshot = await getDocs(collection(db, "matching"));
-    //     let persons=[]
-    //     querySnapshot.forEach((doc) => {
-    //         // doc.data() is never undefined for query doc snapshots
-    //         //console.log(persondata);
-    //         persons.push(doc.data());
-    //     });
-    //     setPersondata(persons);
-    // };
-    // useEffect(()=>{
-    //     test()
-    //     //console.log(persondata.heart_pushed);
-    //     //console.log(heart_pushed);
-    //     console.log(infor);
-
-    // },[]);
->>>>>>> b42087eb0c20028f479060aeffbee39d231e5f0e
 
     // const [number,setNumber] = useState(3);
     // useEffect(()=>{
@@ -245,7 +219,6 @@ const HomeView = ({ navigation }) => {
 
     const heartP = async () => {
         const querySnapshot = await getDocs(collection(db, "users"));
-<<<<<<< HEAD
         const users = []
         querySnapshot.forEach((doc) => {
             users.push(doc.data());
@@ -386,34 +359,6 @@ const HomeView = ({ navigation }) => {
             heartcheck();
         }
     }, [persondata])
-=======
-        let users=[]
-        querySnapshot.forEach((doc) => {
-            users.push(doc.data());
-        });
-        setPersondata(users);
-        let heartarray=[]
-        for(let i = 0; i < persondata.length; i++){
-            heartarray[i] = persondata[i].heart_pushed;
-        };
-        setHeart_pushed(heartarray);
-    };
-    useEffect(()=>{
-        heartP()
-        //console.log(persondata.heart_pushed);
-        //console.log(heart_pushed);
-        //console.log(persondata);
-        console.log(persondata.length);
-        console.log(heart_pushed);
-        heart_check(23);
-    },[]);
-
-    const heart_check = (index) => {
-        console.log(heart_pushed[index]);
-    }
-
-
->>>>>>> b42087eb0c20028f479060aeffbee39d231e5f0e
 
     const styles = StyleSheet.create({
         header: {
