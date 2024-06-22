@@ -1,67 +1,69 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from '../../../firebaseConfig';
-import {signInWithEmailAndPassword, browserLocalPersistence} from 'firebase/auth';
+import { signInWithEmailAndPassword, browserLocalPersistence } from 'firebase/auth';
 import { useHome } from '../../component/context/HomeContext'
-import { collection, getDocs ,getDoc, doc, setDoc, where, query, limit, QuerySnapshot } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc, setDoc, where, query, limit, QuerySnapshot, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
 import LottieView from 'lottie-react-native';
 import Animation1 from '../../component/animation/animation1';
 
 const HomeView = ({ navigation }) => {
-    const {isLogin, setIsLogin, loginUser, setLoginUser}=useHome();
+    const { isLogin, setIsLogin, loginUser, setLoginUser } = useHome();
     const windowHeight = Dimensions.get('window').height;
-    const [infor,setInfor] = useState({name: '', faculty: '', heart: 0, image:'', age: 0, comment: ''});
-    const [persondata, setPersondata] = useState([{name: '', faculty: '', heart: '', image:'', age: 0, comment: ''}]);
-    const [scrollcheck, setScrollcheck] = useState(false);
+    const [infor, setInfor] = useState({ name: '', faculty: '', heart: 0, image: '', age: 0, comment: '' });
+    const [persondata, setPersondata] = useState([{ name: '', faculty: '', heart: '', image: '', age: 0, comment: '', heart_pushed: [], userid: '', randomField: '' }]);
+    const [heartTF, setHeartTF] = useState([]);
+    const [heartnum, setHeartnum] = useState([]);
     const a = 0;
 
-    
-    useEffect(()=>{
+
+    useEffect(() => {
         const loademail = async () => { //ローカルのログイン情報から自動ログイン
-            let useremail='';
+            let useremail = '';
             try {
-              const stringValue = await AsyncStorage.getItem('useremail');
-              if(stringValue != null){
-                const value = JSON.parse(stringValue);
-                console.log('email');
-                useremail=value;
-            }
+                const stringValue = await AsyncStorage.getItem('useremail');
+                if (stringValue != null) {
+                    const value = JSON.parse(stringValue);
+                    //console.log('email');
+                    useremail = value;
+                }
             } catch (e) {
-              console.log(e);
+                console.log(e);
             }
             return useremail;
-          };
-          const loadpassword = async () => {
-            let userpassword='';
+        };
+        const loadpassword = async () => {
+            let userpassword = '';
             try {
-              const stringValue = await AsyncStorage.getItem('userpassword');
-              if(stringValue != null){
-                const value = JSON.parse(stringValue);
-                console.log('password');
-                userpassword=value;
-            }
+                const stringValue = await AsyncStorage.getItem('userpassword');
+                if (stringValue != null) {
+                    const value = JSON.parse(stringValue);
+                    //console.log('password');
+                    userpassword = value;
+                }
             } catch (e) {
-              console.log(e);
+                console.log(e);
             }
             return userpassword;
-          };
-          
-          const handleLogin = async (email, password) => {
+        };
+
+        const handleLogin = async (email, password) => {
             try {
                 // メールアドレスとパスワードでログイン
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;             
-                if (user.emailVerified){
+                const user = userCredential.user;
+                if (user.emailVerified) {
                     setIsLogin(true);
                     setLoginUser(user);
                     const docdata = await getDoc(doc(db, "users", auth.currentUser.uid));
                     console.log(docdata.data());
-                    if (docdata().data() != undefined){
+                    console.log('hellllo');
+                    if (docdata().data() != undefined) {
                         setInfor(docdata.data());
                     }
                 }
@@ -70,25 +72,25 @@ const HomeView = ({ navigation }) => {
                 console.log('User logged in:', user);
                 // console.log('User logged in:', user);
             } catch (error) {
-              // エラー処理
-            //   console.error('Login failed:', error.message);
+                // エラー処理
+                //   console.error('Login failed:', error.message);
             }
-          };
-          const login=async()=>{
-            let usemail='';
-            let uspassword='';
-            usemail= await loademail();
-            uspassword=await loadpassword();
+        };
+        const login = async () => {
+            let usemail = '';
+            let uspassword = '';
+            usemail = await loademail();
+            uspassword = await loadpassword();
             handleLogin(usemail, uspassword);
-          };
-          login();
-    },[]);
+        };
+        login();
+    }, []);
 
     //     getDocs(collection(db, "matching")).forEach((doc) => {
     //   // doc.data() is never undefined for query doc snapshots
     //   console.log(doc.id, " => ", doc.data());
     // });
-
+  
         const test = async () => {
             const getDocument = () => {
                 const usercollection = collection(db, "users");
@@ -175,14 +177,82 @@ const HomeView = ({ navigation }) => {
             }).then(() => {
                 setScrollcheck(false);
             })
+            return getDocument();
+        }).then((querySnapShot) => {
+            //console.log(1);
+            querySnapShot.forEach((doc) => {
+                //console.log(doc.data());
+                persons.push(doc.data());
+            })
+            return getDocument();
+        }).then((querySnapShot) => {
+            //console.log(1);
+            querySnapShot.forEach((doc) => {
+                //console.log(doc.data());
+                persons.push(doc.data());
+            })
+            return getDocument();
+        }).then((querySnapShot) => {
+            //console.log(1);
+            querySnapShot.forEach((doc) => {
+                //console.log(doc.data());
+                persons.push(doc.data());
+            })
+            return getDocument();
+        }).then((querySnapShot) => {
+            //console.log(1);
+            querySnapShot.forEach((doc) => {
+                //console.log(doc.data());
+                persons.push(doc.data());
+            })
+            return getDocument();
+        }).then((querySnapShot) => {
+            //console.log(1);
+            querySnapShot.forEach((doc) => {
+                //console.log(doc.data());
+                persons.push(doc.data());
+            })
+            return getDocument();
+        }).then((querySnapShot) => {
+            //console.log(1);
+            querySnapShot.forEach((doc) => {
+                //console.log(doc.data());
+                persons.push(doc.data());
+            })
+            return getDocument();
+        }).then((querySnapShot) => {
+            //console.log(1);
+            querySnapShot.forEach((doc) => {
+                //console.log(doc.data());
+                persons.push(doc.data());
+            })
+            return getDocument();
+        }).then((querySnapShot) => {
+            //console.log(1);
+            querySnapShot.forEach((doc) => {
+                //console.log(doc.data());
+                persons.push(doc.data());
+            })
+            return getDocument();
+        }).then((querySnapShot) => {
+            //console.log(1);
+            querySnapShot.forEach((doc) => {
+                //console.log(doc.data());
+                persons.push(doc.data());
+            })
+            return getDocument();
+        }).then(() => {
+            //console.log('hellooooo')
+            //console.log(persons);
+            setPersondata(persons);
+        })
 
-        };
+    };
 
-    useEffect(()=>{
-        // test()
-        console.log(persondata);
-
-    },[]);
+    useEffect(() => {
+        test()
+        //console.log(persondata);
+    }, []);
 
     const handleScroll = (event) => {
         const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
@@ -213,7 +283,7 @@ const HomeView = ({ navigation }) => {
     //     setNumber(5)
     //     console.log(number);
     // },[]);
-        
+
     // useEffect(()=>{
     //     const docRef = doc(db, "users", "LkW4tsYgDrVi6KTAv8iEGhtuzkB3");
     //     const docSnap = async () =>{
@@ -223,6 +293,149 @@ const HomeView = ({ navigation }) => {
     //     };
     //     docSnap();
     // },[]);
+
+    const heartP = async () => {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        const users = []
+        querySnapshot.forEach((doc) => {
+            users.push(doc.data());
+        });
+        return users;
+
+    };
+
+    // useEffect(()=>{
+    //     heartP();
+    //     //console.log(persondata)
+    // },[]);
+
+    const heartadd = async (index) => {
+        let usersIDarray = [];
+        let heartwhite = [];
+        for (let i = 0; i < persondata.length; i++) {
+            usersIDarray[i] = persondata[i];
+        }
+        console.log(`helloooo${usersIDarray[index].heart_pushed}`);
+        usersIDarray[index].heart_pushed.push(auth.currentUser.uid);
+        setHeartTF((prev) => {
+            const newarray = [...prev]
+            newarray[index] = true;
+            return newarray;
+        })
+        setHeartnum((prev) => {
+            const newarray = [...prev]
+            newarray[index] += 1;
+            return newarray;
+        })
+        await setDoc(doc(collection(db, 'users'), `${usersIDarray[index].userid}`), {
+            age: usersIDarray[index].age,
+            comment: usersIDarray[index].comment,
+            faculty: usersIDarray[index].faculty,
+            heart: usersIDarray[index].heart,
+            image: usersIDarray[index].image,
+            name: usersIDarray[index].name,
+            randomField: usersIDarray[index].randomField,
+            userid: usersIDarray[index].userid,
+            heart_pushed: usersIDarray[index].heart_pushed
+        });
+        console.log('userIDarraya');
+        console.log(usersIDarray);
+
+    };
+
+
+    const heartdelete = async (index1) => {
+        let usersIDarray = [];
+        for (let i = 0; i < persondata.length; i++) {
+            usersIDarray[i] = persondata[i];
+        }
+        usersIDarray[index1].heart_pushed.forEach((item, index) => {
+            if (item == `${auth.currentUser.uid}`) {
+                usersIDarray[index1].heart_pushed.splice(index, 1);
+            }
+        });
+        setHeartTF((prev) => {
+            const newarray = [...prev]
+            newarray[index1] = false;
+            return newarray;
+        })
+        setHeartnum((prev) => {
+            const newarray = [...prev]
+            newarray[index1] -= 1;
+            return newarray;
+        })
+        await setDoc(doc(collection(db, 'users'), `${usersIDarray[index1].userid}`), {
+            age: usersIDarray[index1].age,
+            comment: usersIDarray[index1].comment,
+            faculty: usersIDarray[index1].faculty,
+            heart: usersIDarray[index1].heart,
+            image: usersIDarray[index1].image,
+            name: usersIDarray[index1].name,
+            randomField: usersIDarray[index1].randomField,
+            userid: usersIDarray[index1].userid,
+            heart_pushed: usersIDarray[index1].heart_pushed
+        });
+    };
+
+    const heartcheck = () => {
+        try {
+           // let heartTFarray = []
+            let heart = []
+            let heartnumber = []
+            for (let i = 0; i < persondata.length; i++) {
+                heart[i] = persondata[i].heart_pushed;
+                heartnumber[i] = heart[i].length;
+            }
+            console.log(heart);
+            // for (let i = 0; i < heart.length; i++) {
+            //     if (heart[i].indexOf(`${auth.currentUser.uid}`) < 0) {
+            //         heartTFarray[i] = false;
+            //     } else {
+            //         heartTFarray[i] = true;
+            //     }
+            // }
+            setHeartTF(heart.map(item => item.includes(auth.currentUser.uid)));
+
+            console.log('っっっっっっっっっっっ');
+            console.log(heart);
+            // console.log(heartTFarray);
+            // setHeartTF(heartTFarray);
+            setHeartnum(heartnumber);
+        } catch (e) {
+            console.log(e.message);
+        }
+
+
+        // const heartchange = (index) => {
+        // if(heartTF[index]==false){
+        //     heartadd(index);
+        //     setHeartTF[index] = true;
+        // }
+        // else{
+        //     heartdelete(index);
+        //     setHeartTF[index] = false;
+        // }
+        // let i = 0;
+        // i++;
+        // setRe(i)
+    };
+    useEffect(() => {
+        heartP().then((result) => {
+            console.log(result);
+            console.log('セットしました')
+            setPersondata(result);
+        })
+
+        //console.log(persondata)
+        //console.log(heartcheck(index));
+
+    }, []);
+
+    useEffect(() => {
+        if (persondata.length > 1) {
+            heartcheck();
+        }
+    }, [persondata])
 
     const styles = StyleSheet.create({
         header: {
@@ -384,7 +597,7 @@ const HomeView = ({ navigation }) => {
             </View>
             <ScrollView style={{ width: '100%' }} pagingEnabled={true} showsVerticalScrollIndicator={false} onScroll={handleScroll} scrollEventThrottle={1000}>
                 <View style={styles.personlist}>
-                    {persondata.map((data,index) => 
+                    {persondata.map((data, index) =>
                         <View style={styles.InfoOutside} key={index}>
                             <View style={styles.personInformation}>
                                 <View style={styles.personImage}>
@@ -404,11 +617,18 @@ const HomeView = ({ navigation }) => {
                                             </View>
                                         </View>
                                         <View style={styles.heartBookmark}>
-                                            <TouchableOpacity style={styles.clickheart} onPress={()=>{makedoc();}}>
-                                                <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                                <Text style={{ color: 'deeppink' }}>{`${data.heart}`}</Text>
-                                            </TouchableOpacity>
+
+                                            {heartTF[index] == true ?
+                                                <TouchableOpacity style={styles.clickheart} onPress={() => { heartdelete(index); }}>
+                                                    <Ionicons name="heart" size={50} color="deeppink" />
+                                                    <Text style={{ color: 'deeppink' }}>{`${heartnum[index]}`}</Text>
+                                                </TouchableOpacity> :
+                                                <TouchableOpacity style={styles.clickheart} onPress={() => { heartadd(index); }}>
+                                                    <Ionicons name="heart-outline" size={50} color="deeppink" />
+                                                    <Text style={{ color: 'deeppink' }}>{`${heartnum[index]}`}</Text>
+                                                </TouchableOpacity>}
                                             <Ionicons name="bookmark" size={50} color="#30CB89" />
+
                                         </View>
                                     </View>
                                     <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>{`${data.comment}`}</Text>
