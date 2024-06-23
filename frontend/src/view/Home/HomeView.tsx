@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
@@ -13,13 +13,15 @@ import LottieView from 'lottie-react-native';
 import Animation1 from '../../component/animation/animation1';
 
 const HomeView = ({ navigation }) => {
-    const { isLogin, setIsLogin, loginUser, setLoginUser } = useHome();
+    const { isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout } = useHome();
     const windowHeight = Dimensions.get('window').height;
+    const windowWidth = Dimensions.get('window').width;
     const [infor, setInfor] = useState({ name: '', faculty: '', heart: 0, image: '', age: 0, comment: '' });
     const [persondata, setPersondata] = useState([{ name: '', faculty: '', heart: '', image: '', age: 0, comment: '', heart_pushed: [], userid: '', randomField: '' }]);
     const [heartTF, setHeartTF] = useState([]);
-    const [heartnum, setHeartnum] = useState([]);
+    const [heartnum, setHeartnum] = useState([0]);
     const [scrollcheck, setScrollcheck] = useState(false);
+    const scrollViewRef = useRef(null);
     const a = 0;
 
 
@@ -64,7 +66,7 @@ const HomeView = ({ navigation }) => {
                     const docdata = await getDoc(doc(db, "users", auth.currentUser.uid));
                     console.log(docdata.data());
                     console.log('hellllo');
-                    if (docdata().data() != undefined) {
+                    if (docdata.data() != undefined) {
                         setInfor(docdata.data());
                     }
                 }
@@ -75,6 +77,7 @@ const HomeView = ({ navigation }) => {
             } catch (error) {
                 // エラー処理
                 //   console.error('Login failed:', error.message);
+                setIsTimeout(true);
             }
         };
         const login = async () => {
@@ -532,12 +535,14 @@ const HomeView = ({ navigation }) => {
                     {persondata.map((data, index) =>
                         <View style={styles.InfoOutside} key={index}>
                             <View style={styles.personInformation}>
-                                <View style={styles.personImage}>
-                                    <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
-                                        source={require('../../component/photo/ディカプリオ.webp')}
-                                        resizeMode='cover'
-                                    />
-                                </View>
+                                {/* <ScrollView pagingEnabled={true} horizontal={true} ref={scrollViewRef} style={{width: windowWidth}} scrollEventThrottle={16} > */}
+                                    <View style={styles.personImage}>
+                                        <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
+                                            source={require('../../component/photo/ディカプリオ.webp')}
+                                            resizeMode='cover'
+                                        />                                        
+                                    </View>
+                                {/* </ScrollView> */}
                                 <View style={styles.personProfile}>
                                     <View style={styles.ProfileTop}>
                                         <View style={styles.NameFucility}>

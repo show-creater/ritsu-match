@@ -224,7 +224,7 @@ const Talk = ({ navigation }) => {
                                 <Text style={{fontSize: 20}}>ディカプリオ</Text>
                             </View>                        
                         </View>
-                        <Friends navigation={navigation}/>
+                        {/* <Friends navigation={navigation}/> */}
                     </ScrollView>
                 {/* </View> */}
             {/* </ScrollView> */}

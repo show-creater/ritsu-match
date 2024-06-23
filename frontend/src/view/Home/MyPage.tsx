@@ -6,13 +6,15 @@ import { AntDesign } from '@expo/vector-icons';
 import { Animated, PanResponder } from 'react-native';
 import { useHome } from '../../component/context/HomeContext';
 import SignUpScreen from '../login/SignUpScreen';
-import { collection, getDocs ,getDoc ,doc} from "firebase/firestore";
+import { collection, getDocs ,getDoc ,doc, setDoc } from "firebase/firestore";
 import { db, auth } from '../../../firebaseConfig';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const MyPage=({navigation})=>{
-    const {isLogin, setIsLogin, loginUser ,setLoginUser}=useHome();
-    const [changeInfor,setChangeInfor] = useState(false);
-    const [infor,setInfor] = useState({name: '', faculty: '', heart: 0, image:'', age: 0, comment: ''});
+    const {isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, isTime, setIsTime}=useHome();
+    const [changeInfor,setChangeInfor] = useState([false,false,false,false,false,false,false,false,false]);
+    const [infor,setInfor] = useState({name: '', heart: 0, faculty: '', image:'', age: 0, comment: '', heart_pushed: [], randomField: 0, userid: ''});
+    const [datachange, setDatachange] = useState(true);
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
     const pan = useRef(new Animated.ValueXY()).current;
@@ -39,6 +41,7 @@ const MyPage=({navigation})=>{
             setLoginUser(currentuser);
             const docSnap = async () =>{
                 const docdata = await getDoc(doc(db, "users", currentuser));
+                console.log('docdataの中身');
                 console.log(docdata.data());
                 if (docdata.data() != undefined){
                     setInfor(docdata.data());
@@ -78,6 +81,42 @@ const MyPage=({navigation})=>{
     //     console.log(infor);
     //     },[]);
 
+    const changeInformation = (i) => {
+        setChangeInfor(() => {
+            const array=[...changeInfor]
+            array[i]=!array[i]
+            return array;
+        })
+    };
+
+    useEffect(() => {
+        const adjustProfile = async() => {
+            if (!datachange){
+                try {
+                console.log('プロフィール変更');
+                console.log(infor);
+                console.log(auth.currentUser.uid);
+                await setDoc(doc(collection(db, 'users'), `${auth.currentUser.uid}`), {
+                    name: infor.name,
+                    age: infor.age,
+                    comment: infor.comment,
+                    faculty: infor.faculty,
+                    heart: infor.heart,
+                    heart_pushed: infor.heart_pushed,
+                    image: infor.image,
+                    randomField: infor.randomField,
+                    userid: infor.userid
+                })
+                }catch(e) {
+                    console.log(e.message);
+            } 
+
+            }           
+        };
+        adjustProfile();
+
+    },[datachange]);
+
     const styles=StyleSheet.create({
         body: {
             flexDirection: 'column',
@@ -91,8 +130,8 @@ const MyPage=({navigation})=>{
             height: '30%',
             width: '100%',
             display: 'flex',
-            backgroundColor: 'red',
-            alignItems: 'center'
+            // alignItems: 'center',
+            position: 'relative',
         },
         image: {
             width: '100%',
@@ -148,31 +187,68 @@ const MyPage=({navigation})=>{
             <View style={styles.body}>
                 {isLogin ? //ログインしてたらマイページを表示
                 <ScrollView style={{width: '100%', height: '100%'}}>
+                    <View style={{width: '100%', height: '5%', justifyContent: 'center', alignItems: 'space-between', paddingRight: '3%',}}>
+                        <TouchableOpacity onPress={()=>{console.log('heooo')}}>
+                            <Ionicons name="ellipsis-horizontal-outline" size={30} color="black" />                                
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.imageContainer}>
+                        <TouchableOpacity style={{backgroundColor: 'transparent', top: '10%', zIndex: 1000000, alignItems: 'space-between'}} onPress={()=>{console.log('hello')}}>
+                            <MaterialIcons name="photo-library" size={30} color='#30CB89' style={{right: 5, backgroundColor: 'transparent', }}/>
+                        </TouchableOpacity>
                         <Image style={{ width: windowWidth, height: windowHeight}}
                             source={require('../../component/photo/ディカプリオ.webp')}
                             resizeMode='cover'
                         />
+                        
                     </View>
                     <View style={styles.profile}>
                         <View style={styles.nameInfor}>
-                            {!changeInfor?<Text style={{fontSize: 35, color: '#30CB89'}}>{`${infor.name}`}</Text>:<TextInput style={{borderWidth: 2, fontSize: 35, color: '#30CB89'}} onChangeText={(text)=>{setInfor((prev)=>{prev.name=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}}></TextInput>}
-                            <TouchableOpacity onPress={() => {setChangeInfor(true)}}>
-                                <Ionicons name="pencil" size={24} color='#595959' />
-                            </TouchableOpacity>
+                            {!changeInfor[0] ? 
+                                <Text style={{fontSize: 35, color: '#30CB89'}}>{`${infor.name}`}</Text>
+                                :<TextInput style={{fontSize: 35, color: '#30CB89'}} onChangeText={(text)=>{setInfor((prev)=>{prev.name=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}} placeholder={`${infor.name}`}></TextInput>
+                            }
+                            {!changeInfor[0] ? 
+                                <TouchableOpacity onPress={() => {changeInformation(0); console.log(isTimeout); console.log(isTime); setDatachange(true);}}>
+                                    <Ionicons name="pencil" size={24} color='#595959' />
+                                </TouchableOpacity>
+                                :<TouchableOpacity onPress={() => {changeInformation(0); console.log('終了'); console.log(isTime); setDatachange(false);}}>
+                                    <Ionicons name="checkmark-circle-outline" size={24} color="red" />
+                                </TouchableOpacity>
+                            }
                         </View>
                         <View style={styles.fucility}>
-                            <Text style={{fontSize: 25, color: '#30CB89'}}>{`${infor.faculty}`}</Text>
+                            {/* <Text style={{fontSize: 25, color: '#30CB89'}}>{`${infor.faculty}`}</Text>
                             <TouchableOpacity>
                             <Ionicons name="pencil" size={24} color='#595959' />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
+                            {!changeInfor[1] ? 
+                                <Text style={{fontSize: 35, color: '#30CB89'}}>{`${infor.faculty}`}</Text>
+                                :<TextInput style={{fontSize: 35, color: '#30CB89'}} onChangeText={(text)=>{setInfor((prev)=>{prev.faculty=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}} placeholder={`${infor.name}`}></TextInput>
+                            }
+                            {!changeInfor[1] ? 
+                                <TouchableOpacity onPress={() => {changeInformation(1); console.log(isTimeout); console.log(isTime); setDatachange(true);}}>
+                                    <Ionicons name="pencil" size={24} color='#595959' />
+                                </TouchableOpacity>
+                                :<TouchableOpacity onPress={() => {changeInformation(1); console.log('終了'); console.log(isTime); setDatachange(false);}}>
+                                    <Ionicons name="checkmark-circle-outline" size={24} color="red" />
+                                </TouchableOpacity>
+                            }
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>年齢</Text>
-                            <Text style={styles.profileStatus}>{`${infor.age}`}</Text>
-                            <TouchableOpacity>
-                            <Ionicons name="pencil" size={24} color='#595959' />
-                            </TouchableOpacity>
+                            {!changeInfor[2] ? 
+                                <Text style={styles.profileStatus}>{`${infor.age}`}</Text>
+                                :<TextInput style={styles.profileStatus} onChangeText={(text:number)=>{setInfor((prev)=>{prev.age=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}} placeholder={`${infor.name}`}></TextInput>
+                            }
+                            {!changeInfor[2] ? 
+                                <TouchableOpacity onPress={() => {changeInformation(2); console.log(isTimeout); console.log(isTime); setDatachange(true);}}>
+                                    <Ionicons name="pencil" size={24} color='#595959' />
+                                </TouchableOpacity>
+                                :<TouchableOpacity onPress={() => {changeInformation(2); console.log('終了'); console.log(isTime); setDatachange(false);}}>
+                                    <Ionicons name="checkmark-circle-outline" size={24} color="red" />
+                                </TouchableOpacity>
+                            }
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>身長</Text>
@@ -211,10 +287,18 @@ const MyPage=({navigation})=>{
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>自己紹介</Text>
-                            <Text style={styles.profileStatus}>{`${infor.comment}`}</Text>
-                            <TouchableOpacity>
-                            <Ionicons name="pencil" size={24} color='#595959' />
-                            </TouchableOpacity>
+                            {!changeInfor[8] ? 
+                                <Text style={{fontSize: 35, color: '#30CB89'}}>{`${infor.comment}`}</Text>
+                                :<TextInput style={{fontSize: 35, color: '#30CB89'}} onChangeText={(text)=>{setInfor((prev)=>{prev.faculty=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}} placeholder={`${infor.name}`}></TextInput>
+                            }
+                            {!changeInfor[8] ? 
+                                <TouchableOpacity onPress={() => {changeInformation(8); console.log(isTimeout); console.log(isTime); setDatachange(true);}}>
+                                    <Ionicons name="pencil" size={24} color='#595959' />
+                                </TouchableOpacity>
+                                :<TouchableOpacity onPress={() => {changeInformation(8); console.log('終了'); console.log(isTime); setDatachange(false);}}>
+                                    <Ionicons name="checkmark-circle-outline" size={24} color="red" />
+                                </TouchableOpacity>
+                            }
                         </View>
                     </View>
                 </ScrollView>

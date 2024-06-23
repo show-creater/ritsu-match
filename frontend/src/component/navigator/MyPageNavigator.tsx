@@ -7,31 +7,39 @@ import React, { useEffect, useState } from 'react';
 const Stack = createNativeStackNavigator();
 
 const HomeNavigator = () => {
-    const {isLogin, setIsLogin, loginUser, setLoginUser}=useHome();
-    const [isTimeout, setIsTimeout] = useState(false);
+    const {isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, isTime, setIsTime}=useHome();
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsTimeout(true);
-          }, 2000);
-    },[]);
+          // 2秒遅延してステートをtrueに設定
+          const timer = setTimeout(() => {
+            setIsTime(true);
+          }, 1000);
+          // クリーンアップ関数
+          return () => clearTimeout(timer);
+      }, []);
+
+      useEffect(() => {
+        console.log('iijijijijij')
+        console.log(isTimeout);
+        console.log(isTime)
+      },[isTime])
 
     return (
             <Stack.Navigator initialRouteName="HomeView"
                 screenOptions={{
                     animation: 'slide_from_bottom', // 特定のスクリーンに上から下へのスライドアニメーションを適用
             }}>
-                {(isLogin || !isTimeout) ? 
-                <Stack.Screen
-                    name="HomeView"
-                    component={HomeView}
-                    options={{ headerShown: false }}
-                /> :
+                {isTimeout && isTime ? 
                 <Stack.Screen
                     name="MyPage"
                     component={MyPage}
                     options={{ headerShown: false }}
-                />}
+                /> :
+                <Stack.Screen
+                name="HomeView"
+                component={HomeView}
+                options={{ headerShown: false }}
+            />}
             </Stack.Navigator>
     )
 }; 

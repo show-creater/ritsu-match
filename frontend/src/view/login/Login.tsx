@@ -13,7 +13,7 @@ import { db } from '../../../firebaseConfig';
 import Animation1 from '../../component/animation/animation1';
 
 const Login=({navigation})=>{
-    const {isLogin, setIsLogin}=useHome();
+    const {isLogin, setIsLogin, isTimeout, setIsTimeout, isTime, setIsTime}=useHome();
     const [email, setEmail]=useState('');
     const [password, setPassword]=useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -27,8 +27,11 @@ const Login=({navigation})=>{
             const user = userCredential.user;
             //ログイン状態管理
             if (user.emailVerified){ //メール認証が完了していた場合
+              console.log('メール認証が完了しています');
               setRoading(false);
               setIsLogin(true);
+              setIsTimeout(false);
+              setIsTime(false);
               const currentuser = auth.currentUser.uid;
               const randomNum=Math.random();
               await setDoc(doc(db, 'users', currentuser), {randomField: randomNum, userid: currentuser, name: '', age: 0, comment: '', faculty: '', heart: 0, image: ''})

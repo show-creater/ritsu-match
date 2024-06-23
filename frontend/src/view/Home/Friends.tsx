@@ -209,7 +209,7 @@ const Friends = ({navigation}) => {
                                             resizeMode='cover'
                                     />
                                     <View style = {styles.containerTextTime}><Text style = {{color:'white',textAlign:'center',fontSize:15}}>2時間前</Text></View>
-                                    <Text style = {styles.containerTextName}>田中</Text>
+                                    <Text style = {styles.containerTextName}>gg</Text>
                                     <Text style = {styles.containerTextInformation}>22歳・滋賀</Text>
                                 </View>
                             </View>
