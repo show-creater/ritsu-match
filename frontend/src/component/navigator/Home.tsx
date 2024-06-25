@@ -14,6 +14,7 @@ import 'react-native-gesture-handler';
 import { useHome } from '../context/HomeContext';
 import HomeNavigator from './MyPageNavigator';
 import TalkMatchingNavigator from './TalkMatching'; //横スクロールのアニメーションを実装するとき、Talkコンポーネントをこのコンポーネントに置き換える
+import Setting from '../../view/Home/setting';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -34,7 +35,7 @@ const Home = () => {
                     ),
                 }}>
                 </Tab.Screen>
-                <Tab.Screen  name='Friends' component={Friends}
+                <Tab.Screen  name='Friends' component={Setting}
                     options={{
                         headerShown:false,
                         tabBarIcon: ({focused}) => (<Ionicons name="person-outline" size={24} color='#30CB89' />
