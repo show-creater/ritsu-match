@@ -193,7 +193,7 @@ const MyPage=({navigation})=>{
                         </TouchableOpacity>
                     </View>
                     <View style={styles.imageContainer}>
-                        <TouchableOpacity style={{backgroundColor: 'transparent', top: '10%', zIndex: 1000000, alignItems: 'space-between'}} onPress={()=>{console.log('hello')}}>
+                        <TouchableOpacity style={{backgroundColor: 'transparent', top: '10%', zIndex: 1000000, alignItems: 'space-between'}} onPress={()=>{console.log('hello'); navigation.navigate('ImageSetting')}}>
                             <MaterialIcons name="photo-library" size={30} color='#30CB89' style={{right: 5, backgroundColor: 'transparent', }}/>
                         </TouchableOpacity>
                         <Image style={{ width: windowWidth, height: windowHeight}}
@@ -224,7 +224,7 @@ const MyPage=({navigation})=>{
                             </TouchableOpacity> */}
                             {!changeInfor[1] ? 
                                 <Text style={{fontSize: 35, color: '#30CB89'}}>{`${infor.faculty}`}</Text>
-                                :<TextInput style={{fontSize: 35, color: '#30CB89'}} onChangeText={(text)=>{setInfor((prev)=>{prev.faculty=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}} placeholder={`${infor.name}`}></TextInput>
+                                :<TextInput style={{fontSize: 35, color: '#30CB89'}} onChangeText={(text)=>{setInfor((prev)=>{prev.faculty=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}} placeholder={`${infor.faculty}`}></TextInput>
                             }
                             {!changeInfor[1] ? 
                                 <TouchableOpacity onPress={() => {changeInformation(1); console.log(isTimeout); console.log(isTime); setDatachange(true);}}>
@@ -239,7 +239,7 @@ const MyPage=({navigation})=>{
                             <Text style={styles.profileText}>年齢</Text>
                             {!changeInfor[2] ? 
                                 <Text style={styles.profileStatus}>{`${infor.age}`}</Text>
-                                :<TextInput style={styles.profileStatus} onChangeText={(text:number)=>{setInfor((prev)=>{prev.age=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}} placeholder={`${infor.name}`}></TextInput>
+                                :<TextInput style={styles.profileStatus} onChangeText={(text:number)=>{setInfor((prev)=>{prev.age=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}} placeholder={`${infor.age}`}></TextInput>
                             }
                             {!changeInfor[2] ? 
                                 <TouchableOpacity onPress={() => {changeInformation(2); console.log(isTimeout); console.log(isTime); setDatachange(true);}}>
@@ -289,7 +289,7 @@ const MyPage=({navigation})=>{
                             <Text style={styles.profileText}>自己紹介</Text>
                             {!changeInfor[8] ? 
                                 <Text style={{fontSize: 35, color: '#30CB89'}}>{`${infor.comment}`}</Text>
-                                :<TextInput style={{fontSize: 35, color: '#30CB89'}} onChangeText={(text)=>{setInfor((prev)=>{prev.faculty=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}} placeholder={`${infor.name}`}></TextInput>
+                                :<TextInput style={{fontSize: 35, color: '#30CB89'}} onChangeText={(text)=>{setInfor((prev)=>{prev.faculty=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}} placeholder={`${infor.comment}`}></TextInput>
                             }
                             {!changeInfor[8] ? 
                                 <TouchableOpacity onPress={() => {changeInformation(8); console.log(isTimeout); console.log(isTime); setDatachange(true);}}>
