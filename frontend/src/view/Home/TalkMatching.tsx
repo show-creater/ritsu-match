@@ -130,7 +130,7 @@ const TalkMatching = ({ navigation }) => {
                             <Text style={{color: 'white', fontWeight: 'bold'}}>トーク</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.MatchingButton} onPress={()=>{scrollViewRef.current.scrollTo({ x: 450, animated: true });}}>
-                            <Text style={{color: 'white', fontWeight: 'bold'}}>マッチング</Text>
+                            <Text style={{color: 'white', fontWeight: 'bold'}}>恋人マッチング</Text>
                         </TouchableOpacity>
                     </View>
                     <ScrollView pagingEnabled={true} horizontal={true} ref={scrollViewRef} style={{width: windowWidth}} onScroll={handleScroll} scrollEventThrottle={16}>
