@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Talk from '../../view/Home/Talk';
 import { useHome } from '../../component/context/HomeContext';
 import React, { useEffect, useState } from 'react';
+import ChatView from '../../view/Chat/ChatView';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,11 @@ const TalkMatchingNavigator = () => {
                     component={Friends}
                     options={{ headerShown: false }}
                 />}
+                <Stack.Screen
+                    name="ChatView"
+                    component={ChatView}
+                    options={{ headerShown: false }}
+                />
             </Stack.Navigator>
     )
 }; 
