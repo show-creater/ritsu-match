@@ -9,9 +9,10 @@ import SignUpScreen from '../login/SignUpScreen';
 import { collection, getDocs ,getDoc ,doc, setDoc } from "firebase/firestore";
 import { db, auth } from '../../../firebaseConfig';
 import { MaterialIcons } from '@expo/vector-icons';
+import MyPageImageHeader from '../../component/header/MyPageImageHeader';
 
 const MyPage=({navigation})=>{
-    const {isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, isTime, setIsTime}=useHome();
+    const {isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, isTime, setIsTime, myPageNow, setMyPageNow}=useHome();
     const [changeInfor,setChangeInfor] = useState([false,false,false,false,false,false,false,false,false]);
     const [infor,setInfor] = useState({name: '', heart: 0, faculty: '', image:'', age: 0, comment: '', heart_pushed: [], randomField: 0, userid: ''});
     const [datachange, setDatachange] = useState(true);
@@ -187,13 +188,14 @@ const MyPage=({navigation})=>{
             <View style={styles.body}>
                 {isLogin ? //ログインしてたらマイページを表示
                 <ScrollView style={{width: '100%', height: '100%'}}>
-                    <View style={{width: '100%', height: '5%', justifyContent: 'center', alignItems: 'space-between', paddingRight: '3%',}}>
+                    {/* <View style={{width: '100%', height: '5%', justifyContent: 'center', alignItems: 'space-between', paddingRight: '3%',}}>
                         <TouchableOpacity onPress={()=>{console.log('heooo')}}>
                             <Ionicons name="ellipsis-horizontal-outline" size={30} color="black" />                                
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
+                    <MyPageImageHeader/>
                     <View style={styles.imageContainer}>
-                        <TouchableOpacity style={{backgroundColor: 'transparent', top: '10%', zIndex: 1000000, alignItems: 'space-between'}} onPress={()=>{console.log('hello'); navigation.navigate('ImageSetting')}}>
+                        <TouchableOpacity style={{backgroundColor: 'transparent', top: '5%', right: 0, zIndex: 1000000, alignItems: 'space-between', position: 'absolute'}} onPress={()=>{console.log('hello'); setMyPageNow(false);}}>
                             <MaterialIcons name="photo-library" size={30} color='#30CB89' style={{right: 5, backgroundColor: 'transparent', }}/>
                         </TouchableOpacity>
                         <Image style={{ width: windowWidth, height: windowHeight}}
