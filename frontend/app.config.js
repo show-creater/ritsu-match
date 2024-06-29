@@ -17,7 +17,15 @@ export default {
       '**/*'
     ],
     ios: {
-      supportsTablet: true
+      supportsTablet: true,
+      permissions: {
+        camera: {
+          accessDescription: "Allow access to your camera for taking photos."
+        },
+        mediaLibrary: {
+          accessDescription: "Allow access to your media library to select photos."
+        }
+      }
     },
     android: {
       adaptiveIcon: {

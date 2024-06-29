@@ -8,7 +8,7 @@ export const HomeProvider = ({ children }) => {
   const [loginUser, setLoginUser]=useState('');
   const [isTimeout, setIsTimeout] = useState(false);
   const [isTime, setIsTime] = useState(false);
-  const [myPageNow, setMyPageNow] = useState(true);
+  const [myPageNow, setMyPageNow] = useState(true); //imagesettingとmypageの切り替え管理
 
     return (
       <HomeContext.Provider value={{ isLogin, setIsLogin ,loginUser ,setLoginUser, isTimeout, setIsTimeout, isTime, setIsTime, myPageNow, setMyPageNow}}>
