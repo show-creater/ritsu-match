@@ -6,12 +6,12 @@ export const useHome = () => useContext(HomeContext);
 export const HomeProvider = ({ children }) => {
   const [isLogin, setIsLogin]=useState(false);
   const [loginUser, setLoginUser]=useState('');
-  const [talkPage, setTalkPage] = useState(true);
   const [isTimeout, setIsTimeout] = useState(false);
   const [isTime, setIsTime] = useState(false);
+  const [myPageNow, setMyPageNow] = useState(true); //imagesettingとmypageの切り替え管理
 
     return (
-      <HomeContext.Provider value={{ isLogin, setIsLogin ,loginUser ,setLoginUser, talkPage, setTalkPage, isTimeout, setIsTimeout, isTime, setIsTime}}>
+      <HomeContext.Provider value={{ isLogin, setIsLogin ,loginUser ,setLoginUser, isTimeout, setIsTimeout, isTime, setIsTime, myPageNow, setMyPageNow}}>
         { children }
       </HomeContext.Provider>
     );

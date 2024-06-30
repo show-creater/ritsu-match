@@ -1,123 +1,155 @@
-import React, { useRef,useEffect, useState } from 'react';
-import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity, TextInput ,Keyboard} from 'react-native';
+import React, { useRef, useEffect, useState } from 'react';
+import { Alert, Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity, TextInput, Keyboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
 import { Animated, PanResponder } from 'react-native';
 import { useHome } from '../../component/context/HomeContext';
 import SignUpScreen from '../login/SignUpScreen';
-import { collection, getDocs ,getDoc ,doc, setDoc } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc, setDoc } from "firebase/firestore";
 import { db, auth } from '../../../firebaseConfig';
 import { MaterialIcons } from '@expo/vector-icons';
+import MyPageImageHeader from '../../component/header/MyPageImageHeader';
+import { launchImageLibrary } from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
+import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 
-const MyPage=({navigation})=>{
-    const {isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, isTime, setIsTime}=useHome();
-    const [changeInfor,setChangeInfor] = useState([false,false,false,false,false,false,false,false,false]);
-    const [infor,setInfor] = useState({name: '', heart: 0, faculty: '', image:'', age: 0, comment: '', heart_pushed: [], randomField: 0, userid: ''});
+const MyPage = ({ navigation }) => {
+    const { isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, isTime, setIsTime, myPageNow, setMyPageNow } = useHome();
+    const [changeInfor, setChangeInfor] = useState([false, false, false, false, false, false, false, false, false]);
+    const [infor, setInfor] = useState({ name: '', heart: 0, faculty: '', image: '', age: 0, comment: '', heart_pushed: [], randomField: 0, userid: '' });
     const [datachange, setDatachange] = useState(true);
+    const [userImage, setUserImage] = useState('');
+    const storage = getStorage();
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
     const pan = useRef(new Animated.ValueXY()).current;
 
     // PanResponderを設定し、ユーザーのドラッグ操作を管理する
     const panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: Animated.event(
-        [null, { dx: pan.x, dy: pan.y }], // ドラッグによる位置の変更をpanに直接反映
-        { useNativeDriver: false }
-      ),
-      onPanResponderRelease: () => {
-        // ドラッグ終了時にアニメーションで元の位置に戻す
-        Animated.spring(pan, {
-          toValue: { x: 0, y: 100 },
-          useNativeDriver: false
-        }).start();
-      }
+        onStartShouldSetPanResponder: () => true,
+        onPanResponderMove: Animated.event(
+            [null, { dx: pan.x, dy: pan.y }], // ドラッグによる位置の変更をpanに直接反映
+            { useNativeDriver: false }
+        ),
+        onPanResponderRelease: () => {
+            // ドラッグ終了時にアニメーションで元の位置に戻す
+            Animated.spring(pan, {
+                toValue: { x: 0, y: 100 },
+                useNativeDriver: false
+            }).start();
+        }
     });
 
-    useEffect(()=>{
-        if (isLogin){
+    const getImage = async () => {
+        const storageRef = ref(storage, `user_image/${auth.currentUser.uid}`);
+        const downloadURL = await getDownloadURL(storageRef);
+        console.log('Download URL:', downloadURL);
+        setUserImage(downloadURL);
+        return downloadURL;
+    };
+
+    useEffect(() => {
+        if (isLogin) {
             const currentuser = auth.currentUser.uid;
             setLoginUser(currentuser);
-            const docSnap = async () =>{
+            const docSnap = async () => {
                 const docdata = await getDoc(doc(db, "users", currentuser));
                 console.log('docdataの中身');
                 console.log(docdata.data());
-                if (docdata.data() != undefined){
+                if (docdata.data() != undefined) {
                     setInfor(docdata.data());
+                    let image = await getImage();
+                    console.log(image, 'getimage');
+                    
                 }
             };
             docSnap();
         }
 
-
-        // const dog = docSnap();
-
-        // console.log(dog);
-    //     if (dog.exists()) {
-    //     console.log("Document data:", docSnap.data());
-    //     } else {
-    //     // docSnap.data() will be undefined in this case
-    //     console.log("No such document!");
-    //     }        
-    },[]);
-
-
-    // const [infor, setInfor] = useState([{name: '', faculty: '', heart: '', image:'', age: '', comment: ''}]);
-    //     const test = async () => {
-    //         const querySnapshot = await getDocs(collection(db, "users","LkW4tsYgDrVi6KTAv8iEGhtuzkB3"));
-    //         let persons=[]
-    //         querySnapshot.forEach((doc) => {
-    //             // doc.data() is never undefined for query doc snapshots
-    //             //console.log(doc.data(),",");
-    //             //console.log(infor);
-    //             persons.push(doc.data());
-
-    //         });
-    //         setInfor(persons);
-    //     };
-    // useEffect(()=>{
-    //     test()
-    //     console.log(infor);
-    //     },[]);
+    }, []);
 
     const changeInformation = (i) => {
         setChangeInfor(() => {
-            const array=[...changeInfor]
-            array[i]=!array[i]
+            const array = [...changeInfor]
+            array[i] = !array[i]
             return array;
         })
     };
 
-    useEffect(() => {
-        const adjustProfile = async() => {
-            if (!datachange){
-                try {
-                console.log('プロフィール変更');
-                console.log(infor);
-                console.log(auth.currentUser.uid);
-                await setDoc(doc(collection(db, 'users'), `${auth.currentUser.uid}`), {
-                    name: infor.name,
-                    age: infor.age,
-                    comment: infor.comment,
-                    faculty: infor.faculty,
-                    heart: infor.heart,
-                    heart_pushed: infor.heart_pushed,
-                    image: infor.image,
-                    randomField: infor.randomField,
-                    userid: infor.userid
-                })
-                }catch(e) {
-                    console.log(e.message);
-            } 
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        try {
 
-            }           
+            if (isLogin){
+                let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                aspect: [4, 3],
+                quality: 1,
+            });
+
+            if (!result.canceled) {
+                console.log(result, 'resultそのもの');
+                console.log(result.assets[0].uri, 'uri表示');
+                const imageBlob = await fetch(result.assets[0].uri).then(response => response.blob());
+
+                const metadata = {
+                    contentType: 'image/webp', // アップロードするデータのコンテンツタイプ
+                };
+                const storageRef = ref(storage, `user_image/${auth.currentUser.uid}`);
+                await uploadBytes(storageRef, imageBlob, metadata);
+                console.log('Image uploaded successfully!');
+                await getImage();
+            }}
+        } catch (e) {
+            console.log(`Error: ${e.message}`);
+        }
+    };
+
+    const handleDeleteImage = async () => {
+        // 画像を削除する前に確認のダイアログを表示
+        Alert.alert(
+            '画像を削除しますか？',
+            'この操作は取り消せません。',
+            [
+                { text: 'キャンセル', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                { text: '削除', onPress: () => console.log('helllllllll') }
+            ],
+            { cancelable: false }
+        );
+    };
+
+    useEffect(() => {
+        const adjustProfile = async () => {
+            if (!datachange) {
+                try {
+                    if (isLogin) {
+                        console.log('プロフィール変更');
+                        console.log(infor);
+                        console.log(auth.currentUser.uid);
+                        await setDoc(doc(collection(db, 'users'), `${auth.currentUser.uid}`), {
+                            name: infor.name,
+                            age: infor.age,
+                            comment: infor.comment,
+                            faculty: infor.faculty,
+                            heart: infor.heart,
+                            heart_pushed: infor.heart_pushed,
+                            image: infor.image,
+                            randomField: infor.randomField,
+                            userid: infor.userid
+                        })
+                    }
+                } catch (e) {
+                    console.log(e.message);
+                }
+
+            }
         };
         adjustProfile();
 
-    },[datachange]);
+    }, [datachange]);
 
-    const styles=StyleSheet.create({
+    const styles = StyleSheet.create({
         body: {
             flexDirection: 'column',
             flex: 1,
@@ -152,9 +184,9 @@ const MyPage=({navigation})=>{
             justifyContent: 'center',
             alignItems: 'center'
         },
-        nameInfor:{
-            flexDirection:'row',
-            alignItems:'center',
+        nameInfor: {
+            flexDirection: 'row',
+            alignItems: 'center',
         },
         fucility: {
             justifyContent: 'center',
@@ -184,35 +216,40 @@ const MyPage=({navigation})=>{
         }
     });
     return (
-            <View style={styles.body}>
-                {isLogin ? //ログインしてたらマイページを表示
-                <ScrollView style={{width: '100%', height: '100%'}}>
-                    <View style={{width: '100%', height: '5%', justifyContent: 'center', alignItems: 'space-between', paddingRight: '3%',}}>
+        <View style={styles.body}>
+            {isLogin && <MyPageImageHeader />}
+            {isLogin ? //ログインしてたらマイページを表示
+                <ScrollView style={{ width: '100%', height: '100%' }}>
+                    {/* <View style={{width: '100%', height: '5%', justifyContent: 'center', alignItems: 'space-between', paddingRight: '3%',}}>
                         <TouchableOpacity onPress={()=>{console.log('heooo')}}>
                             <Ionicons name="ellipsis-horizontal-outline" size={30} color="black" />                                
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                     <View style={styles.imageContainer}>
-                        <TouchableOpacity style={{backgroundColor: 'transparent', top: '10%', zIndex: 1000000, alignItems: 'space-between'}} onPress={()=>{console.log('hello')}}>
-                            <MaterialIcons name="photo-library" size={30} color='#30CB89' style={{right: 5, backgroundColor: 'transparent', }}/>
-                        </TouchableOpacity>
-                        <Image style={{ width: windowWidth, height: windowHeight}}
-                            source={require('../../component/photo/ディカプリオ.webp')}
+                        <View style={{ backgroundColor: 'transparent', top: '5%', right: 0, zIndex: 1000000, alignItems: 'space-between', position: 'absolute', flexDirection: 'row' }}>
+                            <TouchableOpacity onPress={() => { handleDeleteImage(); }}>
+                                <Ionicons name="trash-sharp" size={30} color="red" style={{ right: 20, backgroundColor: 'transparent', }} />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => { pickImage(); }}>
+                                <MaterialIcons name="photo-library" size={30} color='#30CB89' style={{ right: 5, backgroundColor: 'transparent', }} />
+                            </TouchableOpacity>
+                        </View>
+                        <Image style={{ width: windowWidth, height: windowHeight }}
+                            source={{uri: userImage}}
                             resizeMode='cover'
                         />
-                        
                     </View>
                     <View style={styles.profile}>
                         <View style={styles.nameInfor}>
-                            {!changeInfor[0] ? 
-                                <Text style={{fontSize: 35, color: '#30CB89'}}>{`${infor.name}`}</Text>
-                                :<TextInput style={{fontSize: 35, color: '#30CB89'}} onChangeText={(text)=>{setInfor((prev)=>{prev.name=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}} placeholder={`${infor.name}`}></TextInput>
+                            {!changeInfor[0] ?
+                                <Text style={{ fontSize: 35, color: '#30CB89' }}>{`${infor.name}`}</Text>
+                                : <TextInput style={{ fontSize: 35, color: '#30CB89' }} onChangeText={(text) => { setInfor((prev) => { prev.name = text; return prev }) }} onSubmitEditing={() => { Keyboard.dismiss(); }} placeholder={`${infor.name}`}></TextInput>
                             }
-                            {!changeInfor[0] ? 
-                                <TouchableOpacity onPress={() => {changeInformation(0); console.log(isTimeout); console.log(isTime); setDatachange(true);}}>
+                            {!changeInfor[0] ?
+                                <TouchableOpacity onPress={() => { changeInformation(0); console.log(isTimeout); console.log(isTime); setDatachange(true); }}>
                                     <Ionicons name="pencil" size={24} color='#595959' />
                                 </TouchableOpacity>
-                                :<TouchableOpacity onPress={() => {changeInformation(0); console.log('終了'); console.log(isTime); setDatachange(false);}}>
+                                : <TouchableOpacity onPress={() => { changeInformation(0); console.log('終了'); console.log(isTime); setDatachange(false); }}>
                                     <Ionicons name="checkmark-circle-outline" size={24} color="red" />
                                 </TouchableOpacity>
                             }
@@ -222,30 +259,30 @@ const MyPage=({navigation})=>{
                             <TouchableOpacity>
                             <Ionicons name="pencil" size={24} color='#595959' />
                             </TouchableOpacity> */}
-                            {!changeInfor[1] ? 
-                                <Text style={{fontSize: 35, color: '#30CB89'}}>{`${infor.faculty}`}</Text>
-                                :<TextInput style={{fontSize: 35, color: '#30CB89'}} onChangeText={(text)=>{setInfor((prev)=>{prev.faculty=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}} placeholder={`${infor.name}`}></TextInput>
+                            {!changeInfor[1] ?
+                                <Text style={{ fontSize: 35, color: '#30CB89' }}>{`${infor.faculty}`}</Text>
+                                : <TextInput style={{ fontSize: 35, color: '#30CB89' }} onChangeText={(text) => { setInfor((prev) => { prev.faculty = text; return prev }) }} onSubmitEditing={() => { Keyboard.dismiss(); }} placeholder={`${infor.faculty}`}></TextInput>
                             }
-                            {!changeInfor[1] ? 
-                                <TouchableOpacity onPress={() => {changeInformation(1); console.log(isTimeout); console.log(isTime); setDatachange(true);}}>
+                            {!changeInfor[1] ?
+                                <TouchableOpacity onPress={() => { changeInformation(1); console.log(isTimeout); console.log(isTime); setDatachange(true); }}>
                                     <Ionicons name="pencil" size={24} color='#595959' />
                                 </TouchableOpacity>
-                                :<TouchableOpacity onPress={() => {changeInformation(1); console.log('終了'); console.log(isTime); setDatachange(false);}}>
+                                : <TouchableOpacity onPress={() => { changeInformation(1); console.log('終了'); console.log(isTime); setDatachange(false); }}>
                                     <Ionicons name="checkmark-circle-outline" size={24} color="red" />
                                 </TouchableOpacity>
                             }
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>年齢</Text>
-                            {!changeInfor[2] ? 
+                            {!changeInfor[2] ?
                                 <Text style={styles.profileStatus}>{`${infor.age}`}</Text>
-                                :<TextInput style={styles.profileStatus} onChangeText={(text:number)=>{setInfor((prev)=>{prev.age=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}} placeholder={`${infor.name}`}></TextInput>
+                                : <TextInput style={styles.profileStatus} onChangeText={(text: number) => { setInfor((prev) => { prev.age = text; return prev }) }} onSubmitEditing={() => { Keyboard.dismiss(); }} placeholder={`${infor.age}`}></TextInput>
                             }
-                            {!changeInfor[2] ? 
-                                <TouchableOpacity onPress={() => {changeInformation(2); console.log(isTimeout); console.log(isTime); setDatachange(true);}}>
+                            {!changeInfor[2] ?
+                                <TouchableOpacity onPress={() => { changeInformation(2); console.log(isTimeout); console.log(isTime); setDatachange(true); }}>
                                     <Ionicons name="pencil" size={24} color='#595959' />
                                 </TouchableOpacity>
-                                :<TouchableOpacity onPress={() => {changeInformation(2); console.log('終了'); console.log(isTime); setDatachange(false);}}>
+                                : <TouchableOpacity onPress={() => { changeInformation(2); console.log('終了'); console.log(isTime); setDatachange(false); }}>
                                     <Ionicons name="checkmark-circle-outline" size={24} color="red" />
                                 </TouchableOpacity>
                             }
@@ -254,62 +291,62 @@ const MyPage=({navigation})=>{
                             <Text style={styles.profileText}>身長</Text>
                             <Text style={styles.profileStatus}>184cm</Text>
                             <TouchableOpacity>
-                            <Ionicons name="pencil" size={24} color='#595959' />
+                                <Ionicons name="pencil" size={24} color='#595959' />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>出身地</Text>
                             <Text style={styles.profileStatus}>東京都</Text>
                             <TouchableOpacity>
-                            <Ionicons name="pencil" size={24} color='#595959' />
+                                <Ionicons name="pencil" size={24} color='#595959' />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>趣味</Text>
                             <Text style={styles.profileStatus}>映画鑑賞</Text>
                             <TouchableOpacity>
-                            <Ionicons name="pencil" size={24} color='#595959' />
+                                <Ionicons name="pencil" size={24} color='#595959' />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>血液型</Text>
                             <Text style={styles.profileStatus}>B型</Text>
                             <TouchableOpacity>
-                            <Ionicons name="pencil" size={24} color='#595959' />
+                                <Ionicons name="pencil" size={24} color='#595959' />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>大学</Text>
                             <Text style={styles.profileStatus}>立命館大学</Text>
                             <TouchableOpacity>
-                            <Ionicons name="pencil" size={24} color='#595959' />
+                                <Ionicons name="pencil" size={24} color='#595959' />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.profileInfo}>
                             <Text style={styles.profileText}>自己紹介</Text>
-                            {!changeInfor[8] ? 
-                                <Text style={{fontSize: 35, color: '#30CB89'}}>{`${infor.comment}`}</Text>
-                                :<TextInput style={{fontSize: 35, color: '#30CB89'}} onChangeText={(text)=>{setInfor((prev)=>{prev.faculty=text; return prev})}} onSubmitEditing={() => {Keyboard.dismiss();}} placeholder={`${infor.name}`}></TextInput>
+                            {!changeInfor[8] ?
+                                <Text style={{ fontSize: 35, color: '#30CB89' }}>{`${infor.comment}`}</Text>
+                                : <TextInput style={{ fontSize: 35, color: '#30CB89' }} onChangeText={(text) => { setInfor((prev) => { prev.faculty = text; return prev }) }} onSubmitEditing={() => { Keyboard.dismiss(); }} placeholder={`${infor.comment}`}></TextInput>
                             }
-                            {!changeInfor[8] ? 
-                                <TouchableOpacity onPress={() => {changeInformation(8); console.log(isTimeout); console.log(isTime); setDatachange(true);}}>
+                            {!changeInfor[8] ?
+                                <TouchableOpacity onPress={() => { changeInformation(8); console.log(isTimeout); console.log(isTime); setDatachange(true); }}>
                                     <Ionicons name="pencil" size={24} color='#595959' />
                                 </TouchableOpacity>
-                                :<TouchableOpacity onPress={() => {changeInformation(8); console.log('終了'); console.log(isTime); setDatachange(false);}}>
+                                : <TouchableOpacity onPress={() => { changeInformation(8); console.log('終了'); console.log(isTime); setDatachange(false); }}>
                                     <Ionicons name="checkmark-circle-outline" size={24} color="red" />
                                 </TouchableOpacity>
                             }
                         </View>
                     </View>
                 </ScrollView>
-                : 
-                <SignUpScreen navigation={navigation}/>
-                }
-                { isLogin && <View style={styles.footer}>
-                    <HomeFooter navigation={navigation} />
-                </View>}                                    
-            </View>            
-        
+                :
+                <SignUpScreen navigation={navigation} />
+            }
+            {isLogin && <View style={styles.footer}>
+                <HomeFooter navigation={navigation} />
+            </View>}
+        </View>
+
 
     );
 };

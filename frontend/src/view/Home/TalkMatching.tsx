@@ -9,9 +9,10 @@ import { arrayUnion, updateDoc, Timestamp, onSnapshot, orderBy, addDoc, doc, get
 import { TouchableOpacity } from 'react-native';
 import Friends from './Friends';
 import Talk from './Talk';
+import HomeHeader from '../../component/header/HomeHeader';
 
 const TalkMatching = ({ navigation }) => {
-    const {isLogin, setIsLogin, talkPage, setTalkPage}=useHome();
+    const {isLogin, setIsLogin}=useHome();
     const windowWidth = Dimensions.get('window').width;
     const a = 0;
     const scrollViewRef = useRef(null);
@@ -64,59 +65,6 @@ const TalkMatching = ({ navigation }) => {
 
 
     const styles = StyleSheet.create({
-        header: {
-            flexDirection: 'row',
-            margin: 10,
-            borderRadius: 15,
-            borderWidth: 2,
-            borderColor: '#30CB89',
-            height: '10%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            width: '95%',
-            top: 50,
-            backgroundColor: 'white',
-            zIndex: 1
-        },
-        icon: {
-            backgroundColor: 'black',
-            borderRadius: 100,
-            height: 60,
-            width: 60,
-            marginLeft: 40,
-            marginRight: 10
-        },
-        informations: {
-            flexDirection: 'column',
-        },
-        NameHeart: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '75%',
-            paddingLeft: '5%',
-            paddingBottom: 5
-
-        },
-        heart: {
-            flexDirection: 'row',
-            justifyContent: 'flex-end'
-        },
-        heartCount: {
-            backgroundColor: 'silver',
-            width: '60%',
-            borderRadius: 20,
-            alignItems: 'center',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingRight: '5%'
-        },
-        FucilityDate: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '70%',
-            paddingLeft: '3%'
-        },
         personlist: {
             width: '100%',
             height: 16000,
@@ -159,7 +107,7 @@ const TalkMatching = ({ navigation }) => {
             alignItems: 'center',
             marginVertical: '1%',
             borderRadius: 10,
-            backgroundColor: (talkPage && scrollX) ? '#30CB89' : 'gray',
+            backgroundColor: scrollX ? '#30CB89' : 'gray',
         },
         MatchingButton: {
             height: '100%',
@@ -167,44 +115,22 @@ const TalkMatching = ({ navigation }) => {
             alignItems: 'center',
             marginVertical: '1%',
             borderRadius: 10,
-            backgroundColor: (talkPage && scrollX) ? 'gray' : '#30CB89',
+            backgroundColor: scrollX ? 'gray' : '#30CB89',
         },
 
     });
     return (
         //ヘッダー
         <View style={{ flex: 1, alignItems: 'center', height: 1000 }}>
-            <View style={styles.header}>
-                <View style={styles.icon}></View>
-                <View style={styles.informations}>
-                    <View style={styles.NameHeart}>
-                        <Text style={{ fontSize: 20, color: '#30CB89' }}>{'山田太郎'}</Text>
-                        <View style={styles.heart}>
-                            <Ionicons name="heart" size={24} color="deeppink" />
-                            <View style={styles.heartCount}>
-                                <Text style={{ fontSize: 18, paddingLeft: '10%', color: 'white' }}>{`× ${a}　`}</Text>
-                                <AntDesign name="plus" size={15} color="dodgerblue" />
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.FucilityDate}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Ionicons name="pencil" size={24} color='#30CB89' />
-                            <Text style={{ fontSize: 16, color: '#30CB89' }}>{'薬学部'}</Text>
-                        </View>
-                        <Text style={{ fontSize: 16, color: '#30CB89' }}>{'2日 12:05'}</Text>
-                    </View>
-                </View>
-            </View>
-
+            <HomeHeader/>
             <ScrollView style={{ width: '100%' }}>
                 <View style={styles.personlist}>
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.TalkButton} onPress={()=>{setTalkPage(true); scrollViewRef.current.scrollTo({ x: 0, animated: true });}}>
+                        <TouchableOpacity style={styles.TalkButton} onPress={()=>{scrollViewRef.current.scrollTo({ x: 0, animated: true });}}>
                             <Text style={{color: 'white', fontWeight: 'bold'}}>トーク</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.MatchingButton} onPress={()=>{setTalkPage(false); scrollViewRef.current.scrollTo({ x: 450, animated: true });}}>
-                            <Text style={{color: 'white', fontWeight: 'bold'}}>マッチング</Text>
+                        <TouchableOpacity style={styles.MatchingButton} onPress={()=>{scrollViewRef.current.scrollTo({ x: 450, animated: true });}}>
+                            <Text style={{color: 'white', fontWeight: 'bold'}}>恋人マッチング</Text>
                         </TouchableOpacity>
                     </View>
                     <ScrollView pagingEnabled={true} horizontal={true} ref={scrollViewRef} style={{width: windowWidth}} onScroll={handleScroll} scrollEventThrottle={16}>

@@ -59,7 +59,7 @@ const Login=({navigation})=>{
           
               // ログインが成功した場合の処理
               console.log('User logged in:', user);
-              navigation.navigate('MyPage');              
+              navigation.navigate('MyPageAndImage');              
             }else{
               setErrorMessage('このアカウントはメール認証が完了していません');
               setRoading(false);

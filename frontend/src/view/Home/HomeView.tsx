@@ -11,6 +11,7 @@ import { collection, getDocs, getDoc, doc, setDoc, where, query, limit, QuerySna
 import { db } from '../../../firebaseConfig';
 import LottieView from 'lottie-react-native';
 import Animation1 from '../../component/animation/animation1';
+import HomeHeader from '../../component/header/HomeHeader';
 
 const HomeView = ({ navigation }) => {
     const { isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout } = useHome();
@@ -96,6 +97,7 @@ const HomeView = ({ navigation }) => {
     // });
   
     const test = async () => {
+        console.log('test関数が実行されました');
         const getDocument = () => {
             const usercollection = collection(db, "users");
             const randomNum=Math.random();
@@ -104,74 +106,139 @@ const HomeView = ({ navigation }) => {
             return getDocs(q)
         };
         let persons=[]
-        getDocument().then((querySnapShot)=>{
+        getDocument().then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
             console.log(1);
             querySnapShot.forEach((doc)=>{
                 console.log(doc.data());
-                persons.push(doc.data());                        
+                if (doc.data().userid != auth.currentUser.uid){
+                    persons.push(doc.data());
+                }                                  
             })
             return getDocument();
-        }).then((querySnapShot)=>{
+        }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
             console.log(1);
             querySnapShot.forEach((doc)=>{
                 console.log(doc.data());
-                persons.push(doc.data());                        
+                if (doc.data().userid != auth.currentUser.uid){
+                    persons.push(doc.data());
+                }                                  
             })
             return getDocument();
-        }).then((querySnapShot)=>{
+        }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
             console.log(1);
             querySnapShot.forEach((doc)=>{
                 console.log(doc.data());
-                persons.push(doc.data());                        
+                if (doc.data().userid != auth.currentUser.uid){
+                    persons.push(doc.data());
+                }                                  
             })
             return getDocument();
-        }).then((querySnapShot)=>{
+        }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
             console.log(1);
             querySnapShot.forEach((doc)=>{
                 console.log(doc.data());
-                persons.push(doc.data());                        
+                if (doc.data().userid != auth.currentUser.uid){
+                    persons.push(doc.data());
+                }                                  
             })
             return getDocument();
-        }).then((querySnapShot)=>{
+        }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
             console.log(1);
             querySnapShot.forEach((doc)=>{
                 console.log(doc.data());
-                persons.push(doc.data());                        
+                if (doc.data().userid != auth.currentUser.uid){
+                    persons.push(doc.data());
+                }                                  
             })
             return getDocument();
-        }).then((querySnapShot)=>{
+        }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
             console.log(1);
             querySnapShot.forEach((doc)=>{
                 console.log(doc.data());
-                persons.push(doc.data());                        
+                if (doc.data().userid != auth.currentUser.uid){
+                    persons.push(doc.data());
+                }                                  
             })
             return getDocument();
-        }).then((querySnapShot)=>{
+        }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
             console.log(1);
             querySnapShot.forEach((doc)=>{
                 console.log(doc.data());
-                persons.push(doc.data());                        
+                if (doc.data().userid != auth.currentUser.uid){
+                    persons.push(doc.data());
+                }                                  
             })
             return getDocument();
-        }).then((querySnapShot)=>{
+        }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
             console.log(1);
             querySnapShot.forEach((doc)=>{
                 console.log(doc.data());
-                persons.push(doc.data());                        
+                if (doc.data().userid != auth.currentUser.uid){
+                    persons.push(doc.data());
+                }                                  
             })
             return getDocument();
-        }).then((querySnapShot)=>{
+        }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
             console.log(1);
             querySnapShot.forEach((doc)=>{
                 console.log(doc.data());
-                persons.push(doc.data());                        
+                if (doc.data().userid != auth.currentUser.uid){
+                    persons.push(doc.data());
+                }                                  
             })
             return getDocument();
-        }).then((querySnapShot)=>{
+        }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
             console.log(1);
             querySnapShot.forEach((doc)=>{
                 console.log(doc.data());
-                persons.push(doc.data());                        
+                if (doc.data().userid != auth.currentUser.uid){
+                    persons.push(doc.data());
+                }                                  
+            })
+            return getDocument();
+        }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
+            console.log(1);
+            querySnapShot.forEach((doc)=>{
+                console.log(doc.data());
+                if (doc.data().userid != auth.currentUser.uid){
+                    persons.push(doc.data());
+                }                                  
+            })
+            return getDocument();
+        }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
+            console.log(1);
+            querySnapShot.forEach((doc)=>{
+                console.log(doc.data());
+                if (doc.data().userid != auth.currentUser.uid){
+                    persons.push(doc.data());
+                }                                  
+            })
+            return getDocument();
+        }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
+            console.log(1);
+            querySnapShot.forEach((doc)=>{
+                console.log(doc.data());
+                if (doc.data().userid != auth.currentUser.uid){
+                    persons.push(doc.data());
+                }                                  
+            })
+            return getDocument();
+        }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
+            console.log(1);
+            querySnapShot.forEach((doc)=>{
+                console.log(doc.data());
+                if (doc.data().userid != auth.currentUser.uid){
+                    persons.push(doc.data());
+                }                                  
+            })
+            return getDocument();
+        }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
+            console.log(1);
+            querySnapShot.forEach((doc)=>{
+                console.log(doc.data());
+                if (doc.data().userid != auth.currentUser.uid){
+                    persons.push(doc.data());
+                }                                  
             })
             return getDocument();
         }).then(() => {
@@ -193,7 +260,7 @@ const HomeView = ({ navigation }) => {
         const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
         const isBottom = contentOffset.y + layoutMeasurement.height >= contentSize.height - 20;
 
-        if (isBottom && !scrollcheck) {
+        if (isBottom && !scrollcheck) {//一番下までスクロールをしたらスクロールチェックをtrueにする
             console.log('Reached the bottom!');
             test();
             setScrollcheck(true);
@@ -373,59 +440,6 @@ const HomeView = ({ navigation }) => {
     }, [persondata])
 
     const styles = StyleSheet.create({
-        header: {
-            flexDirection: 'row',
-            margin: 10,
-            borderRadius: 15,
-            borderWidth: 2,
-            borderColor: '#30CB89',
-            height: '10%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'absolute',
-            width: '95%',
-            top: 50,
-            backgroundColor: 'white',
-            zIndex: 1
-        },
-        icon: {
-            backgroundColor: 'black',
-            borderRadius: 100,
-            height: 60,
-            width: 60,
-            marginLeft: 40,
-            marginRight: 10
-        },
-        informations: {
-            flexDirection: 'column',
-        },
-        NameHeart: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '75%',
-            paddingLeft: '5%',
-            paddingBottom: 5
-
-        },
-        heart: {
-            flexDirection: 'row',
-            justifyContent: 'flex-end'
-        },
-        heartCount: {
-            backgroundColor: 'silver',
-            width: '60%',
-            borderRadius: 20,
-            alignItems: 'center',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingRight: '5%'
-        },
-        FucilityDate: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '70%',
-            paddingLeft: '3%'
-        },
         personlist: {
             width: '100%',
             height: windowHeight*(persondata.length-1),//?個分の高さ
@@ -508,28 +522,7 @@ const HomeView = ({ navigation }) => {
     return (
         <View style={{ flex: 1, alignItems: 'center', height: 1000 }}>
             {/* <View><Text>{`${number}`}</Text></View> */}
-            <View style={styles.header}>
-                <View style={styles.icon}></View>
-                <View style={styles.informations}>
-                    <View style={styles.NameHeart}>
-                        <Text style={{ fontSize: 20, color: '#30CB89' }}>{`${infor.name}`}</Text>
-                        <View style={styles.heart}>
-                            <Ionicons name="heart" size={24} color="deeppink" />
-                            <View style={styles.heartCount}>
-                                <Text style={{ fontSize: 18, paddingLeft: '10%', color: 'white' }}>{`× ${a}　`}</Text>
-                                <AntDesign name="plus" size={15} color="dodgerblue" />
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.FucilityDate}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Ionicons name="pencil" size={24} color='#30CB89' />
-                            <Text style={{ fontSize: 16, color: '#30CB89' }}>{`${infor.faculty}`}</Text>
-                        </View>
-                        <Text style={{ fontSize: 16, color: '#30CB89' }}>{'2日 12:05'}</Text>
-                    </View>
-                </View>
-            </View>
+            <HomeHeader/>
             <ScrollView style={{ width: '100%' }} pagingEnabled={true} showsVerticalScrollIndicator={false} onScroll={handleScroll} scrollEventThrottle={1000}>
                 <View style={styles.personlist}>
                     {persondata.map((data, index) =>

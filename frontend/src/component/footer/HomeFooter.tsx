@@ -28,13 +28,13 @@ const HomeFooter = ({navigation}) => {
             <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('Home')}}>
                 <Ionicons name="notifications-outline" size={30} color='#30CB89' />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('Friends')}}>
+            <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('UserSearch')}}>
                 <Ionicons name="person-outline" size={30} color='#30CB89' />
             </TouchableOpacity>
             <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('Talk')}}>
                 <Ionicons name="chatbubble-ellipses-outline" size={30} color='#30CB89' />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('MyPage')}}>
+            <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('MyPageAndImage')}}>
             <Ionicons name="person-circle-outline" size={30} color='#30CB89' />
             </TouchableOpacity>
         </View> 

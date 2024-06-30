@@ -13,7 +13,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import 'react-native-gesture-handler';
 import { useHome } from '../context/HomeContext';
 import HomeNavigator from './MyPageNavigator';
-import TalkMatchingNavigator from './TalkMatching'; //横スクロールのアニメーションを実装するとき、Talkコンポーネントをこのコンポーネントに置き換える
+import PhotoList from './PhotoList'; //横スクロールのアニメーションを実装するとき、Talkコンポーネントをこのコンポーネントに置き換える
+import UserSearch from '../../view/Home/UserSearch';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -34,7 +35,7 @@ const Home = () => {
                     ),
                 }}>
                 </Tab.Screen>
-                <Tab.Screen  name='Friends' component={Friends}
+                <Tab.Screen  name='UserSearch' component={UserSearch}
                     options={{
                         headerShown:false,
                         tabBarIcon: ({focused}) => (<Ionicons name="person-outline" size={24} color='#30CB89' />
@@ -48,7 +49,7 @@ const Home = () => {
                     ),
                 }}>
                 </Tab.Screen>
-                <Tab.Screen  name='MyPage' component={MyPage}
+                <Tab.Screen  name='MyPageAndImage' component={PhotoList}
                     options={{
                         headerShown:false,
                         tabBarIcon: ({focused}) => (<Ionicons name="person-circle-outline" size={24} color='#30CB89' />
