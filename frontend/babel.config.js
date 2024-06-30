@@ -13,5 +13,6 @@ module.exports = function(api) {
           'allowUndefined': false,
         }],
     ]
+    plugins: ['nativewind/babel'],
   };
 };
