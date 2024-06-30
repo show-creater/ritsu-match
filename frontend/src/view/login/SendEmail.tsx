@@ -1,7 +1,7 @@
-import {View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
-const SendEmail=()=>{
-    const styles = StyleSheet.create({ 
+const SendEmail = () => {
+    const styles = StyleSheet.create({
         title: {
             // justifyContent: 'center',
             alignItems: 'center',
@@ -10,7 +10,7 @@ const SendEmail=()=>{
             justifyContent: 'center',
         },
 
-      });
+    });
     return (
         <View style={styles.title}>
             <View style={styles.message}>

@@ -18,7 +18,6 @@ export const HomeProvider = ({ children }) => {
 
   useLoadDoc({persondata, setPersondata, setScrollcheck, isLogin});
 
-
   return (
     <HomeContext.Provider value={{ isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, isTime, setIsTime, myPageNow, setMyPageNow, infor, setInfor, userImage, setUserImage, persondata, setPersondata, scrollcheck, setScrollcheck }}>
       {children}

@@ -1,5 +1,5 @@
 import React from 'react'; // Reactをインポート
-import { createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import HomeView from '../../view/Home/HomeView';
 import MyPage from '../../view/Home/MyPage';
@@ -28,33 +28,33 @@ const Home = () => {
                     tabBarStyle: { display: 'none' } // ここでタブバーを非表示に設定
                 }}
             >
-                <Tab.Screen  name='Home' component={HomeNavigator}
+                <Tab.Screen name='Home' component={HomeNavigator}
                     options={{
-                        headerShown:false,
-                        tabBarIcon: ({focused}) => (<Ionicons name="notifications-outline" size={24} color='#30CB89' />
-                    ),
-                }}>
+                        headerShown: false,
+                        tabBarIcon: ({ focused }) => (<Ionicons name="notifications-outline" size={24} color='#30CB89' />
+                        ),
+                    }}>
                 </Tab.Screen>
-                <Tab.Screen  name='UserSearch' component={UserSearch}
+                <Tab.Screen name='UserSearch' component={UserSearch}
                     options={{
-                        headerShown:false,
-                        tabBarIcon: ({focused}) => (<Ionicons name="person-outline" size={24} color='#30CB89' />
-                    ),
-                }}>
+                        headerShown: false,
+                        tabBarIcon: ({ focused }) => (<Ionicons name="person-outline" size={24} color='#30CB89' />
+                        ),
+                    }}>
                 </Tab.Screen>
-                <Tab.Screen  name='Talk' component={TalkMatching}
+                <Tab.Screen name='Talk' component={TalkMatching}
                     options={{
-                        headerShown:false,
-                        tabBarIcon: ({focused}) => (<Ionicons name="chatbubble-ellipses-outline" size={24} color='#30CB89' />
-                    ),
-                }}>
+                        headerShown: false,
+                        tabBarIcon: ({ focused }) => (<Ionicons name="chatbubble-ellipses-outline" size={24} color='#30CB89' />
+                        ),
+                    }}>
                 </Tab.Screen>
-                <Tab.Screen  name='MyPageAndImage' component={PhotoList}
+                <Tab.Screen name='MyPageAndImage' component={PhotoList}
                     options={{
-                        headerShown:false,
-                        tabBarIcon: ({focused}) => (<Ionicons name="person-circle-outline" size={24} color='#30CB89' />
-                    ),
-                }}>
+                        headerShown: false,
+                        tabBarIcon: ({ focused }) => (<Ionicons name="person-circle-outline" size={24} color='#30CB89' />
+                        ),
+                    }}>
                 </Tab.Screen>
 
                 <Tab.Screen name='SignUpScreen' component={SignUpScreen}>
@@ -75,12 +75,12 @@ export default Home;
 
 function SignUpScreenStack() {
     return (
-      <Stack.Navigator
-        screenOptions={{
-          animation: 'slide_from_bottom', // 特定のスクリーンに上から下へのスライドアニメーションを適用
-        }}
-      >
-        <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-      </Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                animation: 'slide_from_bottom', // 特定のスクリーンに上から下へのスライドアニメーションを適用
+            }}
+        >
+            <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+        </Stack.Navigator>
     );
 }

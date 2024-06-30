@@ -1,16 +1,16 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
 import { useHome } from '../../component/context/HomeContext'
-import { auth,db,storage } from '../../../firebaseConfig';
-import { arrayUnion, updateDoc, Timestamp, onSnapshot, orderBy, addDoc, doc, getDoc, setDoc , collection, getDocs, getFirestore, query, where } from '@firebase/firestore';
+import { auth, db, storage } from '../../../firebaseConfig';
+import { arrayUnion, updateDoc, Timestamp, onSnapshot, orderBy, addDoc, doc, getDoc, setDoc, collection, getDocs, getFirestore, query, where } from '@firebase/firestore';
 import { TouchableOpacity } from 'react-native';
 import Friends from './Friends';
 
 const Talk = ({ navigation }) => {
-    const {isLogin, setIsLogin, talkPage, setTalkPage}=useHome();
+    const { isLogin, setIsLogin, talkPage, setTalkPage } = useHome();
     const windowWidth = Dimensions.get('window').width;
     const a = 0;
     const scrollViewRef = useRef(null);
@@ -21,7 +21,7 @@ const Talk = ({ navigation }) => {
         }
         //     scrollViewRef.current.scrollTo({ x: 1000, animated: true });
         // }
-    },[talkPage]);
+    }, [talkPage]);
 
     // useEffect(()=>{
     //     if(isLogin){
@@ -131,7 +131,7 @@ const Talk = ({ navigation }) => {
             alignItems: 'center',
             marginVertical: '1%',
             borderRadius: 10,
-            backgroundColor: talkPage  ? '#30CB89' : 'gray',
+            backgroundColor: talkPage ? '#30CB89' : 'gray',
         },
         MatchingButton: {
             height: '100%',
@@ -139,7 +139,7 @@ const Talk = ({ navigation }) => {
             alignItems: 'center',
             marginVertical: '1%',
             borderRadius: 10,
-            backgroundColor: talkPage  ? 'gray' : '#30CB89',
+            backgroundColor: talkPage ? 'gray' : '#30CB89',
         },
 
     });
@@ -171,7 +171,7 @@ const Talk = ({ navigation }) => {
 
             {/* <ScrollView style={{ width: '100%' }}>
                 <View style={styles.personlist}> */}
-                    {/* <View style={styles.buttonContainer}>
+            {/* <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.TalkButton} onPress={()=>{setTalkPage(true)}}>
                             <Text style={{color: 'white', fontWeight: 'bold'}}>トーク</Text>
                         </TouchableOpacity>
@@ -179,54 +179,54 @@ const Talk = ({ navigation }) => {
                             <Text style={{color: 'white', fontWeight: 'bold'}}>マッチング</Text>
                         </TouchableOpacity>
                     </View> */}
-                    <ScrollView pagingEnabled={true} horizontal={true} ref={scrollViewRef} style={{width: windowWidth, paddingTop: '10%'}}>
-                        <View style={{width: windowWidth}}>
-                            <View style={styles.personInfo}>
-                                <View style={{paddingRight: '2%'}}>
-                                    <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
-                                </View>
-                                <Text>ディカプリオ</Text>
-                            </View>
-                            <View style={styles.personInfo}>
-                                <View style={{paddingRight: '2%'}}>
-                                    <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
-                                </View>
-                                <Text style={{fontSize: 20}}>ディカプリオ</Text>
-                            </View>
-                            <View style={styles.personInfo}>
-                                <View style={{paddingRight: '2%'}}>
-                                    <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
-                                </View>
-                                <Text style={{fontSize: 20}}>ディカプリオ</Text>
-                            </View>
-                            <View style={styles.personInfo}>
-                                <View style={{paddingRight: '2%'}}>
-                                    <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
-                                </View>
-                                <Text style={{fontSize: 20}}>ディカプリオ</Text>
-                            </View>
-                            <View style={styles.personInfo}>
-                                <View style={{paddingRight: '2%'}}>
-                                    <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
-                                </View>
-                                <Text style={{fontSize: 20}}>ディカプリオ</Text>
-                            </View>
-                            <View style={styles.personInfo}>
-                                <View style={{paddingRight: '2%'}}>
-                                    <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
-                                </View>
-                                <Text style={{fontSize: 20}}>ディカプリオ</Text>
-                            </View>
-                            <View style={styles.personInfo}>
-                                <View style={{paddingRight: '2%'}}>
-                                    <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
-                                </View>
-                                <Text style={{fontSize: 20}}>ディカプリオ</Text>
-                            </View>                        
+            <ScrollView pagingEnabled={true} horizontal={true} ref={scrollViewRef} style={{ width: windowWidth, paddingTop: '10%' }}>
+                <View style={{ width: windowWidth }}>
+                    <View style={styles.personInfo}>
+                        <View style={{ paddingRight: '2%' }}>
+                            <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
                         </View>
-                        {/* <Friends navigation={navigation}/> */}
-                    </ScrollView>
-                {/* </View> */}
+                        <Text>ディカプリオ</Text>
+                    </View>
+                    <View style={styles.personInfo}>
+                        <View style={{ paddingRight: '2%' }}>
+                            <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
+                        </View>
+                        <Text style={{ fontSize: 20 }}>ディカプリオ</Text>
+                    </View>
+                    <View style={styles.personInfo}>
+                        <View style={{ paddingRight: '2%' }}>
+                            <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
+                        </View>
+                        <Text style={{ fontSize: 20 }}>ディカプリオ</Text>
+                    </View>
+                    <View style={styles.personInfo}>
+                        <View style={{ paddingRight: '2%' }}>
+                            <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
+                        </View>
+                        <Text style={{ fontSize: 20 }}>ディカプリオ</Text>
+                    </View>
+                    <View style={styles.personInfo}>
+                        <View style={{ paddingRight: '2%' }}>
+                            <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
+                        </View>
+                        <Text style={{ fontSize: 20 }}>ディカプリオ</Text>
+                    </View>
+                    <View style={styles.personInfo}>
+                        <View style={{ paddingRight: '2%' }}>
+                            <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
+                        </View>
+                        <Text style={{ fontSize: 20 }}>ディカプリオ</Text>
+                    </View>
+                    <View style={styles.personInfo}>
+                        <View style={{ paddingRight: '2%' }}>
+                            <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
+                        </View>
+                        <Text style={{ fontSize: 20 }}>ディカプリオ</Text>
+                    </View>
+                </View>
+                {/* <Friends navigation={navigation}/> */}
+            </ScrollView>
+            {/* </View> */}
             {/* </ScrollView> */}
             {/* <View style={styles.footer}>
                 <HomeFooter navigation={navigation} />

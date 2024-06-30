@@ -1,17 +1,17 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
 import { useHome } from '../../component/context/HomeContext'
-import { auth,db,storage } from '../../../firebaseConfig';
-import { arrayUnion, updateDoc, Timestamp, onSnapshot, orderBy, addDoc, doc, getDoc, setDoc , collection, getDocs, getFirestore, query, where } from '@firebase/firestore';
+import { auth, db, storage } from '../../../firebaseConfig';
+import { arrayUnion, updateDoc, Timestamp, onSnapshot, orderBy, addDoc, doc, getDoc, setDoc, collection, getDocs, getFirestore, query, where } from '@firebase/firestore';
 import { TouchableOpacity } from 'react-native';
 
 const HomeHeader = () => {
     const { isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, infor, setInfor, userImage, setUserImage } = useHome();
-    let a=0;
-    const styles=StyleSheet.create({
+    let a = 0;
+    const styles = StyleSheet.create({
         header: {
             flexDirection: 'row',
             margin: 10,
@@ -64,14 +64,14 @@ const HomeHeader = () => {
             justifyContent: 'space-between',
             width: '70%',
             paddingLeft: '3%'
-        },        
+        },
     })
 
     return (
         <View style={styles.header}>
             <View style={styles.icon}>
-                {userImage != '' && <Image style={{zIndex: 100, borderRadius: 100, height: 60, width: 60,}}
-                    source={{uri: userImage}}
+                {userImage != '' && <Image style={{ zIndex: 100, borderRadius: 100, height: 60, width: 60, }}
+                    source={{ uri: userImage }}
                     resizeMode='cover'
                 />}
             </View>

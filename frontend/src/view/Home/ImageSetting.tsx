@@ -2,13 +2,34 @@ import React, { useState } from 'react';
 import { Button, Alert, Image, View, Platform, Text, ScrollView, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, getDownloadURL,uploadBytes } from "firebase/storage";
+import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import MyPageImageHeader from '../../component/header/MyPageImageHeader';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { Entypo } from '@expo/vector-icons';
 import { db, auth } from '../../../firebaseConfig';
 
-const UploadImage = ({navigation}) => {
+
+
+
+
+
+
+
+
+
+
+//今後プロフ画を複数設定できるようにするならこれ使う
+
+
+
+
+
+
+
+
+
+
+const UploadImage = ({ navigation }) => {
   const [imageUri, setImageUri] = useState(null);
   const storage = getStorage();
   const windowWidth = Dimensions.get('window').width;
@@ -33,7 +54,7 @@ const UploadImage = ({navigation}) => {
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         quality: 1,
       });
-    
+
       if (!result.canceled) {
         console.log(result, 'resultそのもの');
         console.log(result.assets[0].uri, 'uri表示');
@@ -45,11 +66,11 @@ const UploadImage = ({navigation}) => {
         await uploadBytes(storageRef, imageBlob, metadata);
         console.log('Image uploaded successfully!');
       }
-    }catch(e){
+    } catch (e) {
       console.log(`Error: ${e.message}`);
     }
   };
-  
+
 
   const handleDeleteImage = async () => {
     // 画像を削除する前に確認のダイアログを表示
@@ -84,49 +105,49 @@ const UploadImage = ({navigation}) => {
 
   const styles = StyleSheet.create({
     footer: {
-        position: 'absolute',
-        bottom: 0,
-        height: '10%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
+      position: 'absolute',
+      bottom: 0,
+      height: '10%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
     },
 
 
 
-});
+  });
 
   return (
-    <View style={{flex: 1 , alignItems: 'center', flexDirection: 'column', width: windowWidth}}>
-      <MyPageImageHeader/>
-      <ScrollView contentContainerStyle={{width: windowWidth,alignItems: 'center'}}>
-        <View style={{marginTop: '10%', height: '40%', width: '90%', flexWrap: 'wrap'}} >
-          <TouchableOpacity style={{borderWidth: 2, height: '90%', width: '50%', margin: '4%', borderRadius: 10, borderColor: '#30CB89'}} onPress={handleDeleteImage}>
+    <View style={{ flex: 1, alignItems: 'center', flexDirection: 'column', width: windowWidth }}>
+      <MyPageImageHeader />
+      <ScrollView contentContainerStyle={{ width: windowWidth, alignItems: 'center' }}>
+        <View style={{ marginTop: '10%', height: '40%', width: '90%', flexWrap: 'wrap' }} >
+          <TouchableOpacity style={{ borderWidth: 2, height: '90%', width: '50%', margin: '4%', borderRadius: 10, borderColor: '#30CB89' }} onPress={handleDeleteImage}>
             <Image style={{ width: '100%', height: '100%', borderRadius: 10, zIndex: -1 }}
               source={require('../../component/photo/サンプル.jpg')}
               resizeMode='cover'
             />
           </TouchableOpacity>
-          <View style={{borderWidth: 2, height: '41.25%', width: '30%', margin: '4%', borderRadius: 10, borderColor: '#30CB89'}}></View>
-          <TouchableOpacity style={{borderWidth: 2, height: '41.25%', width: '30%', margin: '4%', borderRadius: 10, borderColor: '#30CB89', justifyContent: 'center', alignItems: 'center'}} onPress={pickImage}>
+          <View style={{ borderWidth: 2, height: '41.25%', width: '30%', margin: '4%', borderRadius: 10, borderColor: '#30CB89' }}></View>
+          <TouchableOpacity style={{ borderWidth: 2, height: '41.25%', width: '30%', margin: '4%', borderRadius: 10, borderColor: '#30CB89', justifyContent: 'center', alignItems: 'center' }} onPress={pickImage}>
             <Entypo name="plus" size={24} color="black" />
           </TouchableOpacity>
         </View>
-        <View style={{height: 1000, width: '100%', flexDirection: 'row'}}>
-          <TouchableOpacity style={{borderWidth: 2, height: '16.25%', width: '25%', margin: '4%', borderRadius: 10, borderColor: '#30CB89', justifyContent: 'center', alignItems: 'center'}} onPress={pickImage}>
+        <View style={{ height: 1000, width: '100%', flexDirection: 'row' }}>
+          <TouchableOpacity style={{ borderWidth: 2, height: '16.25%', width: '25%', margin: '4%', borderRadius: 10, borderColor: '#30CB89', justifyContent: 'center', alignItems: 'center' }} onPress={pickImage}>
             <Entypo name="plus" size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity style={{borderWidth: 2, height: '16.25%', width: '25%', margin: '4%', borderRadius: 10, borderColor: '#30CB89', justifyContent: 'center', alignItems: 'center'}} onPress={pickImage}>
+          <TouchableOpacity style={{ borderWidth: 2, height: '16.25%', width: '25%', margin: '4%', borderRadius: 10, borderColor: '#30CB89', justifyContent: 'center', alignItems: 'center' }} onPress={pickImage}>
             <Entypo name="plus" size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity style={{borderWidth: 2, height: '16.25%', width: '25%', margin: '4%', borderRadius: 10, borderColor: '#30CB89', justifyContent: 'center', alignItems: 'center'}} onPress={pickImage}>
+          <TouchableOpacity style={{ borderWidth: 2, height: '16.25%', width: '25%', margin: '4%', borderRadius: 10, borderColor: '#30CB89', justifyContent: 'center', alignItems: 'center' }} onPress={pickImage}>
             <Entypo name="plus" size={24} color="black" />
           </TouchableOpacity>
         </View>
       </ScrollView>
       <View style={styles.footer}>
         <HomeFooter navigation={navigation} />
-      </View>      
+      </View>
     </View>
 
   );

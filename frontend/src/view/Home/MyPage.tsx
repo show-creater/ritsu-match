@@ -61,7 +61,7 @@ const MyPage = ({ navigation }) => {
                     setInfor(docdata.data());
                     let image = await getImage();
                     console.log(image, 'getimage');
-                    
+
                 }
             };
             docSnap();
@@ -79,27 +79,28 @@ const MyPage = ({ navigation }) => {
 
     const pickImage = async () => {
         try {
-            if (isLogin){
+            if (isLogin) {
                 let result = await Imagepicker.launchImageLibraryAsync({
-                mediaTypes: Imagepicker.MediaTypeOptions.All,
-                aspect: [4, 3],
-                quality: -10,
-            });
+                    mediaTypes: Imagepicker.MediaTypeOptions.All,
+                    aspect: [4, 3],
+                    quality: -10,
+                });
 
-            if (!result.canceled) {
-                console.log(result, 'resultそのもの');
-                console.log(result.assets[0].uri, 'uri表示');
-                const imageBlob = await fetch(result.assets[0].uri).then(response => response.blob());
+                if (!result.canceled) {
+                    console.log(result, 'resultそのもの');
+                    console.log(result.assets[0].uri, 'uri表示');
+                    const imageBlob = await fetch(result.assets[0].uri).then(response => response.blob());
 
-                const metadata = {
-                    contentType: 'image/webp', // アップロードするデータのコンテンツタイプ
-                };
-                const storageRef = ref(storage, `user_image/${auth.currentUser.uid}`);
-                console.log('upload開始');
-                await uploadBytes(storageRef, imageBlob, metadata);
-                console.log('Image uploaded successfully!');
-                await getImage();
-            }}
+                    const metadata = {
+                        contentType: 'image/webp', // アップロードするデータのコンテンツタイプ
+                    };
+                    const storageRef = ref(storage, `user_image/${auth.currentUser.uid}`);
+                    console.log('upload開始');
+                    await uploadBytes(storageRef, imageBlob, metadata);
+                    console.log('Image uploaded successfully!');
+                    await getImage();
+                }
+            }
         } catch (e) {
             console.log(`Error: ${e.message}`);
         }
@@ -232,8 +233,8 @@ const MyPage = ({ navigation }) => {
                                 <MaterialIcons name="photo-library" size={30} color='#30CB89' style={{ right: 5, backgroundColor: 'transparent', }} />
                             </TouchableOpacity>
                         </View>
-                        <Image style={{ width: windowWidth, height: windowHeight, top: '-40%'}}
-                            source={{uri: userImage}}
+                        <Image style={{ width: windowWidth, height: windowHeight, top: '-40%' }}
+                            source={{ uri: userImage }}
                             resizeMode='contain'
                         />
                     </View>

@@ -1,18 +1,18 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { AntDesign } from '@expo/vector-icons';
 import { useHome } from '../../component/context/HomeContext'
-import { auth,db,storage } from '../../../firebaseConfig';
-import { arrayUnion, updateDoc, Timestamp, onSnapshot, orderBy, addDoc, doc, getDoc, setDoc , collection, getDocs, getFirestore, query, where } from '@firebase/firestore';
+import { auth, db, storage } from '../../../firebaseConfig';
+import { arrayUnion, updateDoc, Timestamp, onSnapshot, orderBy, addDoc, doc, getDoc, setDoc, collection, getDocs, getFirestore, query, where } from '@firebase/firestore';
 import { TouchableOpacity } from 'react-native';
 import Friends from './Friends';
 import Talk from './Talk';
 import HomeHeader from '../../component/header/HomeHeader';
 
 const TalkMatching = ({ navigation }) => {
-    const {isLogin, setIsLogin}=useHome();
+    const { isLogin, setIsLogin } = useHome();
     const windowWidth = Dimensions.get('window').width;
     const a = 0;
     const scrollViewRef = useRef(null);
@@ -26,7 +26,7 @@ const TalkMatching = ({ navigation }) => {
     //     }
     //     console.log(talkPage);
     // },[talkPage]);
-    
+
     // useEffect(() => {
     //     if(scrollViewRef.current.scrollTo.x >= windowWidth/2){
     //         setTalkPage(true);
@@ -38,7 +38,7 @@ const TalkMatching = ({ navigation }) => {
     useEffect(() => {
         console.log(scrollViewRef.current.scrollTo);
 
-    },[scrollViewRef])
+    }, [scrollViewRef])
 
     // useEffect(()=>{
     //     if(isLogin){
@@ -53,15 +53,15 @@ const TalkMatching = ({ navigation }) => {
 
     const handleScroll = (event) => {
         const x = event.nativeEvent.contentOffset.x;
-        if (x > 225){
+        if (x > 225) {
             setScrollX(false);
             console.log('false');
-        }else if (x < 225){
+        } else if (x < 225) {
             setScrollX(true);
             console.log('true');
         }
         // console.log('hello');
-      };
+    };
 
 
     const styles = StyleSheet.create({
@@ -122,20 +122,20 @@ const TalkMatching = ({ navigation }) => {
     return (
         //ヘッダー
         <View style={{ flex: 1, alignItems: 'center', height: 1000 }}>
-            <HomeHeader/>
+            <HomeHeader />
             <ScrollView style={{ width: '100%' }}>
                 <View style={styles.personlist}>
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.TalkButton} onPress={()=>{scrollViewRef.current.scrollTo({ x: 0, animated: true });}}>
-                            <Text style={{color: 'white', fontWeight: 'bold'}}>トーク</Text>
+                        <TouchableOpacity style={styles.TalkButton} onPress={() => { scrollViewRef.current.scrollTo({ x: 0, animated: true }); }}>
+                            <Text style={{ color: 'white', fontWeight: 'bold' }}>トーク</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.MatchingButton} onPress={()=>{scrollViewRef.current.scrollTo({ x: 450, animated: true });}}>
-                            <Text style={{color: 'white', fontWeight: 'bold'}}>恋人マッチング</Text>
+                        <TouchableOpacity style={styles.MatchingButton} onPress={() => { scrollViewRef.current.scrollTo({ x: 450, animated: true }); }}>
+                            <Text style={{ color: 'white', fontWeight: 'bold' }}>恋人マッチング</Text>
                         </TouchableOpacity>
                     </View>
-                    <ScrollView pagingEnabled={true} horizontal={true} ref={scrollViewRef} style={{width: windowWidth}} onScroll={handleScroll} scrollEventThrottle={16}>
-                        <Talk navigation={navigation}/>
-                        <Friends navigation={navigation}/>
+                    <ScrollView pagingEnabled={true} horizontal={true} ref={scrollViewRef} style={{ width: windowWidth }} onScroll={handleScroll} scrollEventThrottle={16}>
+                        <Talk navigation={navigation} />
+                        <Friends navigation={navigation} />
                     </ScrollView>
                 </View>
             </ScrollView>

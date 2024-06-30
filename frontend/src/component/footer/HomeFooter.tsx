@@ -3,10 +3,10 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { auth } from '../../../firebaseConfig';
 
-const HomeFooter = ({navigation}) => {
-    const a=0;
+const HomeFooter = ({ navigation }) => {
+    const a = 0;
     const user = auth.currentUser;
-    const styles=StyleSheet.create({
+    const styles = StyleSheet.create({
         footer: {
             flexDirection: 'row',
             justifyContent: 'center',
@@ -21,23 +21,23 @@ const HomeFooter = ({navigation}) => {
             justifyContent: 'center',
             alignItems: 'center',
         },
-        
+
     });
     return (
         <View style={styles.footer}>
-            <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('Home')}}>
+            <TouchableOpacity style={styles.icon} onPress={() => { navigation.navigate('Home') }}>
                 <Ionicons name="notifications-outline" size={30} color='#30CB89' />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('UserSearch')}}>
+            <TouchableOpacity style={styles.icon} onPress={() => { navigation.navigate('UserSearch') }}>
                 <Ionicons name="person-outline" size={30} color='#30CB89' />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('Talk')}}>
+            <TouchableOpacity style={styles.icon} onPress={() => { navigation.navigate('Talk') }}>
                 <Ionicons name="chatbubble-ellipses-outline" size={30} color='#30CB89' />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.icon} onPress={()=>{navigation.navigate('MyPageAndImage')}}>
-            <Ionicons name="person-circle-outline" size={30} color='#30CB89' />
+            <TouchableOpacity style={styles.icon} onPress={() => { navigation.navigate('MyPageAndImage') }}>
+                <Ionicons name="person-circle-outline" size={30} color='#30CB89' />
             </TouchableOpacity>
-        </View> 
+        </View>
     )
 };
 export default HomeFooter;

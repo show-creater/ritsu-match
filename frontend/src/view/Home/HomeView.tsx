@@ -102,171 +102,6 @@ const HomeView = ({ navigation }) => {
         login();
     }, []);
 
-    //     getDocs(collection(db, "matching")).forEach((doc) => {
-    //   // doc.data() is never undefined for query doc snapshots
-    //   console.log(doc.id, " => ", doc.data());
-    // });
-  
-    // const test = async () => {
-    //     console.log('test関数が実行されました');
-    //     const getDocument = () => {
-    //         const usercollection = collection(db, "users");
-    //         const randomNum=Math.random();
-    //         const q = query(usercollection, where('randomField', '<=', randomNum), where('randomField', '>=', randomNum-0.1), limit(1));
-    //         // console.log(randomNum);
-    //         return getDocs(q)
-    //     };
-    //     let persons=[]
-    //     getDocument().then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
-    //         // console.log(1);
-    //         querySnapShot.forEach((doc)=>{
-    //             // console.log(doc.data());
-    //             if (doc.data().userid != auth.currentUser.uid){
-    //                 persons.push(doc.data());
-    //             }                                  
-    //         })
-    //         return getDocument();
-    //     }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
-    //         // console.log(1);
-    //         querySnapShot.forEach((doc)=>{
-    //             // console.log(doc.data());
-    //             if (doc.data().userid != auth.currentUser.uid){
-    //                 persons.push(doc.data());
-    //             }                                  
-    //         })
-    //         return getDocument();
-    //     }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
-    //         // console.log(1);
-    //         querySnapShot.forEach((doc)=>{
-    //             // console.log(doc.data());
-    //             if (doc.data().userid != auth.currentUser.uid){
-    //                 persons.push(doc.data());
-    //             }                                  
-    //         })
-    //         return getDocument();
-    //     }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
-    //         // console.log(1);
-    //         querySnapShot.forEach((doc)=>{
-    //             // console.log(doc.data());
-    //             if (doc.data().userid != auth.currentUser.uid){
-    //                 persons.push(doc.data());
-    //             }                                  
-    //         })
-    //         return getDocument();
-    //     }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
-    //         // console.log(1);
-    //         querySnapShot.forEach((doc)=>{
-    //             // console.log(doc.data());
-    //             if (doc.data().userid != auth.currentUser.uid){
-    //                 persons.push(doc.data());
-    //             }                                  
-    //         })
-    //         return getDocument();
-    //     }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
-    //         // console.log(1);
-    //         querySnapShot.forEach((doc)=>{
-    //             // console.log(doc.data());
-    //             if (doc.data().userid != auth.currentUser.uid){
-    //                 persons.push(doc.data());
-    //             }                                  
-    //         })
-    //         return getDocument();
-    //     }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
-    //         // console.log(1);
-    //         querySnapShot.forEach((doc)=>{
-    //             // console.log(doc.data());
-    //             if (doc.data().userid != auth.currentUser.uid){
-    //                 persons.push(doc.data());
-    //             }                                  
-    //         })
-    //         return getDocument();
-    //     }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
-    //         // console.log(1);
-    //         querySnapShot.forEach((doc)=>{
-    //             // console.log(doc.data());
-    //             if (doc.data().userid != auth.currentUser.uid){
-    //                 persons.push(doc.data());
-    //             }                                  
-    //         })
-    //         return getDocument();
-    //     }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
-    //         // console.log(1);
-    //         querySnapShot.forEach((doc)=>{
-    //             // console.log(doc.data());
-    //             if (doc.data().userid != auth.currentUser.uid){
-    //                 persons.push(doc.data());
-    //             }                                  
-    //         })
-    //         return getDocument();
-    //     }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
-    //         // console.log(1);
-    //         querySnapShot.forEach((doc)=>{
-    //             // console.log(doc.data());
-    //             if (doc.data().userid != auth.currentUser.uid){
-    //                 persons.push(doc.data());
-    //             }                                  
-    //         })
-    //         return getDocument();
-    //     }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
-    //         // console.log(1);
-    //         querySnapShot.forEach((doc)=>{
-    //             // console.log(doc.data());
-    //             if (doc.data().userid != auth.currentUser.uid){
-    //                 persons.push(doc.data());
-    //             }                                  
-    //         })
-    //         return getDocument();
-    //     }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
-    //         // console.log(1);
-    //         querySnapShot.forEach((doc)=>{
-    //             // console.log(doc.data());
-    //             if (doc.data().userid != auth.currentUser.uid){
-    //                 persons.push(doc.data());
-    //             }                                  
-    //         })
-    //         return getDocument();
-    //     }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
-    //         // console.log(1);
-    //         querySnapShot.forEach((doc)=>{
-    //             // console.log(doc.data());
-    //             if (doc.data().userid != auth.currentUser.uid){
-    //                 persons.push(doc.data());
-    //             }                                  
-    //         })
-    //         return getDocument();
-    //     }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
-    //         // console.log(1);
-    //         querySnapShot.forEach((doc)=>{
-    //             // console.log(doc.data());
-    //             if (doc.data().userid != auth.currentUser.uid){
-    //                 persons.push(doc.data());
-    //             }                                  
-    //         })
-    //         return getDocument();
-    //     }).then((querySnapShot)=>{ //非同期で連続してドキュメントの読み取りができないためしょうがない
-    //         // console.log(1);
-    //         querySnapShot.forEach((doc)=>{
-    //             // console.log(doc.data());
-    //             if (doc.data().userid != auth.currentUser.uid){
-    //                 persons.push(doc.data());
-    //             }                                  
-    //         })
-    //         return getDocument();
-    //     }).then(() => {
-    //         // console.log('hellooooo')
-    //         // console.log(persons);
-    //         setPersondata([...persondata, ...persons]); 
-    //     }).then(() => {
-    //         setScrollcheck(false);
-    //     })
-
-    // };
-
-    // useEffect(() => {
-    //     test()
-    //     //console.log(persondata);
-    // }, []);
-
     const handleScroll = (event) => {
         const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
         const isBottom = contentOffset.y + layoutMeasurement.height >= contentSize.height - 20;
@@ -279,34 +114,6 @@ const HomeView = ({ navigation }) => {
         }
     };
 
-    // const makedoc = async() =>{
-    //     const currentuser = auth.currentUser.uid;
-    //     const randomNum=Math.random();
-    //     try {
-    //         await setDoc(doc(db, 'users', `${randomNum}`), {randomField: randomNum, userid: randomNum, name: `${randomNum}`, age: 0, comment: '', faculty: '', heart: 0, image: ''})
-    //         console.log('起動中');
-    //     }catch(e){
-    //         console.log(e);
-    //     }
-
-    // };
-
-    // const [number,setNumber] = useState(3);
-    // useEffect(()=>{
-    //     setNumber(5)
-    //     console.log(number);
-    // },[]);
-
-    // useEffect(()=>{
-    //     const docRef = doc(db, "users", "LkW4tsYgDrVi6KTAv8iEGhtuzkB3");
-    //     const docSnap = async () =>{
-    //         const docdata = await getDoc(docRef);
-    //         //console.log(docdata.data());
-    //         // setInfor(docdata.data());
-    //     };
-    //     docSnap();
-    // },[]);
-
     const heartP = async () => {
         const querySnapshot = await getDocs(collection(db, "users"));
         const users = []
@@ -316,11 +123,6 @@ const HomeView = ({ navigation }) => {
         return users;
 
     };
-
-    // useEffect(()=>{
-    //     heartP();
-    //     //console.log(persondata)
-    // },[]);
 
     const heartadd = async (index) => {
         let usersIDarray = [];
@@ -417,20 +219,6 @@ const HomeView = ({ navigation }) => {
         } catch (e) {
             console.log(e.message);
         }
-
-
-        // const heartchange = (index) => {
-        // if(heartTF[index]==false){
-        //     heartadd(index);
-        //     setHeartTF[index] = true;
-        // }
-        // else{
-        //     heartdelete(index);
-        //     setHeartTF[index] = false;
-        // }
-        // let i = 0;
-        // i++;
-        // setRe(i)
     };
     useEffect(() => {
         heartP().then((result) => {

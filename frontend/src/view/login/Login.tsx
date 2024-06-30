@@ -6,101 +6,101 @@ import { AntDesign } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from '../../../firebaseConfig';
-import {signInWithEmailAndPassword, browserLocalPersistence, signOut} from 'firebase/auth';
+import { signInWithEmailAndPassword, browserLocalPersistence, signOut } from 'firebase/auth';
 import { useHome } from '../../component/context/HomeContext';
-import { collection, getDocs ,getDoc ,doc, setDoc, addDoc} from "firebase/firestore";
+import { collection, getDocs, getDoc, doc, setDoc, addDoc } from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
 import Animation1 from '../../component/animation/LoginAnimation';
 
-const Login=({navigation})=>{
-    const {isLogin, setIsLogin, isTimeout, setIsTimeout, isTime, setIsTime}=useHome();
-    const [email, setEmail]=useState('');
-    const [password, setPassword]=useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-    const [roading, setRoading] = useState(false);
-    
-    const handleLogin = async () => {
-        try {
-            setRoading(true);
-            // メールアドレスとパスワードでログイン
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-            //ログイン状態管理
-            if (user.emailVerified){ //メール認証が完了していた場合
-              console.log('メール認証が完了しています');
-              setRoading(false);
-              setIsLogin(true);
-              setIsTimeout(false);
-              setIsTime(false);
-              const currentuser = auth.currentUser.uid;
-              const randomNum=Math.random();
-              await setDoc(doc(db, 'users', currentuser), {randomField: randomNum, userid: currentuser, name: '', age: 0, comment: '', faculty: '', heart: 0, image: ''})
+const Login = ({ navigation }) => {
+  const { isLogin, setIsLogin, isTimeout, setIsTimeout, isTime, setIsTime } = useHome();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [roading, setRoading] = useState(false);
 
-              //初回ログイン時にユーザー情報をasyncstorageに保存
-              const saveemail = async () => {
-                  try {
-                    const stringValue = JSON.stringify(email);
-                    await AsyncStorage.setItem('useremail', stringValue);
-                  } catch (e) {
-                    console.log(e);
-                  }
-                };
-                saveemail();
-      
-                const savepassword = async () => {
-                  try {
-                    const stringValue = JSON.stringify(password);
-                    await AsyncStorage.setItem('userpassword', stringValue);
-                  } catch (e) {
-                    console.log(e);
-                  }
-                };
-                savepassword();
-          
-              // ログインが成功した場合の処理
-              console.log('User logged in:', user);
-              navigation.navigate('MyPageAndImage');              
-            }else{
-              setErrorMessage('このアカウントはメール認証が完了していません');
-              setRoading(false);
-              signOut(auth);
-            }
+  const handleLogin = async () => {
+    try {
+      setRoading(true);
+      // メールアドレスとパスワードでログイン
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      //ログイン状態管理
+      if (user.emailVerified) { //メール認証が完了していた場合
+        console.log('メール認証が完了しています');
+        setRoading(false);
+        setIsLogin(true);
+        setIsTimeout(false);
+        setIsTime(false);
+        const currentuser = auth.currentUser.uid;
+        const randomNum = Math.random();
+        await setDoc(doc(db, 'users', currentuser), { randomField: randomNum, userid: currentuser, name: '', age: 0, comment: '', faculty: '', heart: 0, image: '' })
 
-        } catch (error) {
-          // エラー処理
-          console.error('Login failed:', error.message);
-          if (error.message == 'Firebase: Error (auth/invalid-credential).'){
-            setErrorMessage('メールアドレス、もしくはパスワードが間違っています');
-            setRoading(false);
-          }else if (error.message == 'Firebase: Error (auth/invalid-email).'){
-            setErrorMessage('アカウントが存在しません');
-            setRoading(false);
+        //初回ログイン時にユーザー情報をasyncstorageに保存
+        const saveemail = async () => {
+          try {
+            const stringValue = JSON.stringify(email);
+            await AsyncStorage.setItem('useremail', stringValue);
+          } catch (e) {
+            console.log(e);
           }
-        }
-      };
+        };
+        saveemail();
 
-      const styles = StyleSheet.create({
-        footer: {
-            position: 'absolute',
-            bottom: 0,
-            height: '10%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-        },
+        const savepassword = async () => {
+          try {
+            const stringValue = JSON.stringify(password);
+            await AsyncStorage.setItem('userpassword', stringValue);
+          } catch (e) {
+            console.log(e);
+          }
+        };
+        savepassword();
+
+        // ログインが成功した場合の処理
+        console.log('User logged in:', user);
+        navigation.navigate('MyPageAndImage');
+      } else {
+        setErrorMessage('このアカウントはメール認証が完了していません');
+        setRoading(false);
+        signOut(auth);
+      }
+
+    } catch (error) {
+      // エラー処理
+      console.error('Login failed:', error.message);
+      if (error.message == 'Firebase: Error (auth/invalid-credential).') {
+        setErrorMessage('メールアドレス、もしくはパスワードが間違っています');
+        setRoading(false);
+      } else if (error.message == 'Firebase: Error (auth/invalid-email).') {
+        setErrorMessage('アカウントが存在しません');
+        setRoading(false);
+      }
+    }
+  };
+
+  const styles = StyleSheet.create({
+    footer: {
+      position: 'absolute',
+      bottom: 0,
+      height: '10%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+    },
 
 
 
-    });
+  });
 
-    return (
-      <View style={{
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 1,
-        // backgroundColor: roading ? '#a9a9a9' : 'white'
-      }}>{roading && <Animation1/>}
-        <KeyboardAvoidingView
+  return (
+    <View style={{
+      justifyContent: 'center',
+      alignItems: 'center',
+      flex: 1,
+      // backgroundColor: roading ? '#a9a9a9' : 'white'
+    }}>{roading && <Animation1 />}
+      <KeyboardAvoidingView
         behavior="padding"
         style={{
           position: 'absolute',
@@ -109,7 +109,7 @@ const Login=({navigation})=>{
         }}
       >
         <Text style={{ fontSize: 20, marginBottom: 20 }}>ログイン画面</Text>
-        { errorMessage != '' && <Text style={{ fontSize: 15, marginBottom: 20, color: 'red' }}>{`${errorMessage}`}</Text> }
+        {errorMessage != '' && <Text style={{ fontSize: 15, marginBottom: 20, color: 'red' }}>{`${errorMessage}`}</Text>}
         <View style={{ marginBottom: 20 }}>
           <TextInput
             style={{
@@ -149,19 +149,19 @@ const Login=({navigation})=>{
           onPress={handleLogin}
           disabled={!email || !password}
         >
-          <Text style={{ color: roading ? '#a9a9a9' : 'white'  }}>ログイン</Text>
+          <Text style={{ color: roading ? '#a9a9a9' : 'white' }}>ログイン</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={{marginTop: 20, borderBottomWidth: 1}}
-          onPress={()=> navigation.navigate('SignUpScreen')}
+          style={{ marginTop: 20, borderBottomWidth: 1 }}
+          onPress={() => navigation.navigate('SignUpScreen')}
         >
           <Text>まだアカウントをお持ちでない方</Text>
         </TouchableOpacity>
-        { isLogin && <View style={styles.footer}>
-                    <HomeFooter navigation={navigation} />
-                </View>} 
+        {isLogin && <View style={styles.footer}>
+          <HomeFooter navigation={navigation} />
+        </View>}
       </KeyboardAvoidingView>
     </View>
-    );
+  );
 };
 export default Login;

@@ -17,113 +17,113 @@ import Animation1 from '../../component/animation/LoginAnimation';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { useHome } from '../../component/context/HomeContext';
 
-const SignUpScreen = ({navigation}) => {
-  const {isLogin, setIsLogin, loginUser ,setLoginUser}=useHome();
+const SignUpScreen = ({ navigation }) => {
+  const { isLogin, setIsLogin, loginUser, setLoginUser } = useHome();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showLogin, setShowLogin] = useState(false);
-  const [check, setCheck]=useState(false);
+  const [check, setCheck] = useState(false);
 
   const handleRegister = async () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-        try {
-          await sendEmailVerification(user);
-          alert('E-mailをおくりました');
-          setCheck(false);
-        } catch (e) {
-          console.error(e)
-          alert('なんか失敗したようですね');
-        }
-        navigation.navigate('SendEmail');
+      try {
+        await sendEmailVerification(user);
+        alert('E-mailをおくりました');
+        setCheck(false);
+      } catch (e) {
+        console.error(e)
+        alert('なんか失敗したようですね');
+      }
+      navigation.navigate('SendEmail');
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  const styles = StyleSheet.create({ 
+  const styles = StyleSheet.create({
     container1: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
-      footer: {
-        position: 'absolute',
-        bottom: 0,
-        height: '10%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
+    footer: {
+      position: 'absolute',
+      bottom: 0,
+      height: '10%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
     },
   });
 
   return (
-  <View style={{
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-    // backgroundColor: check ? '#a9a9a9' : 'white'
-  }}>{check && <Animation1/>}
-  <KeyboardAvoidingView
-      behavior="padding"
-      style={{
-        alignItems: 'center',
-        position: 'absolute'
-      }}
-    >
-      <Text style={{ fontSize: 20, marginBottom: 20 }}>ユーザ登録画面</Text>
-      <View style={{ marginBottom: 20 }}>
-        <TextInput
-          style={{
-            width: 250,
-            borderWidth: 1,
-            padding: 5,
-            borderColor: 'gray',
-          }}
-          onChangeText={setEmail}
-          value={email}
-          placeholder="メールアドレスを入力してください"
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-      </View>
-      <View style={{ marginBottom: 20 }}>
-        <TextInput
-          style={{
-            width: 250,
-            borderWidth: 1,
-            padding: 5,
-            borderColor: 'gray',
-          }}
-          onChangeText={setPassword}
-          value={password}
-          placeholder="パスワードを入力してください"
-          secureTextEntry={true}
-          autoCapitalize="none"
-        />
-      </View>
-      <TouchableOpacity
+    <View style={{
+      justifyContent: 'center',
+      alignItems: 'center',
+      flex: 1,
+      // backgroundColor: check ? '#a9a9a9' : 'white'
+    }}>{check && <Animation1 />}
+      <KeyboardAvoidingView
+        behavior="padding"
         style={{
-          padding: 10,
-          backgroundColor: '#88cb7f',
-          borderRadius: 10,
+          alignItems: 'center',
+          position: 'absolute'
         }}
-        onPress={()=>{handleRegister(); setCheck(true);}}
-        disabled={!email || !password}
       >
-        <Text style={{ color: check ? '#a9a9a9' : 'white' }}>登録する</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={{marginTop: 20, borderBottomWidth: 1}}
-        onPress={()=> navigation.navigate('Login')}
-      >
-        <Text>すでにアカウントをお持ちの方</Text>
-      </TouchableOpacity>
-      { isLogin && <View style={styles.footer}>
-                    <HomeFooter navigation={navigation} />
-                </View>} 
-    </KeyboardAvoidingView>
+        <Text style={{ fontSize: 20, marginBottom: 20 }}>ユーザ登録画面</Text>
+        <View style={{ marginBottom: 20 }}>
+          <TextInput
+            style={{
+              width: 250,
+              borderWidth: 1,
+              padding: 5,
+              borderColor: 'gray',
+            }}
+            onChangeText={setEmail}
+            value={email}
+            placeholder="メールアドレスを入力してください"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+        </View>
+        <View style={{ marginBottom: 20 }}>
+          <TextInput
+            style={{
+              width: 250,
+              borderWidth: 1,
+              padding: 5,
+              borderColor: 'gray',
+            }}
+            onChangeText={setPassword}
+            value={password}
+            placeholder="パスワードを入力してください"
+            secureTextEntry={true}
+            autoCapitalize="none"
+          />
+        </View>
+        <TouchableOpacity
+          style={{
+            padding: 10,
+            backgroundColor: '#88cb7f',
+            borderRadius: 10,
+          }}
+          onPress={() => { handleRegister(); setCheck(true); }}
+          disabled={!email || !password}
+        >
+          <Text style={{ color: check ? '#a9a9a9' : 'white' }}>登録する</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{ marginTop: 20, borderBottomWidth: 1 }}
+          onPress={() => navigation.navigate('Login')}
+        >
+          <Text>すでにアカウントをお持ちの方</Text>
+        </TouchableOpacity>
+        {isLogin && <View style={styles.footer}>
+          <HomeFooter navigation={navigation} />
+        </View>}
+      </KeyboardAvoidingView>
     </View>
   );
 };
