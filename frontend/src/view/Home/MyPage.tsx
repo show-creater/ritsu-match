@@ -19,6 +19,7 @@ const MyPage = ({ navigation }) => {
     const [changeInfor, setChangeInfor] = useState([false, false, false, false, false, false, false, false, false]);
     const [infor, setInfor] = useState({ name: '', heart: 0, faculty: '', image: '', age: 0, comment: '', heart_pushed: [], randomField: 0, userid: '' });
     const [datachange, setDatachange] = useState(true);
+    const [userImage, setUserImage] = useState('');
     const storage = getStorage();
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
@@ -40,6 +41,14 @@ const MyPage = ({ navigation }) => {
         }
     });
 
+    const getImage = async () => {
+        const storageRef = ref(storage, `user_image/${auth.currentUser.uid}`);
+        const downloadURL = await getDownloadURL(storageRef);
+        console.log('Download URL:', downloadURL);
+        setUserImage(downloadURL);
+        return downloadURL;
+    };
+
     useEffect(() => {
         if (isLogin) {
             const currentuser = auth.currentUser.uid;
@@ -50,6 +59,9 @@ const MyPage = ({ navigation }) => {
                 console.log(docdata.data());
                 if (docdata.data() != undefined) {
                     setInfor(docdata.data());
+                    let image = await getImage();
+                    console.log(image, 'getimage');
+                    
                 }
             };
             docSnap();
@@ -68,7 +80,9 @@ const MyPage = ({ navigation }) => {
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         try {
-            let result = await ImagePicker.launchImageLibraryAsync({
+
+            if (isLogin){
+                let result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.All,
                 aspect: [4, 3],
                 quality: 1,
@@ -78,13 +92,15 @@ const MyPage = ({ navigation }) => {
                 console.log(result, 'resultそのもの');
                 console.log(result.assets[0].uri, 'uri表示');
                 const imageBlob = await fetch(result.assets[0].uri).then(response => response.blob());
-                const storageRef = ref(storage, `user_image/${auth.currentUser.uid}`);
+
                 const metadata = {
-                    contentType: 'image/jpeg', // アップロードするデータのコンテンツタイプ
+                    contentType: 'image/webp', // アップロードするデータのコンテンツタイプ
                 };
+                const storageRef = ref(storage, `user_image/${auth.currentUser.uid}`);
                 await uploadBytes(storageRef, imageBlob, metadata);
                 console.log('Image uploaded successfully!');
-            }
+                await getImage();
+            }}
         } catch (e) {
             console.log(`Error: ${e.message}`);
         }
@@ -107,20 +123,22 @@ const MyPage = ({ navigation }) => {
         const adjustProfile = async () => {
             if (!datachange) {
                 try {
-                    console.log('プロフィール変更');
-                    console.log(infor);
-                    console.log(auth.currentUser.uid);
-                    await setDoc(doc(collection(db, 'users'), `${auth.currentUser.uid}`), {
-                        name: infor.name,
-                        age: infor.age,
-                        comment: infor.comment,
-                        faculty: infor.faculty,
-                        heart: infor.heart,
-                        heart_pushed: infor.heart_pushed,
-                        image: infor.image,
-                        randomField: infor.randomField,
-                        userid: infor.userid
-                    })
+                    if (isLogin) {
+                        console.log('プロフィール変更');
+                        console.log(infor);
+                        console.log(auth.currentUser.uid);
+                        await setDoc(doc(collection(db, 'users'), `${auth.currentUser.uid}`), {
+                            name: infor.name,
+                            age: infor.age,
+                            comment: infor.comment,
+                            faculty: infor.faculty,
+                            heart: infor.heart,
+                            heart_pushed: infor.heart_pushed,
+                            image: infor.image,
+                            randomField: infor.randomField,
+                            userid: infor.userid
+                        })
+                    }
                 } catch (e) {
                     console.log(e.message);
                 }
@@ -209,15 +227,15 @@ const MyPage = ({ navigation }) => {
                     </View> */}
                     <View style={styles.imageContainer}>
                         <View style={{ backgroundColor: 'transparent', top: '5%', right: 0, zIndex: 1000000, alignItems: 'space-between', position: 'absolute', flexDirection: 'row' }}>
-                            <TouchableOpacity onPress={() => {handleDeleteImage();}}>
+                            <TouchableOpacity onPress={() => { handleDeleteImage(); }}>
                                 <Ionicons name="trash-sharp" size={30} color="red" style={{ right: 20, backgroundColor: 'transparent', }} />
-                            </TouchableOpacity>                            
-                            <TouchableOpacity onPress={() => {pickImage();}}>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => { pickImage(); }}>
                                 <MaterialIcons name="photo-library" size={30} color='#30CB89' style={{ right: 5, backgroundColor: 'transparent', }} />
                             </TouchableOpacity>
                         </View>
                         <Image style={{ width: windowWidth, height: windowHeight }}
-                            source={require('../../component/photo/ディカプリオ.webp')}
+                            source={{uri: userImage}}
                             resizeMode='cover'
                         />
                     </View>
