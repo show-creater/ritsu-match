@@ -185,7 +185,7 @@ const Talk = ({ navigation }) => {
                                 <View style={{paddingRight: '2%'}}>
                                     <Ionicons name="person-circle-outline" size={50} color="#30CB89" />
                                 </View>
-                                <Text className="text-xl">ディカプリオ</Text>
+                                <Text>ディカプリオ</Text>
                             </View>
                             <View style={styles.personInfo}>
                                 <View style={{paddingRight: '2%'}}>
