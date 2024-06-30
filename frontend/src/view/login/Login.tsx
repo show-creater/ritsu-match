@@ -10,7 +10,7 @@ import {signInWithEmailAndPassword, browserLocalPersistence, signOut} from 'fire
 import { useHome } from '../../component/context/HomeContext';
 import { collection, getDocs ,getDoc ,doc, setDoc, addDoc} from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
-import Animation1 from '../../component/animation/animation1';
+import Animation1 from '../../component/animation/LoginAnimation';
 
 const Login=({navigation})=>{
     const {isLogin, setIsLogin, isTimeout, setIsTimeout, isTime, setIsTime}=useHome();

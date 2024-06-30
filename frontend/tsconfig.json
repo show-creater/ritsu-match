@@ -1,4 +1,18 @@
 {
   "compilerOptions": {},
-  "extends": "expo/tsconfig.base"
+  "extends": "expo/tsconfig.base",
+  "include": ["src/**/*", "react-native-webp.d.ts"]
 }
+// {
+//   "compilerOptions": {
+//     "target": "es5",
+//     "module": "commonjs",
+//     "strict": true,
+//     "esModuleInterop": true,
+//     "skipLibCheck": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "typeRoots": ["./node_modules/@types", "./types"]
+//   },
+//   "extends": "expo/tsconfig.base",
+//   "include": ["src/**/*", "react-native-webp.d.ts"]
+// }

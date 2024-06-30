@@ -11,15 +11,15 @@ import { db, auth } from '../../../firebaseConfig';
 import { MaterialIcons } from '@expo/vector-icons';
 import MyPageImageHeader from '../../component/header/MyPageImageHeader';
 import { launchImageLibrary } from 'react-native-image-picker';
-import * as ImagePicker from 'expo-image-picker';
+import * as Imagepicker from 'expo-image-picker';
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import ImagePicker from 'react-native-image-crop-picker';
+import RNWebp from 'react-native-webp';
 
 const MyPage = ({ navigation }) => {
-    const { isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, isTime, setIsTime, myPageNow, setMyPageNow } = useHome();
+    const { isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, isTime, setIsTime, myPageNow, setMyPageNow, infor, setInfor, userImage, setUserImage } = useHome();
     const [changeInfor, setChangeInfor] = useState([false, false, false, false, false, false, false, false, false]);
-    const [infor, setInfor] = useState({ name: '', heart: 0, faculty: '', image: '', age: 0, comment: '', heart_pushed: [], randomField: 0, userid: '' });
     const [datachange, setDatachange] = useState(true);
-    const [userImage, setUserImage] = useState('');
     const storage = getStorage();
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
@@ -78,14 +78,12 @@ const MyPage = ({ navigation }) => {
     };
 
     const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
         try {
-
             if (isLogin){
-                let result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                let result = await Imagepicker.launchImageLibraryAsync({
+                mediaTypes: Imagepicker.MediaTypeOptions.All,
                 aspect: [4, 3],
-                quality: 1,
+                quality: -10,
             });
 
             if (!result.canceled) {
@@ -97,6 +95,7 @@ const MyPage = ({ navigation }) => {
                     contentType: 'image/webp', // アップロードするデータのコンテンツタイプ
                 };
                 const storageRef = ref(storage, `user_image/${auth.currentUser.uid}`);
+                console.log('upload開始');
                 await uploadBytes(storageRef, imageBlob, metadata);
                 console.log('Image uploaded successfully!');
                 await getImage();
@@ -164,6 +163,7 @@ const MyPage = ({ navigation }) => {
             display: 'flex',
             // alignItems: 'center',
             position: 'relative',
+            alignItems: 'center',
         },
         image: {
             width: '100%',
@@ -182,11 +182,12 @@ const MyPage = ({ navigation }) => {
         profile: {
             flexDirection: 'column',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
         },
         nameInfor: {
             flexDirection: 'row',
             alignItems: 'center',
+            paddingTop: '5%'
         },
         fucility: {
             justifyContent: 'center',
@@ -227,16 +228,13 @@ const MyPage = ({ navigation }) => {
                     </View> */}
                     <View style={styles.imageContainer}>
                         <View style={{ backgroundColor: 'transparent', top: '5%', right: 0, zIndex: 1000000, alignItems: 'space-between', position: 'absolute', flexDirection: 'row' }}>
-                            <TouchableOpacity onPress={() => { handleDeleteImage(); }}>
-                                <Ionicons name="trash-sharp" size={30} color="red" style={{ right: 20, backgroundColor: 'transparent', }} />
-                            </TouchableOpacity>
                             <TouchableOpacity onPress={() => { pickImage(); }}>
                                 <MaterialIcons name="photo-library" size={30} color='#30CB89' style={{ right: 5, backgroundColor: 'transparent', }} />
                             </TouchableOpacity>
                         </View>
-                        <Image style={{ width: windowWidth, height: windowHeight }}
+                        <Image style={{ width: windowWidth, height: windowHeight, top: '-40%'}}
                             source={{uri: userImage}}
-                            resizeMode='cover'
+                            resizeMode='contain'
                         />
                     </View>
                     <View style={styles.profile}>

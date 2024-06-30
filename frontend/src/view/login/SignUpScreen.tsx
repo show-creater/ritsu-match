@@ -13,7 +13,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/
 import { auth, db, setDoc, doc, collection } from '../../../firebaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LottieView from 'lottie-react-native';
-import Animation1 from '../../component/animation/animation1';
+import Animation1 from '../../component/animation/LoginAnimation';
 import HomeFooter from '../../component/footer/HomeFooter';
 import { useHome } from '../../component/context/HomeContext';
 

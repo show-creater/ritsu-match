@@ -9,6 +9,7 @@ import { arrayUnion, updateDoc, Timestamp, onSnapshot, orderBy, addDoc, doc, get
 import { TouchableOpacity } from 'react-native';
 
 const HomeHeader = () => {
+    const { isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, infor, setInfor, userImage, setUserImage } = useHome();
     let a=0;
     const styles=StyleSheet.create({
         header: {
@@ -68,10 +69,15 @@ const HomeHeader = () => {
 
     return (
         <View style={styles.header}>
-            <View style={styles.icon}></View>
+            <View style={styles.icon}>
+                {userImage != '' && <Image style={{zIndex: 100, borderRadius: 100, height: 60, width: 60,}}
+                    source={{uri: userImage}}
+                    resizeMode='cover'
+                />}
+            </View>
             <View style={styles.informations}>
                 <View style={styles.NameHeart}>
-                    <Text style={{ fontSize: 20, color: '#30CB89' }}>{'山田太郎'}</Text>
+                    <Text style={{ fontSize: 20, color: '#30CB89' }}>{`${infor.name}`}</Text>
                     <View style={styles.heart}>
                         <Ionicons name="heart" size={24} color="deeppink" />
                         <View style={styles.heartCount}>
@@ -83,7 +89,7 @@ const HomeHeader = () => {
                 <View style={styles.FucilityDate}>
                     <View style={{ flexDirection: 'row' }}>
                         <Ionicons name="pencil" size={24} color='#30CB89' />
-                        <Text style={{ fontSize: 16, color: '#30CB89' }}>{'薬学部'}</Text>
+                        <Text style={{ fontSize: 16, color: '#30CB89' }}>{`${infor.faculty}`}</Text>
                     </View>
                     <Text style={{ fontSize: 16, color: '#30CB89' }}>{'2日 12:05'}</Text>
                 </View>
