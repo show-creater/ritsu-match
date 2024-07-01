@@ -3,15 +3,14 @@ module.exports = function(api) {
   return {
     presets: ['babel-preset-expo'],
     plugins: [
-      [
-        'dotenv-import', {
-          'moduleName': '@env',
-          'path': '.env',
-          'blacklist': null,
-          'whitelist': null,
-          'safe': false,
-          'allowUndefined': false,
-        }],['nativewind/babel'],
+      ['module:react-native-dotenv', {
+        moduleName: '@env',
+        path: '.env',
+        blacklist: null,
+        whitelist: null,
+        safe: false,
+        allowUndefined: true
+      }],['nativewind/babel'],
     ]
   };
 };
