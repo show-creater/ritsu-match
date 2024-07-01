@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text,View,StyleSheet,ScrollView,Image,Dimensions} from 'react-native';
 import HomeFooter from '../../component/footer/HomeFooter';
 import LottieView from 'lottie-react-native';
@@ -12,6 +12,9 @@ const Friends = ({navigation}) => {
     const windowHeight = Dimensions.get('window').height;
     const windowWidth = Dimensions.get('window').width;
     const a = 0;
+    useEffect(() => {
+        console.log(windowHeight*19);
+    },[]);
     const styles = StyleSheet.create({ 
         container1: {
             flex: 1,
@@ -27,9 +30,9 @@ const Friends = ({navigation}) => {
             width: '100%',
         },
         main: {
-            height:1420*10, //ちょうど５列要素が入る高さ
+            height:windowHeight*19, //ちょうど５列要素が入る高さ
             paddingTop:'10%',
-            width: windowWidth
+            width: windowWidth,
             },
         container: {
             height:windowHeight,//これが悪い

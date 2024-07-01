@@ -17,7 +17,7 @@ const LoadDoc = async ({ persondata, setPersondata, setScrollcheck, isLogin }) =
         getDocument().then((querySnapShot) => { //非同期で連続してドキュメントの読み取りができないためしょうがない
             // console.log(1);
             querySnapShot.forEach((doc) => {
-                console.log(doc.data());
+                // console.log(doc.data());
                 if (doc.data().userid != auth.currentUser.uid) {
                     persons.push(doc.data());
                 }
@@ -26,7 +26,7 @@ const LoadDoc = async ({ persondata, setPersondata, setScrollcheck, isLogin }) =
         }).then((querySnapShot) => { //非同期で連続してドキュメントの読み取りができないためしょうがない
             // console.log(1);
             querySnapShot.forEach((doc) => {
-                console.log(doc.data());
+                // console.log(doc.data());
                 if (doc.data().userid != auth.currentUser.uid) {
                     persons.push(doc.data());
                 }
@@ -35,7 +35,7 @@ const LoadDoc = async ({ persondata, setPersondata, setScrollcheck, isLogin }) =
         }).then((querySnapShot) => { //非同期で連続してドキュメントの読み取りができないためしょうがない
             // console.log(1);
             querySnapShot.forEach((doc) => {
-                console.log(doc.data());
+                // console.log(doc.data());
                 if (doc.data().userid != auth.currentUser.uid) {
                     persons.push(doc.data());
                 }
@@ -44,7 +44,7 @@ const LoadDoc = async ({ persondata, setPersondata, setScrollcheck, isLogin }) =
         }).then((querySnapShot) => { //非同期で連続してドキュメントの読み取りができないためしょうがない
             // console.log(1);
             querySnapShot.forEach((doc) => {
-                console.log(doc.data());
+                // console.log(doc.data());
                 if (doc.data().userid != auth.currentUser.uid) {
                     persons.push(doc.data());
                 }
@@ -53,7 +53,7 @@ const LoadDoc = async ({ persondata, setPersondata, setScrollcheck, isLogin }) =
         }).then((querySnapShot) => { //非同期で連続してドキュメントの読み取りができないためしょうがない
             // console.log(1);
             querySnapShot.forEach((doc) => {
-                console.log(doc.data());
+                // console.log(doc.data());
                 if (doc.data().userid != auth.currentUser.uid) {
                     persons.push(doc.data());
                 }
@@ -62,7 +62,7 @@ const LoadDoc = async ({ persondata, setPersondata, setScrollcheck, isLogin }) =
         }).then((querySnapShot) => { //非同期で連続してドキュメントの読み取りができないためしょうがない
             // console.log(1);
             querySnapShot.forEach((doc) => {
-                console.log(doc.data());
+                // console.log(doc.data());
                 if (doc.data().userid != auth.currentUser.uid) {
                     persons.push(doc.data());
                 }
@@ -71,7 +71,7 @@ const LoadDoc = async ({ persondata, setPersondata, setScrollcheck, isLogin }) =
         }).then((querySnapShot) => { //非同期で連続してドキュメントの読み取りができないためしょうがない
             // console.log(1);
             querySnapShot.forEach((doc) => {
-                console.log(doc.data());
+                // console.log(doc.data());
                 if (doc.data().userid != auth.currentUser.uid) {
                     persons.push(doc.data());
                 }
@@ -80,7 +80,7 @@ const LoadDoc = async ({ persondata, setPersondata, setScrollcheck, isLogin }) =
         }).then((querySnapShot) => { //非同期で連続してドキュメントの読み取りができないためしょうがない
             // console.log(1);
             querySnapShot.forEach((doc) => {
-                console.log(doc.data());
+                // console.log(doc.data());
                 if (doc.data().userid != auth.currentUser.uid) {
                     persons.push(doc.data());
                 }
@@ -89,7 +89,7 @@ const LoadDoc = async ({ persondata, setPersondata, setScrollcheck, isLogin }) =
         }).then((querySnapShot) => { //非同期で連続してドキュメントの読み取りができないためしょうがない
             // console.log(1);
             querySnapShot.forEach((doc) => {
-                console.log(doc.data());
+                // console.log(doc.data());
                 if (doc.data().userid != auth.currentUser.uid) {
                     persons.push(doc.data());
                 }
@@ -98,7 +98,7 @@ const LoadDoc = async ({ persondata, setPersondata, setScrollcheck, isLogin }) =
         }).then((querySnapShot) => { //非同期で連続してドキュメントの読み取りができないためしょうがない
             // console.log(1);
             querySnapShot.forEach((doc) => {
-                console.log(doc.data());
+                // console.log(doc.data());
                 if (doc.data().userid != auth.currentUser.uid) {
                     persons.push(doc.data());
                 }
@@ -107,7 +107,7 @@ const LoadDoc = async ({ persondata, setPersondata, setScrollcheck, isLogin }) =
         }).then((querySnapShot) => { //非同期で連続してドキュメントの読み取りができないためしょうがない
             // console.log(1);
             querySnapShot.forEach((doc) => {
-                console.log(doc.data());
+                // console.log(doc.data());
                 if (doc.data().userid != auth.currentUser.uid) {
                     persons.push(doc.data());
                 }
@@ -116,7 +116,7 @@ const LoadDoc = async ({ persondata, setPersondata, setScrollcheck, isLogin }) =
         }).then((querySnapShot) => { //非同期で連続してドキュメントの読み取りができないためしょうがない
             // console.log(1);
             querySnapShot.forEach((doc) => {
-                console.log(doc.data());
+                // console.log(doc.data());
                 if (doc.data().userid != auth.currentUser.uid) {
                     persons.push(doc.data());
                 }
@@ -125,7 +125,7 @@ const LoadDoc = async ({ persondata, setPersondata, setScrollcheck, isLogin }) =
         }).then((querySnapShot) => { //非同期で連続してドキュメントの読み取りができないためしょうがない
             // console.log(1);
             querySnapShot.forEach((doc) => {
-                console.log(doc.data());
+                // console.log(doc.data());
                 if (doc.data().userid != auth.currentUser.uid) {
                     persons.push(doc.data());
                 }
@@ -134,7 +134,7 @@ const LoadDoc = async ({ persondata, setPersondata, setScrollcheck, isLogin }) =
         }).then((querySnapShot) => { //非同期で連続してドキュメントの読み取りができないためしょうがない
             // console.log(1);
             querySnapShot.forEach((doc) => {
-                console.log(doc.data());
+                // console.log(doc.data());
                 if (doc.data().userid != auth.currentUser.uid) {
                     persons.push(doc.data());
                 }
@@ -143,7 +143,7 @@ const LoadDoc = async ({ persondata, setPersondata, setScrollcheck, isLogin }) =
         }).then((querySnapShot) => { //非同期で連続してドキュメントの読み取りができないためしょうがない
             // console.log(1);
             querySnapShot.forEach((doc) => {
-                console.log(doc.data());
+                // console.log(doc.data());
                 if (doc.data().userid != auth.currentUser.uid) {
                     persons.push(doc.data());
                 }

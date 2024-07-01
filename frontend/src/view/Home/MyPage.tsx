@@ -83,7 +83,7 @@ const MyPage = ({ navigation }) => {
                 let result = await Imagepicker.launchImageLibraryAsync({
                     mediaTypes: Imagepicker.MediaTypeOptions.All,
                     aspect: [4, 3],
-                    quality: -10,
+                    quality: 0,
                 });
 
                 if (!result.canceled) {
