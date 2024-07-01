@@ -228,7 +228,7 @@ const MyPage = ({ navigation }) => {
                         </TouchableOpacity>
                     </View> */}
                     <View style={styles.imageContainer}>
-                        <View style={{ backgroundColor: 'transparent', top: '5%', right: 0, zIndex: 1000000, alignItems: 'space-between', position: 'absolute', flexDirection: 'row' }}>
+                        <View style={{ backgroundColor: 'transparent', top: '2%', right: 0, zIndex: 1000000, alignItems: 'space-between', position: 'absolute', flexDirection: 'row' }}>
                             <TouchableOpacity onPress={() => { pickImage(); }}>
                                 <MaterialIcons name="photo-library" size={30} color='#30CB89' style={{ right: 5, backgroundColor: 'transparent', }} />
                             </TouchableOpacity>
