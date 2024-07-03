@@ -36,65 +36,74 @@ const HomeHeader = () => {
             marginRight: 10
         },
         informations: {
-            flexDirection: 'column',
-        },
-        NameHeart: {
             flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '75%',
+        },
+        Namefaculty: {
+            flexDirection: 'column',
+            justifyContent: 'center',
             paddingLeft: '5%',
-            paddingBottom: 5
-
+            paddingBottom: 5,
+            width: '45%'
         },
         heart: {
             flexDirection: 'row',
-            justifyContent: 'flex-end'
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         heartCount: {
             backgroundColor: 'silver',
-            width: '60%',
+            width: '47%',
             borderRadius: 20,
             alignItems: 'center',
             flexDirection: 'row',
             justifyContent: 'space-between',
-            paddingRight: '5%'
+            paddingRight: '15%',
         },
-        FucilityDate: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '70%',
-            paddingLeft: '3%'
+        HeartDate: {
+            flexDirection: 'column',
+            justifyContent: 'center',
+            // paddingLeft: '5%',
+            alignItems: 'flex-end',
+            width: '40%',
+            // marginLeft: '15%',
+
         },
-    })
+    });
 
     return (
         <View style={styles.header}>
             <View style={styles.icon}>
-                {userImage != '' && <Image style={{ zIndex: 100, borderRadius: 100, height: 60, width: 60, }}
+                {userImage != '' && <Image style={{ zIndex: 100, borderRadius: 100, height: 60, width: 60 }}
                     source={{ uri: userImage }}
                     resizeMode='cover'
                 />}
             </View>
             <View style={styles.informations}>
-                <View style={styles.NameHeart}>
-                    <Text style={{ fontSize: 20, color: '#30CB89' }}>{`${infor.name}`}</Text>
+                <View style={styles.Namefaculty}>
+                    <Text
+                        style={{ fontSize: 20, color: '#30CB89', maxWidth: '100%' }}
+                        numberOfLines={1}
+                        ellipsizeMode='tail'
+                    >
+                        {`${infor.name}`}
+                    </Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Ionicons name="pencil" size={24} color='#30CB89' />
+                        <Text style={{ fontSize: 16, color: '#30CB89' }}>{`${infor.faculty}`}</Text>
+                    </View>
+                </View>
+                <View style={styles.HeartDate}>
                     <View style={styles.heart}>
                         <Ionicons name="heart" size={24} color="deeppink" />
                         <View style={styles.heartCount}>
                             <Text style={{ fontSize: 18, paddingLeft: '10%', color: 'white' }}>{`× ${a}　`}</Text>
-                            <AntDesign name="plus" size={15} color="dodgerblue" />
+                            <AntDesign name="plus" size={15} color="dodgerblue"/>
                         </View>
-                    </View>
-                </View>
-                <View style={styles.FucilityDate}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Ionicons name="pencil" size={24} color='#30CB89' />
-                        <Text style={{ fontSize: 16, color: '#30CB89' }}>{`${infor.faculty}`}</Text>
                     </View>
                     <Text style={{ fontSize: 16, color: '#30CB89' }}>{'2日 12:05'}</Text>
                 </View>
             </View>
         </View>
-    )
+    );
 };
 export default HomeHeader;
