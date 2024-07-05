@@ -1,5 +1,5 @@
-import { View, Text, SafeAreaView, ScrollView } from "react-native";
-import React, { useEffect, useState } from "react";
+import { View, Text, SafeAreaView, ScrollView,KeyboardAvoidingView, Platform } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useHome } from "../../component/context/HomeContext";
 import { doc, getDoc } from "firebase/firestore";
@@ -23,6 +23,16 @@ const ChatView = () => {
   const params = route.params.friend;
   const [roomID, setRoomID] = useState("");
 
+  const childRef = useRef();
+
+
+  const SendMessage=async(messageObject)=>{
+    console.log(messageObject)
+    if (childRef.current) {
+      childRef.current.sendMessage(messageObject);
+    }
+  }
+
   useEffect(() => {
     let roomGetID;
     const getDate = async () => {
@@ -42,7 +52,7 @@ const ChatView = () => {
           roomGetID = myID + friendID;
           setRoomID(roomGetID);
         }
-        if (myID.toLowerCase() > friendID.toLowerCase()) {
+        if (myID.toLowerCase() >= friendID.toLowerCase()) {
           roomGetID = friendID + myID;
           setRoomID(roomGetID);
         }
@@ -63,19 +73,16 @@ const ChatView = () => {
   }, [route.params.friend, loginUser]);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View
+     style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          <ScrollView style={{ height: "100%" }}>
-            <Text>{roomID}</Text>
-            <MessageListContainer  myID={loginUser.uid} roomID={roomID} friend={route.params.friend.userid}/>
+          <ScrollView>
+            <MessageListContainer ref={childRef} myID={loginUser.uid} roomID={roomID} friend={route.params.friend.userid}/>
           </ScrollView>
         </View>
-        <SendBoxContainer roomID={roomID} friend={route.params.friend.userid} />
+        <SendBoxContainer roomID={roomID} friend={route.params.friend.userid} myID={loginUser.uid} SendMessage={(messageObject)=>SendMessage(messageObject)}/>
       </SafeAreaView>
-      <View style={{ height: 92 }}>
-        <HomeFooter navigation={navigation} />
-      </View>
     </View>
   );
 };
