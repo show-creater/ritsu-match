@@ -74,7 +74,7 @@ const MessageListContainer = forwardRef((props, ref) => {
 
   useEffect(() => {
     const refreshChatMessages = async () => {
-      if (!props.roomID) return;
+      if (!props.roomID||displayMessageArray.length===0) return;
 
       try {
         // if (displayMessageArray.length === 0 ) {

@@ -6,6 +6,7 @@ import { useHome } from "../context/HomeContext";
 import { arrayRemove, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
 import ChatView from "../../view/Chat/ChatView";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const TalkFriendListItemContainer = (props) => {
   const { loginUser, setUnreadMessageJSON, unreadMessagesJSON } = useHome();
@@ -34,13 +35,13 @@ const TalkFriendListItemContainer = (props) => {
         );
         // リアルタイムリスナーを設定
         unsubscribe = onSnapshot(docRef, async (docSnapshot) => {
-          const unreadMessages = [];
+          let unreadMessages = [];
 
           console.log("Talkonsnapない");
 
           const myID = loginUser.uid;
           const friendID = props.FriendData.id;
-  
+
           if (myID.toLowerCase() < friendID.toLowerCase()) {
             roomGetID = myID + friendID;
             setRoomID(roomGetID);
@@ -51,6 +52,26 @@ const TalkFriendListItemContainer = (props) => {
           }
 
           console.log("79");
+          console.log(unreadMessagesJSON[roomGetID]);
+
+          if (
+            !unreadMessagesJSON[roomGetID]
+          ) {
+
+            console.log(
+              "getdata62",`chatUnreadMessages_${roomGetID}`
+            )
+            const storedMessages = await AsyncStorage.getItem(
+              `chatUnreadMessages_${roomGetID}`
+            );
+            console.log()
+            if (JSON.parse(storedMessages).length !== 0) {
+              unreadMessages = JSON.parse(storedMessages);
+            }
+            console.log("getdata");
+            console.log(unreadMessages);
+          }
+
           console.log(docSnapshot.exists());
           if (docSnapshot.exists()) {
             const data = docSnapshot.data().messages;
@@ -73,13 +94,7 @@ const TalkFriendListItemContainer = (props) => {
             // setUnreadMessagesDisplay([
             //   ...removeDuplicates([...unreadMessages]),
             // ]);
-            console.log(getRoomID())
-            setUnreadMessageJSON((prev) => {
-              return {
-                ...prev,
-                [roomGetID]: removeDuplicates([...(prev[roomGetID] || []), ...unreadMessages])
-              };
-            });
+            console.log(getRoomID());
 
             if (data && data.length > 0) {
               for (const message of data) {
@@ -103,10 +118,21 @@ const TalkFriendListItemContainer = (props) => {
               }
             }
           }
+
+          if (unreadMessages.length === 0) return;
+
+          setUnreadMessageJSON((prev) => {
+            return {
+              ...prev,
+              [roomGetID]: removeDuplicates([
+                ...(prev[roomGetID] || []),
+                ...unreadMessages,
+              ]),
+            };
+          });
         });
       }
     };
-
     const getDate = async () => {
       try {
         if (!loginUser) {
@@ -133,7 +159,7 @@ const TalkFriendListItemContainer = (props) => {
     };
     getDate();
 
-    const getRoomID=async ()=>{
+    const getRoomID = async () => {
       const myID = loginUser.uid;
       const friendID = props.FriendData.id;
 
@@ -145,8 +171,7 @@ const TalkFriendListItemContainer = (props) => {
         roomGetID = friendID + myID;
         return setRoomID(roomGetID);
       }
-
-    }
+    };
 
     // コンポーネントのクリーンアップ時にリスナーを解除
     return () => {
@@ -166,9 +191,30 @@ const TalkFriendListItemContainer = (props) => {
     });
   }
 
+  useEffect(() => {
+    const refreshChatMessages = async () => {
+      if (!roomID) return;
+
+      //if(unreadMessagesJSON[roomID].length===0) return
+
+      try {
+        console.log("保存けいとう");
+        console.log(unreadMessagesJSON[roomID]);
+        await AsyncStorage.setItem(
+          `chatUnreadMessages_${roomID}`,
+          JSON.stringify(unreadMessagesJSON[roomID]?unreadMessagesJSON[roomID]:[])
+        );
+      } catch (error) {
+        console.error("Error accessing AsyncStorage:", error);
+      }
+    };
+
+    refreshChatMessages();
+  }, [unreadMessagesJSON[roomID], roomID]);
+
   // useEffect(() => {
   //   setUnreadMessageJSON({[roomID]:unreadMessagesDisplay});
-  // }, [unreadMessagesDisplay]);
+  // }, [unreadMessagesDisplay])
 
   return (
     <TouchableOpacity
