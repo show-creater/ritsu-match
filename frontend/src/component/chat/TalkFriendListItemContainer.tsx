@@ -14,16 +14,13 @@ const TalkFriendListItemContainer = (props) => {
   const [roomID, setRoomID] = useState("");
   const [unreadMessagesDisplay, setUnreadMessagesDisplay] = useState([]);
   const navigation = useNavigation();
+  const [isReadFirst, setIsreadFirst] = useState(false);
 
   let roomGetID;
   let unsubscribe;
 
   useEffect(() => {
     const watchMessage = () => {
-      console.log(13);
-      console.log(props.roomID, props.friendID);
-      console.log("chatData", `${loginUser.uid}`, `${roomGetID}`, "messages");
-
       // ドキュメント参照を取得
       if (loginUser.uid && roomGetID) {
         const docRef = doc(
@@ -36,8 +33,6 @@ const TalkFriendListItemContainer = (props) => {
         // リアルタイムリスナーを設定
         unsubscribe = onSnapshot(docRef, async (docSnapshot) => {
           let unreadMessages = [];
-
-          console.log("Talkonsnapない");
 
           const myID = loginUser.uid;
           const friendID = props.FriendData.id;
@@ -54,17 +49,12 @@ const TalkFriendListItemContainer = (props) => {
           console.log("79");
           console.log(unreadMessagesJSON[roomGetID]);
 
-          if (
-            !unreadMessagesJSON[roomGetID]
-          ) {
-
-            console.log(
-              "getdata62",`chatUnreadMessages_${roomGetID}`
-            )
+          if (!unreadMessagesJSON[roomGetID]) {
+            console.log("getdata62", `chatUnreadMessages_${roomGetID}`);
             const storedMessages = await AsyncStorage.getItem(
               `chatUnreadMessages_${roomGetID}`
             );
-            console.log()
+            console.log(JSON.parse(storedMessages));
             if (JSON.parse(storedMessages).length !== 0) {
               unreadMessages = JSON.parse(storedMessages);
             }
@@ -78,6 +68,19 @@ const TalkFriendListItemContainer = (props) => {
             console.log(docSnapshot.data().messages);
             console.log(22);
             if (data.length === 0) {
+              if (
+                !unreadMessagesJSON[roomGetID] ||
+                unreadMessagesJSON[roomGetID].length === 0
+              ) {
+                console.log(unreadMessages);
+                setUnreadMessageJSON((prev) => {
+                  return {
+                    ...prev,
+                    [roomGetID]: removeDuplicates([...unreadMessages]),
+                  };
+                });
+              }
+              setIsreadFirst(true);
               return;
             }
             data.forEach((messageObject) => {
@@ -119,7 +122,10 @@ const TalkFriendListItemContainer = (props) => {
             }
           }
 
-          if (unreadMessages.length === 0) return;
+          if (unreadMessages.length === 0) {
+            setIsreadFirst(true);
+            return;
+          }
 
           setUnreadMessageJSON((prev) => {
             return {
@@ -130,6 +136,7 @@ const TalkFriendListItemContainer = (props) => {
               ]),
             };
           });
+          setIsreadFirst(true);
         });
       }
     };
@@ -194,15 +201,25 @@ const TalkFriendListItemContainer = (props) => {
   useEffect(() => {
     const refreshChatMessages = async () => {
       if (!roomID) return;
+      console.log("保存けいとう", isReadFirst);
+
+      if (!isReadFirst) return;
 
       //if(unreadMessagesJSON[roomID].length===0) return
 
       try {
         console.log("保存けいとう");
+
         console.log(unreadMessagesJSON[roomID]);
+        console.log(
+          unreadMessagesJSON[roomID] ? unreadMessagesJSON[roomID] : []
+        );
+
         await AsyncStorage.setItem(
           `chatUnreadMessages_${roomID}`,
-          JSON.stringify(unreadMessagesJSON[roomID]?unreadMessagesJSON[roomID]:[])
+          JSON.stringify(
+            unreadMessagesJSON[roomID] ? unreadMessagesJSON[roomID] : []
+          )
         );
       } catch (error) {
         console.error("Error accessing AsyncStorage:", error);

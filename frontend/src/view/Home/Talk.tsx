@@ -43,20 +43,7 @@ const Talk = ({ navigation }) => {
     if (talkPage && scrollViewRef.current) {
       scrollViewRef.current.scrollTo({ x: 0, animated: true });
     }
-    //     scrollViewRef.current.scrollTo({ x: 1000, animated: true });
-    // }
   }, [talkPage]);
-
-  // useEffect(()=>{
-  //     if(isLogin){
-  //         const currentuserid = auth.currentUser.uid;
-  //         const TalkRoomQuery = query(collection(db, 'chat'), where("userid", "array-contains", currentuserid),orderBy("creationTime", "desc"));
-  //         const unsubscribe = onSnapshot(TalkRoomQuery, (querySnapShot) => {
-
-  //         });
-  //         return () => unsubscribe();
-  //     }
-  // },[]);
 
   const styles = StyleSheet.create({
     header: {
@@ -173,6 +160,10 @@ const Talk = ({ navigation }) => {
       name: "soshi1",
       id: "pCwKh5hgOIebyR5jZW6qIzQf9OC2",
     },
+    {
+      name:"daichi",
+      id: "mc9sTuiF4zLLkop0txfW2KW9NXb2",
+    }
   ];
   return (
     //ヘッダー

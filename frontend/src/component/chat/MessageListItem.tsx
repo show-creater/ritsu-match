@@ -8,7 +8,6 @@ const MessageListItem = (props) => {
     if (!props.messageObject.id || !props.myID) return;
     setIsMyMessage(props.messageObject.sendUser == props.myID);
   },[props.messageObject.sendUser , props.myID]);
-console.log(props.messageObject)
   return (
 <View className={`h-12 ${isMyMessage ? "flex-row-reverse" : "flex-row"}`}>
       {isMyMessage ? (
