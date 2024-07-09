@@ -10,13 +10,10 @@ import { useHome } from '../../component/context/HomeContext'
 import { collection, getDocs, getDoc, doc, setDoc, where, query, limit, QuerySnapshot, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
 import LottieView from 'lottie-react-native';
-<<<<<<< HEAD
 import HomeAnimation from '../../component/animation/HomeAnimation';
 import HomeHeader from '../../component/header/HomeHeader';
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import LoadDoc from '../../component/function/LoadDoc';
-=======
->>>>>>> 9f73e43 (設定画面)
 
 const HomeView = ({ navigation }) => {
     const { isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, infor, setInfor, userImage, setUserImage, persondata, setPersondata, scrollcheck, setScrollcheck } = useHome();
@@ -24,13 +21,9 @@ const HomeView = ({ navigation }) => {
     const windowWidth = Dimensions.get('window').width;
     // const [persondata, setPersondata] = useState([{ name: '', faculty: '', heart: '', image: '', age: 0, comment: '', heart_pushed: [], userid: '', randomField: '' }]);
     const [heartTF, setHeartTF] = useState([]);
-<<<<<<< HEAD
     const [heartnum, setHeartnum] = useState([0]);
     const scrollViewRef = useRef(null);
     const storage = getStorage();
-=======
-    const [heartnum, setHeartnum] = useState([]);
->>>>>>> 9f73e43 (設定画面)
     const a = 0;
 
     const getImage = async () => {
@@ -83,15 +76,9 @@ const HomeView = ({ navigation }) => {
                     console.log(image, 'image画像を表示します');
                     setUserImage(image);
                     const docdata = await getDoc(doc(db, "users", auth.currentUser.uid));
-<<<<<<< HEAD
                     // console.log(docdata.data());
                     // console.log('hellllo');
                     if (docdata.data() != undefined) {
-=======
-                    //console.log(docdata.data());
-                    //console.log('hellllo');
-                    if (docdata().data() != undefined) {
->>>>>>> 9f73e43 (設定画面)
                         setInfor(docdata.data());
                     }
                 }
@@ -115,7 +102,6 @@ const HomeView = ({ navigation }) => {
         login();
     }, []);
 
-<<<<<<< HEAD
     const handleScroll = (event) => {
         const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
         const isBottom = contentOffset.y + layoutMeasurement.height >= contentSize.height - 20;
@@ -128,140 +114,6 @@ const HomeView = ({ navigation }) => {
         }
     };
 
-=======
-    //     getDocs(collection(db, "matching")).forEach((doc) => {
-    //   // doc.data() is never undefined for query doc snapshots
-    //   console.log(doc.id, " => ", doc.data());
-    // });
-
-    const test = async () => {
-        const getDocument = () => {
-            const usercollection = collection(db, "users");
-            const randomNum = Math.random();
-            const q = query(usercollection, where('randomField', '<=', randomNum), where('randomField', '>=', randomNum - 0.1), limit(1));
-            //console.log(randomNum);
-            return getDocs(q)
-        };
-        let persons = []
-        getDocument().then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
-            })
-            return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
-            })
-            return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
-            })
-            return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
-            })
-            return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
-            })
-            return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
-            })
-            return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
-            })
-            return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
-            })
-            return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
-            })
-            return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
-            })
-            return getDocument();
-        }).then((querySnapShot) => {
-            //console.log(1);
-            querySnapShot.forEach((doc) => {
-                //console.log(doc.data());
-                persons.push(doc.data());
-            })
-            return getDocument();
-        }).then(() => {
-            //console.log('hellooooo')
-            //console.log(persons);
-            setPersondata(persons);
-        })
-
-    };
-
-    useEffect(() => {
-        test()
-        //console.log(persondata);
-    }, []);
-
-    // const makedoc = async() =>{
-    //     const currentuser = auth.currentUser.uid;
-    //     const randomNum=Math.random();
-    //     try {
-    //         await setDoc(doc(db, 'users', `${randomNum}`), {randomField: randomNum, userid: randomNum, name: `${randomNum}`, age: 0, comment: '', faculty: '', heart: 0, image: ''})
-    //         console.log('起動中');
-    //     }catch(e){
-    //         console.log(e);
-    //     }
-
-    // };
-
-    // const [number,setNumber] = useState(3);
-    // useEffect(()=>{
-    //     setNumber(5)
-    //     console.log(number);
-    // },[]);
-
-    // useEffect(()=>{
-    //     const docRef = doc(db, "users", "LkW4tsYgDrVi6KTAv8iEGhtuzkB3");
-    //     const docSnap = async () =>{
-    //         const docdata = await getDoc(docRef);
-    //         //console.log(docdata.data());
-    //         // setInfor(docdata.data());
-    //     };
-    //     docSnap();
-    // },[]);
-
->>>>>>> 9f73e43 (設定画面)
     const heartP = async () => {
         const querySnapshot = await getDocs(collection(db, "users"));
         const users = []
@@ -348,11 +200,7 @@ const HomeView = ({ navigation }) => {
                 heart[i] = persondata[i].heart_pushed;
                 heartnumber[i] = heart[i].length;
             }
-<<<<<<< HEAD
             // console.log(heart);
-=======
-            //console.log(heart);
->>>>>>> 9f73e43 (設定画面)
             // for (let i = 0; i < heart.length; i++) {
             //     if (heart[i].indexOf(`${auth.currentUser.uid}`) < 0) {
             //         heartTFarray[i] = false;
@@ -362,13 +210,8 @@ const HomeView = ({ navigation }) => {
             // }
             setHeartTF(heart.map(item => item.includes(auth.currentUser.uid)));
 
-<<<<<<< HEAD
             // console.log('っっっっっっっっっっっ');
             // console.log(heart);
-=======
-            //console.log('っっっっっっっっっっっ');
-            //console.log(heart);
->>>>>>> 9f73e43 (設定画面)
             // console.log(heartTFarray);
             // setHeartTF(heartTFarray);
             setHeartnum(heartnumber);
@@ -477,35 +320,8 @@ const HomeView = ({ navigation }) => {
     return (
         <View style={{ flex: 1, alignItems: 'center', height: 1000 }}>
             {/* <View><Text>{`${number}`}</Text></View> */}
-<<<<<<< HEAD
             <HomeHeader/>
             <ScrollView style={{ width: '100%' }} pagingEnabled={true} showsVerticalScrollIndicator={false} onScroll={handleScroll} scrollEventThrottle={1000}>
-=======
-            <View style={styles.header}>
-                <View style={styles.icon}></View>
-                <View style={styles.informations}>
-                    <View style={styles.NameHeart}>
-                        <Text style={{ fontSize: 20, color: '#30CB89' }}>{`${infor.name}`}</Text>
-                        <View style={styles.heart}>
-                            <Ionicons name="heart" size={24} color="deeppink" />
-                            <View style={styles.heartCount}>
-                                <Text style={{ fontSize: 18, paddingLeft: '10%', color: 'white' }}>{`× ${a}　`}</Text>
-                                <AntDesign name="plus" size={15} color="dodgerblue" />
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.FucilityDate}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Ionicons name="pencil" size={24} color='#30CB89' />
-                            <Text style={{ fontSize: 16, color: '#30CB89' }}>{`${infor.faculty}`}</Text>
-                        </View>
-                        <Text style={{ fontSize: 16, color: '#30CB89' }}>{'2日 12:05'}</Text>
-                    </View>
-                </View>
-            </View>
-
-            <ScrollView style={{ width: '100%' }} pagingEnabled={true} showsVerticalScrollIndicator={false}>
->>>>>>> 9f73e43 (設定画面)
                 <View style={styles.personlist}>
                     {persondata.map((data, index) =>
                         <View style={styles.InfoOutside} key={index}>
@@ -550,10 +366,7 @@ const HomeView = ({ navigation }) => {
                     )}
                 </View>
             </ScrollView>
-<<<<<<< HEAD
                 {scrollcheck &&<HomeAnimation/>}
-=======
->>>>>>> 9f73e43 (設定画面)
             <View style={styles.footer}>
                 <HomeFooter navigation={navigation} />
             </View>

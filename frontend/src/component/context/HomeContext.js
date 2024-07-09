@@ -15,7 +15,7 @@ export const HomeProvider = ({ children }) => {
   const [userImage, setUserImage] = useState('');
   const [persondata, setPersondata] = useState([{ name: '', faculty: '', heart: '', image: '', age: 0, comment: '', heart_pushed: [], userid: '', randomField: '' }]);
   const [scrollcheck, setScrollcheck] = useState(false); //読み込みが完了してからスクロールが可能になるように設定
-  const [unreadMessagesJSON,setUnreadMessageJSON]=useState({})
+  const [unreadMessagesJSON,setUnreadMessageJSON]=useState({});
   const allChatMessages={}
 
   useLoadDoc({persondata, setPersondata, setScrollcheck, isLogin});
