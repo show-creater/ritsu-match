@@ -7,6 +7,7 @@ import { useHome } from '../../component/context/HomeContext'
 import { auth, db, storage } from '../../../firebaseConfig';
 import { arrayUnion, updateDoc, Timestamp, onSnapshot, orderBy, addDoc, doc, getDoc, setDoc, collection, getDocs, getFirestore, query, where } from '@firebase/firestore';
 import { TouchableOpacity } from 'react-native';
+import Setting from '../../view/Home/setting';
 
 const MyPageImageHeader = () => {
     const { isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, isTime, setIsTime, myPageNow, setMyPageNow } = useHome();
@@ -35,7 +36,7 @@ const MyPageImageHeader = () => {
                     <Ionicons name="chevron-back" size={30} color='#30CB89' />
                 </TouchableOpacity>
                 :
-                <TouchableOpacity style={{ marginRight: 10, right: '0%', position: 'absolute', bottom: '20%' }}>
+                <TouchableOpacity style={{ marginRight: 10, right: '0%', position: 'absolute', bottom: '20%' }} onPress={()=> setMyPageNow(false)}>
                     <Ionicons name="menu-sharp" size={30} color='#30CB89' />
                 </TouchableOpacity>}
         </View>

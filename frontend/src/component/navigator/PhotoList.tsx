@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ImageSetting from '../../view/Home/ImageSetting';
 import { useHome } from '../context/HomeContext';
 import React, { useEffect, useState } from 'react';
+import Setting from '../../view/Home/setting';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,7 +24,7 @@ const PhotoList = () => {
                 /> :
                 <Stack.Screen
                     name="ImageSetting"
-                    component={ImageSetting}
+                    component={Setting}
                     options={{ headerShown: false }}
                 />}
         </Stack.Navigator>

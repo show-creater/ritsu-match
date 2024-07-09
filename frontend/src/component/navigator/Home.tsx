@@ -15,6 +15,8 @@ import { useHome } from '../context/HomeContext';
 import HomeNavigator from './MyPageNavigator';
 import PhotoList from './PhotoList'; //横スクロールのアニメーションを実装するとき、Talkコンポーネントをこのコンポーネントに置き換える
 import UserSearch from '../../view/Home/UserSearch';
+import TalkMatchingNavigator from './TalkMatching'; //横スクロールのアニメーションを実装するとき、Talkコンポーネントをこのコンポーネントに置き換える
+import Setting from '../../view/Home/setting';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

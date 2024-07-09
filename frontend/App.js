@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './src/component/navigator/Home'
 import { NavigationContainer } from '@react-navigation/native';
+import Setting from './src/view/Home/setting';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,11 @@ export default function App() {
         <Stack.Screen
           name="HomePrimary"
           component={Home}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Setting"
+          component={Setting}
           options={{ headerShown: false }}
         />
         {/* <Stack.Screen
