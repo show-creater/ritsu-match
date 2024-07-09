@@ -12,6 +12,21 @@ import MyPageImageHeader from '../../component/header/MyPageImageHeader';
 
 const Setting = ({ navigation }) => {
     const windowHeight = Dimensions.get('window').height;
+    const [myinfor,setMyinfor] = useState({ name: '', faculty: '', heart: '', image: '', age: 0, comment: '', heart_pushed: [], userid: '', randomField: '',number: '',plan: '',matching: '',mailaddress: '',location: '',blocklist: [],money: 0,remainingheart: 0});
+    //const [myinfor,setMyinfor] = useState({});
+    const [changeInfor,setChangeInfor] = useState(false);
+    useEffect(() => {
+        //infor()
+        const docRef = doc(db, "users", auth.currentUser.uid);
+        const docSnap = async () =>{
+            const docdata= await getDoc(docRef);
+            //console.log(docdata.data());
+            setMyinfor(docdata.data());
+        };
+        docSnap();
+        // console.log(myinfor);
+        // console.log(myinfor.name);
+    }, []);
     const styles=StyleSheet.create({
         header: {
             flexDirection: 'row',
@@ -107,11 +122,11 @@ const Setting = ({ navigation }) => {
             <View style={styles.icon}></View>
             <View style={styles.informations}>
                 <View style={styles.NameHeart}>
-                    <Text style={{ fontSize: 20, color: '#30CB89' }}>{'倍雄 狭男'}</Text>
+                    <Text style={{ fontSize: 20, color: '#30CB89' }}>{`${myinfor.name}`}</Text>
                     <View style={styles.heart}>
                         <Ionicons name="heart" size={24} color="deeppink" />
                         <View style={styles.heartCount}>
-                            <Text style={{ fontSize: 18, paddingLeft: '10%', color: 'white' }}>{'×2'}</Text>
+                            <Text style={{ fontSize: 18, paddingLeft: '10%', color: 'white' }}>{`×${myinfor.remainingheart}`}</Text>
                             <AntDesign name="plus" size={15} color="dodgerblue" />
                         </View>
                     </View>
@@ -119,7 +134,7 @@ const Setting = ({ navigation }) => {
                 <View style={styles.FucilityDate}>
                     <View style={{ flexDirection: 'row' }}>
                         <Ionicons name="pencil" size={24} color='#30CB89' />
-                        <Text style={{ fontSize: 16, color: '#30CB89' }}>{'薬学部'}</Text>
+                        <Text style={{ fontSize: 16, color: '#30CB89' }}>{`${myinfor.faculty}`}</Text>
                     </View>
                     <Text style={{ fontSize: 16, color: '#30CB89' }}>{'2日 12:05'}</Text>
                 </View>
@@ -131,7 +146,7 @@ const Setting = ({ navigation }) => {
         <View style={{alignItems: 'center',marginVertical: 10,height: '15%'}}>
             <View style={styles.money}>
                 <Text style={{fontSize: 30,paddingHorizontal: 49,paddingTop: 10}}>{'残高'}</Text>
-                <Text style={{fontSize: 40,paddingHorizontal: 17,paddingTop: 10}}>{'￥248'}</Text>
+                <Text style={{fontSize: 40,paddingHorizontal: 17,paddingTop: 10}}>{`¥${myinfor.money}`}</Text>
                 <Text style ={{fontSize: 23,position: 'absolute',top : 57,right: 10}}>{'チャージする'}</Text>
                 <AntDesign style={{position: 'absolute',top : 55,right: 150}}name="pluscircleo" size={30} color="black" />
             </View>
@@ -143,17 +158,17 @@ const Setting = ({ navigation }) => {
                     <View style={{alignItems: 'center',justifyContent: 'center',marginBottom: 30}}>
                         <View style={styles.box}>
                             <Text style={{fontSize: 22,marginHorizontal: 20}}>{'電話番号'}</Text>
-                            <Text style={{position: 'absolute',right: 50,fontSize: 20,color: 'grey'}}>{'09012345678'}</Text>
+                            <Text style={{position: 'absolute',right: 50,fontSize: 20,color: 'grey'}}>{`${myinfor.number}`}</Text>
                             <AntDesign style={{position: 'absolute',right: 10}}name="right" size={24} color="black" />
                         </View>
                         <View style={styles.box}>
                             <Text style={{fontSize: 22,marginHorizontal: 20}}>{'メールアドレス'}</Text>
-                            <Text style={{position: 'absolute',right: 50,fontSize: 12,color: 'grey'}}>{'teramoto@icloud.com'}</Text>
+                            <Text style={{position: 'absolute',right: 50,fontSize: 12,color: 'grey'}}>{`${myinfor.mailaddress}`}</Text>
                             <AntDesign style={{position: 'absolute',right: 10}}name="right" size={24} color="black" />
                         </View>
                         <View style={styles.box}>
                             <Text style={{fontSize: 22,marginHorizontal: 20}}>{'位置情報'}</Text>
-                            <Text style={{position: 'absolute',right: 50,fontSize: 20,color: 'grey'}}>{'滋賀県草津市'}</Text>
+                            <Text style={{position: 'absolute',right: 50,fontSize: 20,color: 'grey'}}>{`${myinfor.location}`}</Text>
                             <AntDesign style={{position: 'absolute',right: 10}}name="right" size={24} color="black" />
                         </View>
                     </View>
@@ -161,12 +176,12 @@ const Setting = ({ navigation }) => {
                     <View style={{alignItems: 'center',justifyContent: 'center',marginBottom: 20}}>
                         <View style={styles.box}>
                             <Text style={{fontSize: 22,marginHorizontal: 20}}>{'プラン設定'}</Text>
-                            <Text style={{position: 'absolute',right: 50,fontSize: 20,color: 'grey'}}>{'無料プラン'}</Text>
+                            <Text style={{position: 'absolute',right: 50,fontSize: 20,color: 'grey'}}>{`${myinfor.plan}`}</Text>
                             <AntDesign style={{position: 'absolute',right: 10}}name="right" size={24} color="black" />
                         </View>
                         <View style={styles.box}>
                             <Text style={{fontSize: 22,marginHorizontal: 20}}>{'マッチング相手'}</Text>
-                            <Text style={{position: 'absolute',right: 50,fontSize: 20,color: 'grey'}}>{'女性・学内'}</Text>
+                            <Text style={{position: 'absolute',right: 50,fontSize: 20,color: 'grey'}}>{`${myinfor.matching}`}</Text>
                             <AntDesign style={{position: 'absolute',right: 10}}name="right" size={24} color="black" />
                         </View>
                         <View style={styles.box}>

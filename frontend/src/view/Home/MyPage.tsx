@@ -8,6 +8,7 @@ import { useHome } from '../../component/context/HomeContext';
 import SignUpScreen from '../login/SignUpScreen';
 import { collection, getDocs, getDoc, doc, setDoc } from "firebase/firestore";
 import { db, auth } from '../../../firebaseConfig';
+<<<<<<< HEAD
 import { MaterialIcons } from '@expo/vector-icons';
 import MyPageImageHeader from '../../component/header/MyPageImageHeader';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -15,6 +16,10 @@ import * as Imagepicker from 'expo-image-picker';
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import ImagePicker from 'react-native-image-crop-picker';
 import RNWebp from 'react-native-webp';
+=======
+import { Feather } from '@expo/vector-icons';
+import { rgbaColor } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
+>>>>>>> 9f73e43 (設定画面)
 
 const MyPage = ({ navigation }) => {
     const { isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, isTime, setIsTime, myPageNow, setMyPageNow, infor, setInfor, userImage, setUserImage } = useHome();
@@ -337,6 +342,11 @@ const MyPage = ({ navigation }) => {
                             }
                         </View>
                     </View>
+                <View style={{position:'absolute',top:50,right:20,backgroundColor:"rgba(255,255,255,0.3)",borderRadius:10}}>
+                    <TouchableOpacity onPress={()=>navigation.navigate("Setting")}>
+                        <Feather name="menu" size={50} color="black" />
+                    </TouchableOpacity>
+                </View>
                 </ScrollView>
                 :
                 <SignUpScreen navigation={navigation} />
