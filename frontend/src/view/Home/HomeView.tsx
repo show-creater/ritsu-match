@@ -21,7 +21,7 @@ const HomeView = ({ navigation }) => {
     const windowWidth = Dimensions.get('window').width;
     // const [persondata, setPersondata] = useState([{ name: '', faculty: '', heart: '', image: '', age: 0, comment: '', heart_pushed: [], userid: '', randomField: '' }]);
     const [heartTF, setHeartTF] = useState([]);
-    const [heartnum, setHeartnum] = useState([0]);
+    const [heartnum, setHeartnum] = useState(["読み込み中"]);
     const scrollViewRef = useRef(null);
     const storage = getStorage();
     const a = 0;
@@ -353,7 +353,7 @@ const HomeView = ({ navigation }) => {
                                                 </TouchableOpacity> :
                                                 <TouchableOpacity style={styles.clickheart} onPress={() => { heartadd(index); }}>
                                                     <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                                    <Text style={{ color: 'deeppink' }}>{`${heartnum[index]}`}</Text>
+                                                    <Text style={{ color: 'deeppink' }}>{`${heartnum[index]===undefined?"読み込み中":heartnum[index]}`}</Text>
                                                 </TouchableOpacity>}
                                             <Ionicons name="bookmark" size={50} color="#30CB89" />
 
