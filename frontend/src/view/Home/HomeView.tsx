@@ -89,15 +89,21 @@ const HomeView = ({ navigation }) => {
             } catch (error) {
                 // エラー処理
                 //   console.error('Login failed:', error.message);
-                setIsTimeout(true);
+                console.log('lllllllllllllllllllllllllllllllllllllll',error.message);
+                if (error.message != "Firebase Storage: Object 'user_image/KDdI2NJ4zYOeLWcmb23AmZSNikB2' does not exist. (storage/object-not-found)"){
+                    setIsTimeout(true);
+                }
+                
             }
         };
         const login = async () => {
             let usemail = '';
             let uspassword = '';
             usemail = await loademail();
+            console.log(usemail);
             uspassword = await loadpassword();
-            handleLogin(usemail, uspassword);
+            console.log(uspassword);
+            handleLogin(`${usemail}@ed.ritsumei.ac.jp`, uspassword);
         };
         login();
     }, []);
@@ -235,12 +241,16 @@ const HomeView = ({ navigation }) => {
         if (persondata.length > 1) {
             heartcheck();
         }
-    }, [persondata])
+    }, [persondata]);
+
+    useEffect(() => {
+        console.log('isLogin:', isLogin);
+    },[isLogin]);
 
     const styles = StyleSheet.create({
         personlist: {
             width: '100%',
-            height: 16000,//?個分の高さk
+            height: windowHeight*11,//?個分の高さk
             marginTop: 160,
             alignItems: 'center',
             flexDirection: 'column',

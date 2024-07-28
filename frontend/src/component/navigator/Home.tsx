@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import HomeView from '../../view/Home/HomeView';
 import MyPage from '../../view/Home/MyPage';
-import Friends from '../../view/Home/Friends';
+import Friends from '../../view/Home/SearchResultList';
 import TalkMatching from '../../view/Home/TalkMatching';
 import SignUpScreen from '../../view/login/SignUpScreen';
 import SendEmail from '../../view/login/SendEmail';

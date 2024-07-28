@@ -7,10 +7,12 @@ import { useHome } from '../../component/context/HomeContext'
 import { auth,db,storage } from '../../../firebaseConfig';
 import { arrayUnion, updateDoc, Timestamp, onSnapshot, orderBy, addDoc, doc, getDoc, setDoc , collection, getDocs, getFirestore, query, where } from '@firebase/firestore';
 import { TouchableOpacity } from 'react-native';
-import Friends from './Friends';
+import Friends from './SearchResultList';
 import MyPageImageHeader from '../../component/header/MyPageImageHeader';
+import SettingHeader from '../../component/header/SettingHeader';
 
 const Setting = ({ navigation }) => {
+    const { isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, isTime, setIsTime, myPageNow, setMyPageNow, infor, setInfor, userImage, setUserImage } = useHome();
     const windowHeight = Dimensions.get('window').height;
     const [myinfor,setMyinfor] = useState({ name: '', faculty: '', heart: '', image: '', age: 0, comment: '', heart_pushed: [], userid: '', randomField: '',number: '',plan: '',matching: '',mailaddress: '',location: '',blocklist: [],money: 0,remainingheart: 0});
     //const [myinfor,setMyinfor] = useState({});
@@ -85,6 +87,8 @@ const Setting = ({ navigation }) => {
             width:'95%',
             backgroundColor:'white',
             borderRadius: 20,
+            flexDirection: 'row',
+            alignItems: 'center'
         },
         settingmenu:{
             width:'100%',
@@ -117,41 +121,25 @@ const Setting = ({ navigation }) => {
     });
    return(
     <View style={{flex: 1}}>
-        {MyPageImageHeader()}
-        <View style={styles.header}>
-            <View style={styles.icon}></View>
-            <View style={styles.informations}>
-                <View style={styles.NameHeart}>
-                    <Text style={{ fontSize: 20, color: '#30CB89' }}>{`${myinfor.name}`}</Text>
-                    <View style={styles.heart}>
-                        <Ionicons name="heart" size={24} color="deeppink" />
-                        <View style={styles.heartCount}>
-                            <Text style={{ fontSize: 18, paddingLeft: '10%', color: 'white' }}>{`×${myinfor.remainingheart}`}</Text>
-                            <AntDesign name="plus" size={15} color="dodgerblue" />
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.FucilityDate}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Ionicons name="pencil" size={24} color='#30CB89' />
-                        <Text style={{ fontSize: 16, color: '#30CB89' }}>{`${myinfor.faculty}`}</Text>
-                    </View>
-                    <Text style={{ fontSize: 16, color: '#30CB89' }}>{'2日 12:05'}</Text>
-                </View>
-            </View>
-        </View>
-        <View style={{paddingTop:'25%',justifyContent: "center",alignItems: 'center'}}>
+        {isLogin && <MyPageImageHeader/>}
+        <SettingHeader/> 
+        <View style={{paddingTop:'10%',justifyContent: "center",alignItems: 'center'}}>
             <Text style={{fontSize:21,}}>{'設定'}</Text>
         </View>
         <View style={{alignItems: 'center',marginVertical: 10,height: '15%'}}>
             <View style={styles.money}>
-                <Text style={{fontSize: 30,paddingHorizontal: 49,paddingTop: 10}}>{'残高'}</Text>
-                <Text style={{fontSize: 40,paddingHorizontal: 17,paddingTop: 10}}>{`¥${myinfor.money}`}</Text>
-                <Text style ={{fontSize: 23,position: 'absolute',top : 57,right: 10}}>{'チャージする'}</Text>
-                <AntDesign style={{position: 'absolute',top : 55,right: 150}}name="pluscircleo" size={30} color="black" />
+                <View style={{flexDirection: 'column', width: '50%', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{fontSize: 30}}>{'残高'}</Text>
+                    <Text style={{fontSize: 30}}>{`¥${myinfor.money}`}</Text>                    
+                </View>
+                <View style={{flexDirection: 'row', width: '50%', justifyContent: 'center', alignItems: 'center'}}>
+                    <AntDesign name="pluscircleo" size={30} color="black" />
+                    <Text style ={{fontSize: 23}}>{'チャージする'}</Text>                
+                </View>
+
             </View>
         </View>
-        <View style={{}}>
+        <View>
            <ScrollView>
                 <View style={styles.settingmenu}>
                     <Text style={styles.settingtext}>{'アカウント設定'}</Text>
@@ -163,7 +151,7 @@ const Setting = ({ navigation }) => {
                         </View>
                         <View style={styles.box}>
                             <Text style={{fontSize: 22,marginHorizontal: 20}}>{'メールアドレス'}</Text>
-                            <Text style={{position: 'absolute',right: 50,fontSize: 12,color: 'grey'}}>{`${myinfor.mailaddress}`}</Text>
+                            <Text style={{position: 'absolute',right: 50,fontSize: 20,color: 'grey'}}>{`${myinfor.mailaddress}`}</Text>
                             <AntDesign style={{position: 'absolute',right: 10}}name="right" size={24} color="black" />
                         </View>
                         <View style={styles.box}>

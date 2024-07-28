@@ -21,6 +21,7 @@ const MyPageImageHeader = () => {
             width: '100%',
             top: 0,
             zIndex: 1,
+            borderBottomWidth: 0.5
             // backgroundColor: 'red'
             // backgroundColor: 'white'
         },

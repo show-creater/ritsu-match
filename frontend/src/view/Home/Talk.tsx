@@ -30,7 +30,7 @@ import {
   where,
 } from "@firebase/firestore";
 import { TouchableOpacity } from "react-native";
-import Friends from "./Friends";
+import Friends from "./SearchResultList";
 import TalkFriendListItemContainer from "../../component/chat/TalkFriendListItemContainer";
 
 const Talk = ({ navigation }) => {

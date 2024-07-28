@@ -11,6 +11,7 @@ import { useHome } from '../../component/context/HomeContext';
 import { collection, getDocs, getDoc, doc, setDoc, addDoc } from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
 import Animation1 from '../../component/animation/LoginAnimation';
+import { Svg, Circle, Defs, RadialGradient, Stop } from 'react-native-svg';
 
 const Login = ({ navigation }) => {
   const { isLogin, setIsLogin, isTimeout, setIsTimeout, isTime, setIsTime } = useHome();
@@ -23,7 +24,7 @@ const Login = ({ navigation }) => {
     try {
       setRoading(true);
       // メールアドレスとパスワードでログイン
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, `${email}@ed.ritsumei.ac.jp`, password);
       const user = userCredential.user;
       //ログイン状態管理
       if (user.emailVerified) { //メール認証が完了していた場合
@@ -32,9 +33,6 @@ const Login = ({ navigation }) => {
         setIsLogin(true);
         setIsTimeout(false);
         setIsTime(false);
-        const currentuser = auth.currentUser.uid;
-        const randomNum = Math.random();
-        await setDoc(doc(db, 'users', currentuser), { randomField: randomNum, userid: currentuser, name: '', age: 0, comment: '', faculty: '', heart: 0, image: '' })
 
         //初回ログイン時にユーザー情報をasyncstorageに保存
         const saveemail = async () => {
@@ -94,74 +92,127 @@ const Login = ({ navigation }) => {
   });
 
   return (
-    <View style={{
-      justifyContent: 'center',
-      alignItems: 'center',
-      flex: 1,
-      // backgroundColor: roading ? '#a9a9a9' : 'white'
-    }}>{roading && <Animation1 />}
-      <KeyboardAvoidingView
-        behavior="padding"
-        style={{
-          position: 'absolute',
-          alignItems: 'center'
+    <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: 'blue' }}>
+      <View style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+        backgroundColor: '#30CB89'
+      }}>{roading && <Animation1 />}
 
-        }}
-      >
-        <Text style={{ fontSize: 20, marginBottom: 20 }}>ログイン画面</Text>
-        {errorMessage != '' && <Text style={{ fontSize: 15, marginBottom: 20, color: 'red' }}>{`${errorMessage}`}</Text>}
-        <View style={{ marginBottom: 20 }}>
-          <TextInput
-            style={{
-              width: 250,
-              borderWidth: 1,
-              padding: 5,
-              borderColor: 'gray',
-            }}
-            onChangeText={setEmail}
-            value={email}
-            placeholder="メールアドレスを入力してください"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
+        <View style={{ top: 0, left: 0, position: 'absolute' }}>
+          <Svg height="300" width="300">
+            <Defs>
+              <RadialGradient
+                id="grad"
+                cx="50%"
+                cy="50%"
+                r="50%"
+                fx="100%"
+                fy="100%"
+              >
+                <Stop offset="0%" stopColor="white" stopOpacity="0" />
+                <Stop offset="100%" stopColor="white" stopOpacity="0.5" />
+              </RadialGradient>
+            </Defs>
+            <Circle
+              cx="30" // 円の中心のx座標
+              cy="30" // 円の中心のy座標
+              r="250"  // 円の半径
+              fill="url(#grad)" // 円の塗りつぶしの色
+            />
+          </Svg>
         </View>
-        <View style={{ marginBottom: 20 }}>
-          <TextInput
-            style={{
-              width: 250,
-              borderWidth: 1,
-              padding: 5,
-              borderColor: 'gray',
-            }}
-            onChangeText={setPassword}
-            value={password}
-            placeholder="パスワードを入力してください"
-            secureTextEntry={true}
-            autoCapitalize="none"
-          />
+        <View style={{ bottom: 0, right: 0, position: 'absolute' }}>
+          <Svg height="300" width="300">
+            <Defs>
+              <RadialGradient
+                id="grad"
+                cx="50%"
+                cy="50%"
+                r="50%"
+                fx="100%"
+                fy="100%"
+              >
+                <Stop offset="0%" stopColor="white" stopOpacity="0" />
+                <Stop offset="100%" stopColor="white" stopOpacity="0.5" />
+              </RadialGradient>
+            </Defs>
+            <Circle
+              cx="270" // 円の中心のx座標
+              cy="270" // 円の中心のy座標
+              r="250"  // 円の半径
+              fill="url(#grad)" // 円の塗りつぶしの色
+            />
+          </Svg>
         </View>
-        <TouchableOpacity
+        <KeyboardAvoidingView
+          behavior="padding"
           style={{
-            padding: 10,
-            backgroundColor: '#88cb7f',
-            borderRadius: 10,
+            alignItems: 'center',
+            position: 'absolute'
           }}
-          onPress={handleLogin}
-          disabled={!email || !password}
         >
-          <Text style={{ color: roading ? '#a9a9a9' : 'white' }}>ログイン</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ marginTop: 20, borderBottomWidth: 1 }}
-          onPress={() => navigation.navigate('SignUpScreen')}
-        >
-          <Text>まだアカウントをお持ちでない方</Text>
-        </TouchableOpacity>
-        {isLogin && <View style={styles.footer}>
-          <HomeFooter navigation={navigation} />
-        </View>}
-      </KeyboardAvoidingView>
-    </View>
+          <Text style={{ marginBottom: 30, fontSize: 30, color: 'white' }}>Ritsu-Friendship</Text>
+          <View style={{ padding: 20, alignItems: 'center', backgroundColor: 'white', borderRadius: 7 }}>
+            <Text style={{ fontSize: 30, marginBottom: 20 }}>Login</Text>
+            {errorMessage != '' && <Text style={{ color: 'red', width: 250, paddingBottom: 10 }}>{errorMessage}</Text>}
+            <View style={{ marginBottom: 20, width: 250, }}>
+              <Text>E-mail</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <TextInput
+                  style={{
+                    width: '40%',
+                    borderBottomWidth: 1,
+                    padding: 5,
+                    borderColor: 'gray',
+                  }}
+                  onChangeText={setEmail}
+                  value={email}
+                  // placeholder="メールアドレスを入力してください"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                <Text style={{ fontSize: 17, paddingLeft: 5 }}>@ed.ritsumei.ac.jp</Text>
+              </View>
+            </View>
+            <View style={{ marginBottom: 20, width: '100%' }}>
+              <Text>Password</Text>
+              <TextInput
+                style={{
+                  width: 250,
+                  borderWidth: 1,
+                  padding: 5,
+                  borderColor: 'gray',
+                }}
+                onChangeText={setPassword}
+                value={password}
+                placeholder="パスワードを入力してください"
+                secureTextEntry={true}
+                autoCapitalize="none"
+              />
+            </View>
+            <TouchableOpacity
+              style={{
+                padding: 10,
+                backgroundColor: '#88cb7f',
+                borderRadius: 10,
+              }}
+              onPress={() => { handleLogin(); setRoading(true); }}
+              disabled={!email || !password}
+            >
+              <Text style={{ color: roading ? '#a9a9a9' : 'white' }}>ログイン</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ marginTop: 20, borderBottomWidth: 1 }}
+              onPress={() => navigation.navigate('SignUpScreen')}
+            >
+              <Text>まだアカウントをお持ちでない方</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      </View>
+    </ScrollView>
   );
 };
 export default Login;

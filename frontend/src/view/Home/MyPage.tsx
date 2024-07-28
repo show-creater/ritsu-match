@@ -186,6 +186,8 @@ const MyPage = ({ navigation }) => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
+            borderTopWidth: 0.5,
+            borderRadius: 30
         },
         nameInfor: {
             flexDirection: 'row',
@@ -235,10 +237,15 @@ const MyPage = ({ navigation }) => {
                                 <MaterialIcons name="photo-library" size={30} color='#30CB89' style={{ right: 5, backgroundColor: 'transparent', }} />
                             </TouchableOpacity>
                         </View>
-                        <Image style={{ width: windowWidth, height: windowHeight, top: '-40%' }}
+                        {userImage != '' ? <Image style={{ width: windowWidth, height: windowHeight, top: '-40%' }}
                             source={{ uri: userImage }}
                             resizeMode='contain'
+                        /> :
+                        <Image style={{ width: windowWidth, height: windowHeight, top: '-40%' }}
+                            source={ require('../../component/photo/初期画像.jpg') }
+                            resizeMode='contain'
                         />
+                        }
                     </View>
                     <View style={styles.profile}>
                         <View style={styles.nameInfor}>
@@ -339,11 +346,11 @@ const MyPage = ({ navigation }) => {
                             }
                         </View>
                     </View>
-                <View style={{position:'absolute',top:50,right:20,backgroundColor:"rgba(255,255,255,0.3)",borderRadius:10}}>
+                {/* <View style={{position:'absolute',top:50,right:20,backgroundColor:"rgba(255,255,255,0.3)",borderRadius:10}}>
                     <TouchableOpacity onPress={()=>navigation.navigate("Setting")}>
                         <Feather name="menu" size={50} color="black" />
                     </TouchableOpacity>
-                </View>
+                </View> */}
                 </ScrollView>
                 :
                 <SignUpScreen navigation={navigation} />
