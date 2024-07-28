@@ -247,6 +247,7 @@ const MyPage = ({ navigation }) => {
                         />
                         }
                     </View>
+                {/* こんにちは */}
                     <View style={styles.profile}>
                         <View style={styles.nameInfor}>
                             {!changeInfor[0] ?
