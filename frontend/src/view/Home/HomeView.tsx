@@ -104,7 +104,7 @@ const HomeView = ({ navigation }) => {
             console.log(usemail);
             uspassword = await loadpassword();
             console.log(uspassword);
-            handleLogin(`${usemail}@ed.ritsumei.ac.jp`, uspassword);
+            handleLogin(usemail, uspassword);
         };
         login();
     }, []);
