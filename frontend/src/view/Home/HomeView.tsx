@@ -72,6 +72,7 @@ const HomeView = ({ navigation }) => {
                 if (user.emailVerified) {
                     setIsLogin(true);
                     setLoginUser(user);
+                    setIsTimeout(true);
                     const image = await getImage();
                     console.log(image, 'image画像を表示します');
                     setUserImage(image);
@@ -89,11 +90,11 @@ const HomeView = ({ navigation }) => {
             } catch (error) {
                 // エラー処理
                 //   console.error('Login failed:', error.message);
-                console.log('lllllllllllllllllllllllllllllllllllllll',error.message);
-                if (error.message != "Firebase Storage: Object 'user_image/KDdI2NJ4zYOeLWcmb23AmZSNikB2' does not exist. (storage/object-not-found)"){
+                console.log('lllllllllllllllllllllllllllllllllllllll', error.message);
+                if (error.message == "Firebase Storage: Object 'user_image/KDdI2NJ4zYOeLWcmb23AmZSNikB2' does not exist. (storage/object-not-found)") {
                     setIsTimeout(true);
                 }
-                
+
             }
         };
         const login = async () => {
@@ -114,9 +115,9 @@ const HomeView = ({ navigation }) => {
 
         if (isBottom && !scrollcheck) {//一番下までスクロールをしたらスクロールチェックをtrueにする
             console.log('Reached the bottom!');
-            LoadDoc({persondata, setPersondata, setScrollcheck, isLogin});
+            LoadDoc({ persondata, setPersondata, setScrollcheck, isLogin });
             setScrollcheck(true);
-            
+
         }
     };
 
@@ -199,7 +200,7 @@ const HomeView = ({ navigation }) => {
 
     const heartcheck = () => {
         try {
-           // let heartTFarray = []
+            // let heartTFarray = []
             let heart = []
             let heartnumber = []
             for (let i = 0; i < persondata.length; i++) {
@@ -245,12 +246,12 @@ const HomeView = ({ navigation }) => {
 
     useEffect(() => {
         console.log('isLogin:', isLogin);
-    },[isLogin]);
+    }, [isLogin]);
 
     const styles = StyleSheet.create({
         personlist: {
             width: '100%',
-            height: windowHeight*11,//?個分の高さk
+            height: windowHeight * 11,//?個分の高さk
             marginTop: 160,
             alignItems: 'center',
             flexDirection: 'column',
@@ -329,25 +330,21 @@ const HomeView = ({ navigation }) => {
     });
     return (
         <View style={{ flex: 1, alignItems: 'center', height: 1000 }}>
-            {/* <View><Text>{`${number}`}</Text></View> */}
-            <HomeHeader/>
+            <HomeHeader />
             <ScrollView style={{ width: '100%' }} pagingEnabled={true} showsVerticalScrollIndicator={false} onScroll={handleScroll} scrollEventThrottle={1000}>
                 <View style={styles.personlist}>
                     {persondata.map((data, index) =>
                         <View style={styles.InfoOutside} key={index}>
                             <View style={styles.personInformation}>
-                                {/* <ScrollView pagingEnabled={true} horizontal={true} ref={scrollViewRef} style={{width: windowWidth}} scrollEventThrottle={16} > */}
-                                    <View style={styles.personImage}>
-                                        <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
-                                            source={require('../../component/photo/ディカプリオ.webp')}
-                                            resizeMode='cover'
-                                        />                                        
-                                    </View>
-                                {/* </ScrollView> */}
+                                <View style={styles.personImage}>
+                                    <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
+                                        source={require('../../component/photo/ディカプリオ.webp')}
+                                        resizeMode='cover'
+                                    />
+                                </View>
                                 <View style={styles.personProfile}>
                                     <View style={styles.ProfileTop}>
                                         <View style={styles.NameFucility}>
-
                                             <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>{`${data.name}`}</Text>
                                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                 <Ionicons name="pencil" size={24} color='#30CB89' />
@@ -355,7 +352,6 @@ const HomeView = ({ navigation }) => {
                                             </View>
                                         </View>
                                         <View style={styles.heartBookmark}>
-
                                             {heartTF[index] == true ?
                                                 <TouchableOpacity style={styles.clickheart} onPress={() => { heartdelete(index); }}>
                                                     <Ionicons name="heart" size={50} color="deeppink" />
@@ -366,7 +362,6 @@ const HomeView = ({ navigation }) => {
                                                     <Text style={{ color: 'deeppink' }}>{`${heartnum[index]}`}</Text>
                                                 </TouchableOpacity>}
                                             <Ionicons name="bookmark" size={50} color="#30CB89" />
-
                                         </View>
                                     </View>
                                     <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>{`${data.comment}`}</Text>
@@ -376,7 +371,7 @@ const HomeView = ({ navigation }) => {
                     )}
                 </View>
             </ScrollView>
-                {scrollcheck &&<HomeAnimation/>}
+            {scrollcheck && <HomeAnimation />}
             <View style={styles.footer}>
                 <HomeFooter navigation={navigation} />
             </View>
