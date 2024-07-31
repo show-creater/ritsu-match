@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Dimensions, Text, View, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { Dimensions, Text, View, StyleSheet, Vibration, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,11 +15,12 @@ import LoadDoc from '../../component/function/LoadDoc';
 import { GestureHandlerRootView, GestureDetector, Gesture } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, runOnJS } from 'react-native-reanimated';
 
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
 const HomeView = ({ navigation }) => {
     const { isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, infor, setInfor, userImage, setUserImage, persondata, setPersondata, scrollcheck, setScrollcheck } = useHome();
-    const windowHeight = Dimensions.get('window').height;
-    const windowWidth = Dimensions.get('window').width;
+
     const [heartTF, setHeartTF] = useState([]);
     const [heartnum, setHeartnum] = useState([0]);
     const scrollViewRef = useRef(null);
@@ -32,17 +33,23 @@ const HomeView = ({ navigation }) => {
     const currentIndexShared = useSharedValue(0);
 
     const updateIndex = (newIndex) => {
+        console.log('端に来たから0に戻します');
         setCurrentIndex(newIndex % persondata.length);
         x.value = 0;
         y.value = 0;
     };
 
     useEffect(() => {
+        console.log(x);
+        console.log(y);
+    }, [x, y]);
+
+    useEffect(() => {
         console.log('hello');
         const timer = setTimeout(() => {
             x.value = 0.001;
             y.value = 0.001;
-        }, 1);
+        }, 10);
         return () => clearTimeout(timer);
     }, [currentIndex]);
 
@@ -56,22 +63,6 @@ const HomeView = ({ navigation }) => {
         console.log('Download URL:', downloadURL);
         setUserImage(downloadURL);
         return downloadURL;
-    };
-
-    const onGestureEvent = (event) => {
-        setPosition({
-            x: event.nativeEvent.translationX,
-            y: event.nativeEvent.translationY
-        });
-    };
-
-    const onHandlerStateChange = (event) => {
-        if (event.nativeEvent.state === State.END) {
-            setPosition({
-                x: event.nativeEvent.translationX,
-                y: event.nativeEvent.translationY,
-            });
-        }
     };
 
     useEffect(() => {
@@ -250,112 +241,11 @@ const HomeView = ({ navigation }) => {
         console.log('isLogin:', isLogin);
     }, [isLogin]);
 
-    const styles = StyleSheet.create({
-        personlist: {
-            width: '100%',
-            height: windowHeight * 11,
-            marginTop: 160,
-            alignItems: 'center',
-            flexDirection: 'column',
-            marginBottom: 900
-        },
-        InfoOutside: {
-            height: windowHeight,
-            width: '90%',
-            position: 'absolute',
-        },
-        personInformation: {
-            height: '70%',
-            width: '100%',
-            borderRadius: 20,
-            borderWidth: 1.5,
-            borderColor: '#30CB89',
-            flexDirection: 'column',
-            backgroundColor: '#30CB89',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingBottom: '0.5%',
 
-        },
-        personImage: {
-            display: 'flex',
-            backgroundColor: 'white',
-            height: '64.5%',
-            borderRadius: 20,
-            width: '99%',
-            marginBottom: '1%',
-            flex: 1,
-            justifyContent: "center",
-            alignItems: 'center',
-            marginTop: '0.5%',
-        },
-        personProfile: {
-            backgroundColor: 'white',
-            height: '34%',
-            borderRadius: 20,
-            width: '99%',
-            paddingTop: '2%',
-            paddingRight: '5%',
-            paddingLeft: '5%',
-            flexDirection: 'column'
-        },
-        ProfileTop: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-        },
-        NameFucility: {
-            flexDirection: 'column',
-        },
-        heartBookmark: {
-            flexDirection: 'row',
-        },
-        clickheart: {
-            flexDirection: 'column',
-            alignItems: 'center'
-        },
-        ProfileBottom: {
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            height: '60%',
-        },
-        footer: {
-            position: 'absolute',
-            bottom: 0,
-            height: '10%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-        },
-        container: {
-            flex: 1,
-            // // justifyContent: 'center',
-            // alignItems: 'center',
-        },
-        card: {
-            position: 'absolute',
-            width: windowWidth,
-            height: windowHeight,
-            justifyContent: 'center',
-            alignItems: 'center',
-            // backgroundColor: 'red'
-            marginTop: 160,
-            
-            
-        },
-        cardContent: {
-            // flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        text: {
-            fontSize: 24,
-            fontWeight: 'bold',
-        },
-    });
 
     return (
         <View style={{ flex: 1 }}>
-            <HomeHeader/>
+            <HomeHeader />
             <GestureHandlerRootView style={styles.container}>
                 {persondata.map((item, index) => {
                     if (index < currentIndex) {
@@ -376,15 +266,18 @@ const HomeView = ({ navigation }) => {
                         .onEnd((event) => {
                             if (event.translationX > windowWidth / 4) {
                                 //   x.value = withSpring(windowWidth, {}, () => {
+                                console.log('右端');
                                 runOnJS(updateIndex)(currentIndexShared.value + 1);
                                 currentIndexShared.value = currentIndexShared.value + 1;
                                 //   });
                             } else if (event.translationX < -windowWidth / 4) {
                                 //   x.value = withSpring(-windowWidth, {}, () => {
+                                console.log('左端');
                                 runOnJS(updateIndex)(currentIndexShared.value + 1);
                                 currentIndexShared.value = currentIndexShared.value + 1;
                                 //   });
                             } else {
+                                console.log('0に戻る');
                                 x.value = withSpring(0);
                                 y.value = withSpring(0);
                             }
@@ -448,6 +341,111 @@ const HomeView = ({ navigation }) => {
         </View>
 
     );
+
+
 };
+
+const styles = StyleSheet.create({
+    personlist: {
+        width: '100%',
+        height: windowHeight * 11,
+        marginTop: 160,
+        alignItems: 'center',
+        flexDirection: 'column',
+        marginBottom: 900
+    },
+    InfoOutside: {
+        height: windowHeight,
+        width: '90%',
+        position: 'absolute',
+    },
+    personInformation: {
+        height: '70%',
+        width: '100%',
+        borderRadius: 20,
+        borderWidth: 1.5,
+        borderColor: '#30CB89',
+        flexDirection: 'column',
+        backgroundColor: '#30CB89',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: '0.5%',
+
+    },
+    personImage: {
+        display: 'flex',
+        backgroundColor: 'white',
+        height: '64.5%',
+        borderRadius: 20,
+        width: '99%',
+        marginBottom: '1%',
+        flex: 1,
+        justifyContent: "center",
+        alignItems: 'center',
+        marginTop: '0.5%',
+    },
+    personProfile: {
+        backgroundColor: 'white',
+        height: '34%',
+        borderRadius: 20,
+        width: '99%',
+        paddingTop: '2%',
+        paddingRight: '5%',
+        paddingLeft: '5%',
+        flexDirection: 'column'
+    },
+    ProfileTop: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    NameFucility: {
+        flexDirection: 'column',
+    },
+    heartBookmark: {
+        flexDirection: 'row',
+    },
+    clickheart: {
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+    ProfileBottom: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        height: '60%',
+    },
+    footer: {
+        position: 'absolute',
+        bottom: 0,
+        height: '10%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+    },
+    container: {
+        flex: 1,
+        // // justifyContent: 'center',
+        // alignItems: 'center',
+    },
+    card: {
+        position: 'absolute',
+        width: windowWidth,
+        height: windowHeight,
+        justifyContent: 'center',
+        alignItems: 'center',
+        // backgroundColor: 'red'
+        marginTop: 160,
+
+
+    },
+    cardContent: {
+        // flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    text: {
+        fontSize: 24,
+        fontWeight: 'bold',
+    },
+});
 
 export default HomeView;
