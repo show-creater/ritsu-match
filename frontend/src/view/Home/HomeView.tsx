@@ -1,30 +1,54 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Dimensions, Text, View, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity } from 'react-native';
+import { Dimensions, Text, View, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import HomeFooter from '../../component/footer/HomeFooter';
-import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from '../../../firebaseConfig';
-import { signInWithEmailAndPassword, browserLocalPersistence } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useHome } from '../../component/context/HomeContext'
-import { collection, getDocs, getDoc, doc, setDoc, where, query, limit, QuerySnapshot, updateDoc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, getDoc, doc, setDoc } from "firebase/firestore";
 import { db } from '../../../firebaseConfig';
-import LottieView from 'lottie-react-native';
 import HomeAnimation from '../../component/animation/HomeAnimation';
 import HomeHeader from '../../component/header/HomeHeader';
-import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import LoadDoc from '../../component/function/LoadDoc';
+import { GestureHandlerRootView, GestureDetector, Gesture } from 'react-native-gesture-handler';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring, runOnJS } from 'react-native-reanimated';
+
 
 const HomeView = ({ navigation }) => {
     const { isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, infor, setInfor, userImage, setUserImage, persondata, setPersondata, scrollcheck, setScrollcheck } = useHome();
     const windowHeight = Dimensions.get('window').height;
     const windowWidth = Dimensions.get('window').width;
-    // const [persondata, setPersondata] = useState([{ name: '', faculty: '', heart: '', image: '', age: 0, comment: '', heart_pushed: [], userid: '', randomField: '' }]);
     const [heartTF, setHeartTF] = useState([]);
     const [heartnum, setHeartnum] = useState([0]);
     const scrollViewRef = useRef(null);
     const storage = getStorage();
-    const a = 0;
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const x = useSharedValue(0);
+    const y = useSharedValue(0);
+    const currentIndexShared = useSharedValue(0);
+
+    const updateIndex = (newIndex) => {
+        setCurrentIndex(newIndex % persondata.length);
+        x.value = 0;
+        y.value = 0;
+    };
+
+    useEffect(() => {
+        console.log('hello');
+        const timer = setTimeout(() => {
+            x.value = 0.001;
+            y.value = 0.001;
+        }, 1);
+        return () => clearTimeout(timer);
+    }, [currentIndex]);
+
+    const animatedStyle = useAnimatedStyle(() => ({
+        transform: [{ translateX: x.value }, { translateY: y.value }],
+    }));
 
     const getImage = async () => {
         const storageRef = ref(storage, `user_image/${auth.currentUser.uid}`);
@@ -34,6 +58,27 @@ const HomeView = ({ navigation }) => {
         return downloadURL;
     };
 
+    const onGestureEvent = (event) => {
+        setPosition({
+            x: event.nativeEvent.translationX,
+            y: event.nativeEvent.translationY
+        });
+    };
+
+    const onHandlerStateChange = (event) => {
+        if (event.nativeEvent.state === State.END) {
+            setPosition({
+                x: event.nativeEvent.translationX,
+                y: event.nativeEvent.translationY,
+            });
+        }
+    };
+
+    useEffect(() => {
+        console.log(position);
+        console.log(windowWidth);
+    }, [position]);
+
     useEffect(() => {
         const loademail = async () => { //ローカルのログイン情報から自動ログイン
             let useremail = '';
@@ -41,7 +86,6 @@ const HomeView = ({ navigation }) => {
                 const stringValue = await AsyncStorage.getItem('useremail');
                 if (stringValue != null) {
                     const value = JSON.parse(stringValue);
-                    //console.log('email');
                     useremail = value;
                 }
             } catch (e) {
@@ -55,7 +99,6 @@ const HomeView = ({ navigation }) => {
                 const stringValue = await AsyncStorage.getItem('userpassword');
                 if (stringValue != null) {
                     const value = JSON.parse(stringValue);
-                    //console.log('password');
                     userpassword = value;
                 }
             } catch (e) {
@@ -66,7 +109,6 @@ const HomeView = ({ navigation }) => {
 
         const handleLogin = async (email, password) => {
             try {
-                // メールアドレスとパスワードでログイン
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
                 if (user.emailVerified) {
@@ -77,33 +119,23 @@ const HomeView = ({ navigation }) => {
                     console.log(image, 'image画像を表示します');
                     setUserImage(image);
                     const docdata = await getDoc(doc(db, "users", auth.currentUser.uid));
-                    // console.log(docdata.data());
-                    // console.log('hellllo');
                     if (docdata.data() != undefined) {
                         setInfor(docdata.data());
                     }
                 }
-
-                // ログインが成功した場合の処理
-                // console.log('User logged in:', user);
-                // console.log('User logged in:', user);
             } catch (error) {
-                // エラー処理
-                //   console.error('Login failed:', error.message);
-                console.log('lllllllllllllllllllllllllllllllllllllll', error.message);
+                console.log('Login failed:', error.message);
                 if (error.message == "Firebase Storage: Object 'user_image/KDdI2NJ4zYOeLWcmb23AmZSNikB2' does not exist. (storage/object-not-found)") {
                     setIsTimeout(true);
                 }
-
             }
         };
+
         const login = async () => {
             let usemail = '';
             let uspassword = '';
             usemail = await loademail();
-            console.log(usemail);
             uspassword = await loadpassword();
-            console.log(uspassword);
             handleLogin(`${usemail}@ed.ritsumei.ac.jp`, uspassword);
         };
         login();
@@ -113,11 +145,10 @@ const HomeView = ({ navigation }) => {
         const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
         const isBottom = contentOffset.y + layoutMeasurement.height >= contentSize.height - 20;
 
-        if (isBottom && !scrollcheck) {//一番下までスクロールをしたらスクロールチェックをtrueにする
+        if (isBottom && !scrollcheck) {
             console.log('Reached the bottom!');
             LoadDoc({ persondata, setPersondata, setScrollcheck, isLogin });
             setScrollcheck(true);
-
         }
     };
 
@@ -132,11 +163,9 @@ const HomeView = ({ navigation }) => {
 
     const heartadd = async (index) => {
         let usersIDarray = [];
-        let heartwhite = [];
         for (let i = 0; i < persondata.length; i++) {
             usersIDarray[i] = persondata[i];
         }
-        console.log(`helloooo${usersIDarray[index].heart_pushed}`);
         usersIDarray[index].heart_pushed.push(auth.currentUser.uid);
         setHeartTF((prev) => {
             const newarray = [...prev]
@@ -159,22 +188,14 @@ const HomeView = ({ navigation }) => {
             userid: usersIDarray[index].userid,
             heart_pushed: usersIDarray[index].heart_pushed
         });
-        // console.log('userIDarraya');
-        // console.log(usersIDarray);
-
     };
-
 
     const heartdelete = async (index1) => {
         let usersIDarray = [];
         for (let i = 0; i < persondata.length; i++) {
             usersIDarray[i] = persondata[i];
         }
-        usersIDarray[index1].heart_pushed.forEach((item, index) => {
-            if (item == `${auth.currentUser.uid}`) {
-                usersIDarray[index1].heart_pushed.splice(index, 1);
-            }
-        });
+        usersIDarray[index1].heart_pushed = usersIDarray[index1].heart_pushed.filter(item => item !== auth.currentUser.uid);
         setHeartTF((prev) => {
             const newarray = [...prev]
             newarray[index1] = false;
@@ -200,42 +221,23 @@ const HomeView = ({ navigation }) => {
 
     const heartcheck = () => {
         try {
-            // let heartTFarray = []
             let heart = []
             let heartnumber = []
             for (let i = 0; i < persondata.length; i++) {
                 heart[i] = persondata[i].heart_pushed;
                 heartnumber[i] = heart[i].length;
             }
-            // console.log(heart);
-            // for (let i = 0; i < heart.length; i++) {
-            //     if (heart[i].indexOf(`${auth.currentUser.uid}`) < 0) {
-            //         heartTFarray[i] = false;
-            //     } else {
-            //         heartTFarray[i] = true;
-            //     }
-            // }
             setHeartTF(heart.map(item => item.includes(auth.currentUser.uid)));
-
-            // console.log('っっっっっっっっっっっ');
-            // console.log(heart);
-            // console.log(heartTFarray);
-            // setHeartTF(heartTFarray);
             setHeartnum(heartnumber);
         } catch (e) {
             console.log(e.message);
         }
     };
+
     useEffect(() => {
         heartP().then((result) => {
-            // console.log(result);
-            console.log('セットしました')
             setPersondata(result);
         })
-
-        //console.log(persondata)
-        //console.log(heartcheck(index));
-
     }, []);
 
     useEffect(() => {
@@ -251,7 +253,7 @@ const HomeView = ({ navigation }) => {
     const styles = StyleSheet.create({
         personlist: {
             width: '100%',
-            height: windowHeight * 11,//?個分の高さk
+            height: windowHeight * 11,
             marginTop: 160,
             alignItems: 'center',
             flexDirection: 'column',
@@ -259,7 +261,8 @@ const HomeView = ({ navigation }) => {
         },
         InfoOutside: {
             height: windowHeight,
-            width: '90%'
+            width: '90%',
+            position: 'absolute',
         },
         personInformation: {
             height: '70%',
@@ -271,7 +274,8 @@ const HomeView = ({ navigation }) => {
             backgroundColor: '#30CB89',
             justifyContent: 'center',
             alignItems: 'center',
-            paddingBottom: '0.5%'
+            paddingBottom: '0.5%',
+
         },
         personImage: {
             display: 'flex',
@@ -298,11 +302,9 @@ const HomeView = ({ navigation }) => {
         ProfileTop: {
             flexDirection: 'row',
             justifyContent: 'space-between',
-            // height: '70%',
         },
         NameFucility: {
             flexDirection: 'column',
-
         },
         heartBookmark: {
             flexDirection: 'row',
@@ -324,58 +326,128 @@ const HomeView = ({ navigation }) => {
             alignItems: 'center',
             width: '100%',
         },
-
-
-
+        container: {
+            flex: 1,
+            // // justifyContent: 'center',
+            // alignItems: 'center',
+        },
+        card: {
+            position: 'absolute',
+            width: windowWidth,
+            height: windowHeight,
+            justifyContent: 'center',
+            alignItems: 'center',
+            // backgroundColor: 'red'
+            marginTop: 160,
+            
+            
+        },
+        cardContent: {
+            // flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        text: {
+            fontSize: 24,
+            fontWeight: 'bold',
+        },
     });
+
     return (
-        <View style={{ flex: 1, alignItems: 'center', height: 1000 }}>
-            <HomeHeader />
-            <ScrollView style={{ width: '100%' }} pagingEnabled={true} showsVerticalScrollIndicator={false} onScroll={handleScroll} scrollEventThrottle={1000}>
-                <View style={styles.personlist}>
-                    {persondata.map((data, index) =>
-                        <View style={styles.InfoOutside} key={index}>
-                            <View style={styles.personInformation}>
-                                <View style={styles.personImage}>
-                                    <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
-                                        source={require('../../component/photo/ディカプリオ.webp')}
-                                        resizeMode='cover'
-                                    />
-                                </View>
-                                <View style={styles.personProfile}>
-                                    <View style={styles.ProfileTop}>
-                                        <View style={styles.NameFucility}>
-                                            <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>{`${data.name}`}</Text>
-                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                <Ionicons name="pencil" size={24} color='#30CB89' />
-                                                <Text style={{ fontSize: 15, color: '#30CB89' }}>{`${data.faculty}`}</Text>
+        <View style={{ flex: 1 }}>
+            <HomeHeader/>
+            <GestureHandlerRootView style={styles.container}>
+                {persondata.map((item, index) => {
+                    if (index < currentIndex) {
+                        return null;
+                    }
+
+                    const isLastCard = index === currentIndex;
+
+                    // ジェスチャーをここで定義
+                    const panGesture = Gesture.Pan()
+                        .onBegin(() => {
+                            // 必要なら何か処理を行う
+                        })
+                        .onUpdate((event) => {
+                            x.value = event.translationX;
+                            y.value = event.translationY;
+                        })
+                        .onEnd((event) => {
+                            if (event.translationX > windowWidth / 4) {
+                                //   x.value = withSpring(windowWidth, {}, () => {
+                                runOnJS(updateIndex)(currentIndexShared.value + 1);
+                                currentIndexShared.value = currentIndexShared.value + 1;
+                                //   });
+                            } else if (event.translationX < -windowWidth / 4) {
+                                //   x.value = withSpring(-windowWidth, {}, () => {
+                                runOnJS(updateIndex)(currentIndexShared.value + 1);
+                                currentIndexShared.value = currentIndexShared.value + 1;
+                                //   });
+                            } else {
+                                x.value = withSpring(0);
+                                y.value = withSpring(0);
+                            }
+                        });
+
+                    return (
+                        <Animated.View
+                            key={item.id}
+                            style={[
+                                styles.card,
+                                { zIndex: persondata.length - index },
+                                isLastCard && animatedStyle,
+                            ]}
+                        >
+                            <GestureDetector gesture={panGesture}>
+                                <Animated.View style={styles.cardContent}>
+                                    <View style={[styles.InfoOutside, { transform: [{ translateX: position.x }, { translateY: position.y }], zIndex: index }]}>
+                                        <View style={styles.personInformation}>
+                                            <View style={styles.personImage}>
+                                                <Image style={{ width: '100%', height: '100%', borderRadius: 20, zIndex: -1 }}
+                                                    source={require('../../component/photo/ディカプリオ.webp')}
+                                                    resizeMode='cover'
+                                                />
+                                            </View>
+                                            <View style={styles.personProfile}>
+                                                <View style={styles.ProfileTop}>
+                                                    <View style={styles.NameFucility}>
+                                                        <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 25, color: '#30CB89', width: 200, maxHeight: '55%' }}>{`${item.name}`}</Text>
+                                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                            <Ionicons name="pencil" size={24} color='#30CB89' />
+                                                            <Text style={{ fontSize: 15, color: '#30CB89' }}>{`${item.faculty}`}</Text>
+                                                        </View>
+                                                    </View>
+                                                    <View style={styles.heartBookmark}>
+                                                        {heartTF[index] ?
+                                                            <TouchableOpacity style={styles.clickheart} onPress={() => { heartdelete(index); }}>
+                                                                <Ionicons name="heart" size={50} color="deeppink" />
+                                                                <Text style={{ color: 'deeppink' }}>{`${heartnum[index]}`}</Text>
+                                                            </TouchableOpacity> :
+                                                            <TouchableOpacity style={styles.clickheart} onPress={() => { heartadd(index); }}>
+                                                                <Ionicons name="heart-outline" size={50} color="deeppink" />
+                                                                <Text style={{ color: 'deeppink' }}>{`${heartnum[index]}`}</Text>
+                                                            </TouchableOpacity>}
+                                                        <Ionicons name="bookmark" size={50} color="#30CB89" />
+                                                    </View>
+                                                </View>
+                                                <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>{`${item.comment}`}</Text>
                                             </View>
                                         </View>
-                                        <View style={styles.heartBookmark}>
-                                            {heartTF[index] == true ?
-                                                <TouchableOpacity style={styles.clickheart} onPress={() => { heartdelete(index); }}>
-                                                    <Ionicons name="heart" size={50} color="deeppink" />
-                                                    <Text style={{ color: 'deeppink' }}>{`${heartnum[index]}`}</Text>
-                                                </TouchableOpacity> :
-                                                <TouchableOpacity style={styles.clickheart} onPress={() => { heartadd(index); }}>
-                                                    <Ionicons name="heart-outline" size={50} color="deeppink" />
-                                                    <Text style={{ color: 'deeppink' }}>{`${heartnum[index]}`}</Text>
-                                                </TouchableOpacity>}
-                                            <Ionicons name="bookmark" size={50} color="#30CB89" />
-                                        </View>
                                     </View>
-                                    <Text numberOfLines={3} ellipsizeMode="tail" style={{ fontSize: 18, width: '100%', marginTop: 10 }}>{`${data.comment}`}</Text>
-                                </View>
-                            </View>
-                        </View>
-                    )}
-                </View>
-            </ScrollView>
+                                </Animated.View>
+                            </GestureDetector>
+                        </Animated.View>
+                    );
+                }).reverse()}
+            </GestureHandlerRootView>
             {scrollcheck && <HomeAnimation />}
             <View style={styles.footer}>
                 <HomeFooter navigation={navigation} />
             </View>
         </View>
-    )
+
+    );
 };
+
 export default HomeView;

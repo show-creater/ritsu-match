@@ -23,7 +23,7 @@ const HomeNavigator = () => {
     // 2秒遅延してステートをtrueに設定
     const timer = setTimeout(() => {
       setIsTime(true);
-    }, 3000);
+    }, 2000);
     // クリーンアップ関数
     return () => clearTimeout(timer);
   }, []);

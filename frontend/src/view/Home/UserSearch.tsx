@@ -27,7 +27,7 @@ const UserSearch = ({ navigation }) => {
     const [searchResult, setSearchResult] = useState([]);
     const [deepSearch, setDeepSearch] = useState([]);
 
-// [仕組み] 趣味項目の最初の一つ目だけをfirebaseから検索して、検索結果をsearchResultに格納。それ以降の複数条件はすでに読み込んだsearchResultから絞り込んでdeepSearchに格納するからfirebaseからの読み取り自体は最初の一回のみ
+// 【仕組み】 趣味項目の最初の一つ目だけをfirebaseから検索して、検索結果をsearchResultに格納。それ以降の複数条件はすでに読み込んだsearchResultから絞り込んでdeepSearchに格納するからfirebaseからの読み取り自体は最初の一回のみ
     useEffect(() => {
         const searchDoc = async () => { 
             let array = [];
@@ -45,45 +45,42 @@ const UserSearch = ({ navigation }) => {
                 setSearchResult(docarray);
                 setDeepSearch(docarray);
             } else if (choosen.length > 1) {//趣味候補二つ目以降の複数条件絞り
-                console.log('1異常です');
+                console.log('choosen.lengthは1以上です');
                 deepSearch.map((data) => {
-                    choosen.map((word, index) => {
-                        if (index > 0) {
-                            if (data.hobby.indexOf(word) > 0) {
-                                array.push(data);
-                            }
-                        }
-                    });
+                    // console.log(choosen[choosen.length - 1]);
+                    if (data.hobby.indexOf(choosen[choosen.length - 1]) > 0){
+                        console.log('hit');
+                        array.push(data)
+                    }
                 });
                 setDeepSearch(array);
             }
             console.log('array', array);
-            console.log('searchResult', searchResult);
+            // console.log('deepsearch', searchResult);
         };
 
         searchDoc();
 
     }, [choosen]);
 
+    const isSubset = (subset, superset) => {
+        return subset.every(element => superset.includes(element));
+      };
+
     const DeleteSearch = (hobbys) => {
-        console.log('choosenデリーと時です', choosen);
+        console.log('choosenデリート時です', choosen);
         const choosenarray = [...choosen];
         const array = [...searchResult];
         console.log('searcharray', array);
         let deparray = []
         const newArray = choosenarray.filter((prev) => prev != hobbys);
-        console.log('newarray', newArray);
+        console.log('newArray', newArray);
         if (newArray.length > 0) {
             array.map((data, index) => {
-                newArray.map((chose, id) => {
-                    console.log('chose', chose);
-                    if (data.hobby.includes(chose)) {
-                        console.log('ヒットしました');
-                        deparray.push(data);
-                    } else {
-                        console.log('じゃないです', data.hobby);
-                    }
-                });
+                console.log('data.hobby',data.hobby);
+                if(isSubset(newArray, data.hobby)){
+                    deparray.push(data);
+                }
             });
         } else {
             setDeepSearch([]);
@@ -153,6 +150,7 @@ const UserSearch = ({ navigation }) => {
             justifyContent: 'flex-start',
             alignItems: 'center',
             borderWidth: 1,
+            borderColor: 'gray',
             borderRadius: 20,
             width: '90%',
             paddingHorizontal: '2%',

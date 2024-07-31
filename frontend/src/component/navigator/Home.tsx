@@ -17,6 +17,7 @@ import PhotoList from './PhotoList'; //横スクロールのアニメーショ�
 import UserSearch from '../../view/Home/UserSearch';
 import TalkMatchingNavigator from './TalkMatching'; //横スクロールのアニメーションを実装するとき、Talkコンポーネントをこのコンポーネントに置き換える
 import Setting from '../../view/Home/setting';
+import App from '../../view/Home/test2'
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -37,7 +38,7 @@ const Home = () => {
                         ),
                     }}>
                 </Tab.Screen>
-                <Tab.Screen name='UserSearch' component={UserSearch}
+                <Tab.Screen name='UserSearch' component={App}
                     options={{
                         headerShown: false,
                         tabBarIcon: ({ focused }) => (<Ionicons name="person-outline" size={24} color='#30CB89' />
