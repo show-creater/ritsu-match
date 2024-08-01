@@ -44,6 +44,7 @@ const HomeView = ({ navigation }) => {
             console.log('端に来たから0に戻します');
             if (!heartTF[currentIndex]){
                 setGood(true);
+                heartadd(currentIndex);
                 // setHeartIndex(prev=>prev+1);
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);                
             }
