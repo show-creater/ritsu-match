@@ -14,6 +14,9 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import LoadDoc from '../../component/function/LoadDoc';
 import { GestureHandlerRootView, GestureDetector, Gesture } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, runOnJS } from 'react-native-reanimated';
+import * as Haptics from 'expo-haptics';
+import GoodAnimation from '../../component/animation/GoodAnimation';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -27,29 +30,51 @@ const HomeView = ({ navigation }) => {
     const storage = getStorage();
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [good, setGood] = useState(false);
+    // const [indexCount, setIndexCount] = useState(0);
+    // const [heartIndex, setHeartIndex] = useState(0);
 
     const x = useSharedValue(0);
     const y = useSharedValue(0);
     const currentIndexShared = useSharedValue(0);
 
-    const updateIndex = (newIndex) => {
-        console.log('端に来たから0に戻します');
+    const updateIndex = (newIndex, type) => {
+        // setIndexCount(prev => prev + 1);
+        if (type == 'right') {
+            console.log('端に来たから0に戻します');
+            if (!heartTF[currentIndex]){
+                setGood(true);
+                // setHeartIndex(prev=>prev+1);
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);                
+            }
+
+        } else {
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+        }
+
         setCurrentIndex(newIndex % persondata.length);
         x.value = 0;
         y.value = 0;
     };
 
+
     useEffect(() => {
-        console.log(x);
-        console.log(y);
-    }, [x, y]);
+        console.log('heartAdd発火');
+        // if (heartTF[heartIndex]){
+            const timer = setTimeout(() => {
+                setGood(false);
+            }, 600);
+        return () => clearTimeout(timer);   
+        // }
+        
+    },[good]);
 
     useEffect(() => {
         console.log('hello');
         const timer = setTimeout(() => {
             x.value = 0.001;
             y.value = 0.001;
-        }, 10);
+        }, 7);
         return () => clearTimeout(timer);
     }, [currentIndex]);
 
@@ -246,6 +271,7 @@ const HomeView = ({ navigation }) => {
     return (
         <View style={{ flex: 1 }}>
             <HomeHeader />
+            {good && <GoodAnimation />}
             <GestureHandlerRootView style={styles.container}>
                 {persondata.map((item, index) => {
                     if (index < currentIndex) {
@@ -264,16 +290,16 @@ const HomeView = ({ navigation }) => {
                             y.value = event.translationY;
                         })
                         .onEnd((event) => {
-                            if (event.translationX > windowWidth / 4) {
+                            if (event.translationX > windowWidth / 5) {
                                 //   x.value = withSpring(windowWidth, {}, () => {
                                 console.log('右端');
-                                runOnJS(updateIndex)(currentIndexShared.value + 1);
+                                runOnJS(updateIndex)(currentIndexShared.value + 1, 'right');
                                 currentIndexShared.value = currentIndexShared.value + 1;
                                 //   });
-                            } else if (event.translationX < -windowWidth / 4) {
+                            } else if (event.translationX < -windowWidth / 5) {
                                 //   x.value = withSpring(-windowWidth, {}, () => {
                                 console.log('左端');
-                                runOnJS(updateIndex)(currentIndexShared.value + 1);
+                                runOnJS(updateIndex)(currentIndexShared.value + 1, 'left');
                                 currentIndexShared.value = currentIndexShared.value + 1;
                                 //   });
                             } else {
@@ -292,8 +318,10 @@ const HomeView = ({ navigation }) => {
                                 isLastCard && animatedStyle,
                             ]}
                         >
+
                             <GestureDetector gesture={panGesture}>
                                 <Animated.View style={styles.cardContent}>
+
                                     <View style={[styles.InfoOutside, { transform: [{ translateX: position.x }, { translateY: position.y }], zIndex: index }]}>
                                         <View style={styles.personInformation}>
                                             <View style={styles.personImage}>
@@ -301,6 +329,7 @@ const HomeView = ({ navigation }) => {
                                                     source={require('../../component/photo/ディカプリオ.webp')}
                                                     resizeMode='cover'
                                                 />
+
                                             </View>
                                             <View style={styles.personProfile}>
                                                 <View style={styles.ProfileTop}>
@@ -313,12 +342,12 @@ const HomeView = ({ navigation }) => {
                                                     </View>
                                                     <View style={styles.heartBookmark}>
                                                         {heartTF[index] ?
-                                                            <TouchableOpacity style={styles.clickheart} onPress={() => { heartdelete(index); }}>
-                                                                <Ionicons name="heart" size={50} color="deeppink" />
+                                                            <TouchableOpacity style={styles.clickheart} onPress={() => { heartdelete(index); Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error) }}>
+                                                                <FontAwesome name="thumbs-up" size={50} color="#30CB89" />
                                                                 <Text style={{ color: 'deeppink' }}>{`${heartnum[index]}`}</Text>
                                                             </TouchableOpacity> :
-                                                            <TouchableOpacity style={styles.clickheart} onPress={() => { heartadd(index); }}>
-                                                                <Ionicons name="heart-outline" size={50} color="deeppink" />
+                                                            <TouchableOpacity style={styles.clickheart} onPress={() => { setGood(true); heartadd(index); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);}}>
+                                                                <FontAwesome name="thumbs-o-up" size={50} color="#30CB89" />
                                                                 <Text style={{ color: 'deeppink' }}>{`${heartnum[index]}`}</Text>
                                                             </TouchableOpacity>}
                                                         <Ionicons name="bookmark" size={50} color="#30CB89" />

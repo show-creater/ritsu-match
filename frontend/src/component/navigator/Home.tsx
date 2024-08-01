@@ -38,7 +38,7 @@ const Home = () => {
                         ),
                     }}>
                 </Tab.Screen>
-                <Tab.Screen name='UserSearch' component={App}
+                <Tab.Screen name='UserSearch' component={UserSearch}
                     options={{
                         headerShown: false,
                         tabBarIcon: ({ focused }) => (<Ionicons name="person-outline" size={24} color='#30CB89' />
