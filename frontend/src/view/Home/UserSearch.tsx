@@ -27,33 +27,39 @@ const UserSearch = ({ navigation }) => {
     const [searchResult, setSearchResult] = useState([]);
     const [deepSearch, setDeepSearch] = useState([]);
 
-// 【仕組み】 趣味項目の最初の一つ目だけをfirebaseから検索して、検索結果をsearchResultに格納。それ以降の複数条件はすでに読み込んだsearchResultから絞り込んでdeepSearchに格納するからfirebaseからの読み取り自体は最初の一回のみ
+    // 【仕組み】 趣味項目の最初の一つ目だけをfirebaseから検索して、検索結果をsearchResultに格納。それ以降の複数条件はすでに読み込んだsearchResultから絞り込んでdeepSearchに格納するからfirebaseからの読み取り自体は最初の一回のみ
     useEffect(() => {
-        const searchDoc = async () => { 
+        const searchDoc = async () => {
             let array = [];
             let docarray = [];
-            if (choosen.length == 1 && searchResult.length == 0) { //趣味候補最初の一つ目の読み取り
-                console.log('1です');
-                console.log(choosen);
-                const queryhobby = collection(db, 'users');
-                const q = query(queryhobby, where('hobby', 'array-contains', choosen[0]), limit(10));
-                const querySnapshot = await getDocs(q);
-                querySnapshot.forEach((doc) => {
-                    console.log(doc.id, " => ", doc.data());
-                    docarray.push(doc.data());
-                });
-                setSearchResult(docarray);
-                setDeepSearch(docarray);
-            } else if (choosen.length > 1) {//趣味候補二つ目以降の複数条件絞り
-                console.log('choosen.lengthは1以上です');
-                deepSearch.map((data) => {
-                    // console.log(choosen[choosen.length - 1]);
-                    if (data.hobby.indexOf(choosen[choosen.length - 1]) > 0){
-                        console.log('hit');
-                        array.push(data)
-                    }
-                });
-                setDeepSearch(array);
+            try {
+                if (choosen.length == 1 && searchResult.length == 0) { //趣味候補最初の一つ目の読み取り
+                    console.log('1です');
+                    console.log(choosen);
+                    const queryhobby = collection(db, 'users');
+                    const q = query(queryhobby, where('hobbys', 'array-contains', choosen[0]), limit(10));
+                    const querySnapshot = await getDocs(q);
+                    querySnapshot.forEach((doc) => {
+                        console.log(doc.id, " => ", doc.data());
+                        docarray.push(doc.data());
+                    });
+                    setSearchResult(docarray);
+                    setDeepSearch(docarray);
+                } else if (choosen.length > 1) {//趣味候補二つ目以降の複数条件絞り
+                    console.log('choosen.lengthは1以上です');
+                    deepSearch.map((data) => {
+                        // console.log(choosen[choosen.length - 1]);
+                        if (data.hobbys.indexOf(choosen[choosen.length - 1]) > 0) {
+                            console.log('hit');
+                            array.push(data)
+                        } else {
+                            console.log('nohits');
+                        }
+                    });
+                    setDeepSearch(array);
+                }
+            } catch (e) {
+                console.log(e.message);
             }
             console.log('array', array);
             // console.log('deepsearch', searchResult);
@@ -65,7 +71,7 @@ const UserSearch = ({ navigation }) => {
 
     const isSubset = (subset, superset) => {
         return subset.every(element => superset.includes(element));
-      };
+    };
 
     const DeleteSearch = (hobbys) => {
         console.log('choosenデリート時です', choosen);
@@ -77,8 +83,8 @@ const UserSearch = ({ navigation }) => {
         console.log('newArray', newArray);
         if (newArray.length > 0) {
             array.map((data, index) => {
-                console.log('data.hobby',data.hobby);
-                if(isSubset(newArray, data.hobby)){
+                console.log('data.hobby', data.hobbys);
+                if (isSubset(newArray, data.hobbys)) {
                     deparray.push(data);
                 }
             });

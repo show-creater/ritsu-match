@@ -13,6 +13,9 @@ const HomeHeader = () => {
     let a = 0;
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
+    useEffect(() => {
+        console.log('inforが更新されました', infor);
+    },[infor]);
     const styles = StyleSheet.create({
         header: {
             flexDirection: 'row',
@@ -98,7 +101,6 @@ const HomeHeader = () => {
                         <Ionicons name="pencil" size={24} color='#30CB89' />
                         <Text style={{ fontSize: 16, color: '#30CB89' }}>{`${infor.faculty}`}</Text>
                     </View>
-                    <Text style={{ fontSize: 16, color: '#30CB89' }}>{'2日 12:05'}</Text>
                 </View>
             </View>
         </View>
