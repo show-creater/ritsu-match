@@ -32,6 +32,7 @@ const TalkFriendListItemContainer = (props) => {
         );
         // リアルタイムリスナーを設定
         unsubscribe = onSnapshot(docRef, async (docSnapshot) => {
+          try{
           let unreadMessages = [];
 
           const myID = loginUser.uid;
@@ -55,7 +56,7 @@ const TalkFriendListItemContainer = (props) => {
               `chatUnreadMessages_${roomGetID}`
             );
             console.log(JSON.parse(storedMessages));
-            if (JSON.parse(storedMessages).length !== 0) {
+            if (storedMessages!==null&&JSON.parse(storedMessages).length !== 0) {
               unreadMessages = JSON.parse(storedMessages);
             }
             console.log("getdata");
@@ -137,6 +138,9 @@ const TalkFriendListItemContainer = (props) => {
             };
           });
           setIsreadFirst(true);
+        }catch(e){
+          console.error(e); 
+        }
         });
       }
     };

@@ -153,7 +153,7 @@ const HomeView = ({ navigation }) => {
             let uspassword = '';
             usemail = await loademail();
             uspassword = await loadpassword();
-            handleLogin(`${usemail}@ed.ritsumei.ac.jp`, uspassword);
+            handleLogin(`${usemail}`, uspassword);
         };
         login();
     }, []);

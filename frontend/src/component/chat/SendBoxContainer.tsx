@@ -3,7 +3,7 @@ import React from "react";
 import SendBox from "./SendBox";
 import { async } from "@firebase/util";
 import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import { db } from "../../../firebaseConfig";
+import { auth, db } from "../../../firebaseConfig";
 import uuid from "react-native-uuid";
 
 const SendBoxContainer = (props) => {
@@ -36,6 +36,12 @@ const SendBoxContainer = (props) => {
             ...sendMessageObject,
           }),
         });
+        const userDocRef = doc(db, "chatData", props.friend);
+
+        // friendArrayフィールドにfriendIdを追加
+            await setDoc(userDocRef, {
+              friendArray: arrayUnion(auth.currentUser.uid)
+            },{merge:true});
       } else {
         // ドキュメントが存在しない場合、新しく作成
         await setDoc(docRef, {
@@ -45,6 +51,12 @@ const SendBoxContainer = (props) => {
             },
           ],
         });
+        const userDocRef = doc(db, "chatData", props.friend);
+    // friendArrayフィールドにfriendIdを追加
+        await setDoc(userDocRef, {
+          friendArray: arrayUnion(auth.currentUser.uid)
+        },{merge:true});
+
       }
     } catch (e) {
       // その他のエラーの場合
