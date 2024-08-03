@@ -27,7 +27,7 @@ const Animation1=()=>{
 return(
     <View style={styles.container1}>
         <LottieView
-            source={require('../../../assets/animation1.json')}
+            source={require('../../../assets/Roading.json')}
             autoPlay
             loop
             speed={1.5}

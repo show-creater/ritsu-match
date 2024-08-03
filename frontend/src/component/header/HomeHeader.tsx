@@ -11,6 +11,11 @@ import { TouchableOpacity } from 'react-native';
 const HomeHeader = () => {
     const { isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, infor, setInfor, userImage, setUserImage } = useHome();
     let a = 0;
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
+    useEffect(() => {
+        console.log('inforが更新されました', infor);
+    },[infor]);
     const styles = StyleSheet.create({
         header: {
             flexDirection: 'row',
@@ -70,10 +75,15 @@ const HomeHeader = () => {
     return (
         <View style={styles.header}>
             <View style={styles.icon}>
-                {userImage != '' && <Image style={{ zIndex: 100, borderRadius: 100, height: 60, width: 60, }}
+                {userImage != '' ? <Image style={{ zIndex: 100, borderRadius: 100, height: 60, width: 60, }}
                     source={{ uri: userImage }}
                     resizeMode='cover'
-                />}
+                /> :
+                    <Image style={{ zIndex: 100, borderRadius: 100, height: 60, width: 60, }}
+                        source={require('../../component/photo/初期画像.jpg')}
+                        resizeMode='cover'
+                    />
+                }
             </View>
             <View style={styles.informations}>
                 <View style={styles.NameHeart}>
@@ -91,7 +101,6 @@ const HomeHeader = () => {
                         <Ionicons name="pencil" size={24} color='#30CB89' />
                         <Text style={{ fontSize: 16, color: '#30CB89' }}>{`${infor.faculty}`}</Text>
                     </View>
-                    <Text style={{ fontSize: 16, color: '#30CB89' }}>{'2日 12:05'}</Text>
                 </View>
             </View>
         </View>

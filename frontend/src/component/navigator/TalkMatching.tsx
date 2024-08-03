@@ -1,4 +1,4 @@
-import Friends from '../../view/Home/Friends';
+import Friends from '../../view/Home/SearchResultList';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Talk from '../../view/Home/Talk';
 import { useHome } from '../../component/context/HomeContext';

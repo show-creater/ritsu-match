@@ -23,7 +23,7 @@ const HomeNavigator = () => {
     // 2秒遅延してステートをtrueに設定
     const timer = setTimeout(() => {
       setIsTime(true);
-    }, 1000);
+    }, 2000);
     // クリーンアップ関数
     return () => clearTimeout(timer);
   }, []);
@@ -41,7 +41,7 @@ const HomeNavigator = () => {
         animation: "slide_from_bottom", // 特定のスクリーンに上から下へのスライドアニメーションを適用
       }}
     >
-      {isTimeout && isTime ? (
+      {!isTimeout && isTime ? (
         <Stack.Screen
           name="MyPage"
           component={MyPage}
