@@ -26,7 +26,7 @@ const HomeView = ({ navigation }) => {
     const { isLogin, setIsLogin, loginUser, setLoginUser, isTimeout, setIsTimeout, infor, setInfor, userImage, setUserImage, persondata, setPersondata, scrollcheck, setScrollcheck } = useHome();
 
     const [heartTF, setHeartTF] = useState([]);
-    const [heartnum, setHeartnum] = useState([0]);
+    const [heartnum, setHeartnum] = useState(["読み込み中"]);
     const scrollViewRef = useRef(null);
     const storage = getStorage();
     const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -235,7 +235,7 @@ const HomeView = ({ navigation }) => {
 
 
     return (
-        <View style={{ flex: 1 }}>
+       <View style={{ flex: 1 }}>
             <HomeHeader />
             {good && <GoodAnimation />}
             {scrollcheck ? <HomeAnimation /> :
