@@ -73,6 +73,9 @@ const Login = ({ navigation }) => {
       } else if (error.message == 'Firebase: Error (auth/invalid-email).') {
         setErrorMessage('アカウントが存在しません');
         setRoading(false);
+      }else if (error.message == 'Firebase: Error (auth/user-disabled).'){
+        setErrorMessage('このアカウントは凍結しています');
+        setRoading(false);
       }
     }
   };

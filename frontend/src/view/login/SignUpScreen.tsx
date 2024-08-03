@@ -61,7 +61,7 @@ const SignUpScreen = ({ navigation }) => {
       try {
         await sendEmailVerification(user);
         const randomNum = Math.random();
-        await setDoc(doc(db, 'users', user.uid), { randomField: randomNum, userid: user.uid, name: name, age: parseInt(age, 10), comment: '', faculty: faculty, heart_pushed: [], image: '' });
+        await setDoc(doc(db, 'users', user.uid), { randomField: randomNum, userid: user.uid, name: name, age: parseInt(age, 10), comment: '', faculty: faculty, heart_pushed: [], image: '', hobbys: [] });
         const saveemail = async () => {
           try {
             const stringValue = JSON.stringify(email);
