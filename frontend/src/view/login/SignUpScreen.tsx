@@ -55,7 +55,7 @@ const SignUpScreen = ({ navigation }) => {
 
   const handleRegister = async () => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, `${email}@ed.ritsumei.ac.jp`, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       console.log('こちらがユーザー情報です',user);
       try {
@@ -194,7 +194,7 @@ const SignUpScreen = ({ navigation }) => {
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <TextInput
                   style={{
-                    width: '40%',
+                    width: '100%',
                     borderBottomWidth: 1,
                     padding: 5,
                     borderColor: 'gray',
@@ -205,7 +205,7 @@ const SignUpScreen = ({ navigation }) => {
                   autoCapitalize="none"
                   autoCorrect={false}
                 />
-                <Text style={{fontSize:17, paddingLeft: 5}}>@ed.ritsumei.ac.jp</Text>
+                {/* <Text style={{fontSize:17, paddingLeft: 5}}>@ed.ritsumei.ac.jp</Text> */}
               </View>
             </View>
             <View style={{ marginBottom: 20, width: '100%' }}>

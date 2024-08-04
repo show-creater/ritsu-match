@@ -24,7 +24,7 @@ const Login = ({ navigation }) => {
     try {
       setRoading(true);
       // メールアドレスとパスワードでログイン
-      const userCredential = await signInWithEmailAndPassword(auth, `${email}@ed.ritsumei.ac.jp`, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       //ログイン状態管理
       if (user.emailVerified) { //メール認証が完了していた場合
@@ -176,7 +176,7 @@ const Login = ({ navigation }) => {
                   autoCapitalize="none"
                   autoCorrect={false}
                 />
-                <Text style={{ fontSize: 17, paddingLeft: 5 }}>@ed.ritsumei.ac.jp</Text>
+                {/* <Text style={{ fontSize: 17, paddingLeft: 5 }}>@ed.ritsumei.ac.jp</Text> */}
               </View>
             </View>
             <View style={{ marginBottom: 20, width: '100%' }}>

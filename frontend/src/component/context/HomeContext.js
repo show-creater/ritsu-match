@@ -106,7 +106,7 @@ export const HomeProvider = ({ children }) => {
       let uspassword = '';
       usemail = await loademail();
       uspassword = await loadpassword();
-      handleLogin(`${usemail}@ed.ritsumei.ac.jp`, uspassword);
+      handleLogin(usemail, uspassword);
     };
     login();
   }, []);
