@@ -119,6 +119,81 @@ const HomeView = ({ navigation }) => {
         console.log(windowWidth);
     }, [position]);
 
+    useEffect(() => {
+        const loademail = async () => { //ローカルのログイン情報から自動ログイン
+            let useremail = '';
+            try {
+                const stringValue = await AsyncStorage.getItem('useremail');
+                if (stringValue != null) {
+                    const value = JSON.parse(stringValue);
+                    useremail = value;
+                }
+            } catch (e) {
+                console.log(e);
+            }
+            return useremail;
+        };
+        const loadpassword = async () => {
+            let userpassword = '';
+            try {
+                const stringValue = await AsyncStorage.getItem('userpassword');
+                if (stringValue != null) {
+                    const value = JSON.parse(stringValue);
+                    userpassword = value;
+                }
+            } catch (e) {
+                console.log(e);
+            }
+            return userpassword;
+        };
+
+        const handleLogin = async (email, password) => {
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                if (user.emailVerified) {
+                    setIsLogin(true);
+                    setLoginUser(user);
+                    setIsTimeout(true);
+                    const image = await getImage();
+                    console.log(image, 'image画像を表示します');
+                    setUserImage(image);
+                    const docdata = await getDoc(doc(db, "users", auth.currentUser.uid));
+                    if (docdata.data() != undefined) {
+                        setInfor(docdata.data());
+                    }
+                }
+            } catch (error) {
+                console.log('Login failed:', error.message);
+                if (error.message == "Firebase Storage: Object 'user_image/KDdI2NJ4zYOeLWcmb23AmZSNikB2' does not exist. (storage/object-not-found)") {
+                    setIsTimeout(true);
+                }
+            }
+        };
+
+        const login = async () => {
+            let usemail = '';
+            let uspassword = '';
+            usemail = await loademail();
+            uspassword = await loadpassword();
+            handleLogin(`${usemail}`, uspassword);
+        };
+        login();
+    }, []);
+
+    const handleScroll = (event) => {
+        const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
+        const isBottom = contentOffset.y + layoutMeasurement.height >= contentSize.height - 20;
+
+        if (isBottom && !scrollcheck) {
+            console.log('Reached the bottom!');
+            LoadDoc({ persondata, setPersondata, setScrollcheck, isLogin });
+            setScrollcheck(true);
+        }
+    };
+
+
+  
     const heartP = async () => {
         const querySnapshot = await getDocs(collection(db, "users"));
         const users = []

@@ -12,6 +12,8 @@ import Talk from './Talk';
 import HomeHeader from '../../component/header/HomeHeader';
 
 const TalkMatching = ({ navigation }) => {
+    const TalkRef = useRef();
+
     const { isLogin, setIsLogin } = useHome();
     const windowWidth = Dimensions.get('window').width;
     const a = 0;
@@ -67,7 +69,7 @@ const TalkMatching = ({ navigation }) => {
     const styles = StyleSheet.create({
         personlist: {
             width: '100%',
-            height: 16000,
+            // height: 16000,
             marginTop: '45%',
             alignItems: 'center',
             flexDirection: 'column',
@@ -117,11 +119,16 @@ const TalkMatching = ({ navigation }) => {
             borderRadius: 10,
             backgroundColor: scrollX ? 'gray' : '#30CB89',
         },
-
     });
+
+    const createRoom =  (id,name) => {
+        if (TalkRef.current) {
+            TalkRef.current.createRoom(id,name);
+          }
+    }
     return (
         //ヘッダー
-        <View style={{ flex: 1, alignItems: 'center', height: 1000 }}>
+        <View style={{ flex: 1, alignItems: 'center',  }}>
             <HomeHeader />
             <ScrollView style={{ width: '100%' }}>
                 <View style={styles.personlist}>
@@ -134,8 +141,8 @@ const TalkMatching = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                     <ScrollView pagingEnabled={true} horizontal={true} ref={scrollViewRef} style={{ width: windowWidth }} onScroll={handleScroll} scrollEventThrottle={16}>
-                        <Talk navigation={navigation} />
-                        <Friends navigation={navigation} />
+                        <Talk navigation={navigation} ref={TalkRef}/>
+                        <Friends navigation={navigation} createRoom={(id,name)=>createRoom(id,name)}/>
                     </ScrollView>
                 </View>
             </ScrollView>

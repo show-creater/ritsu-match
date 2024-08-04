@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useImperativeHandle, forwardRef } from "react";
 import {
   Dimensions,
   Text,
@@ -32,8 +32,9 @@ import {
 import { TouchableOpacity } from "react-native";
 import Friends from "./SearchResultList";
 import TalkFriendListItemContainer from "../../component/chat/TalkFriendListItemContainer";
+import { useNavigation } from "@react-navigation/native";
 
-const Talk = ({ navigation }) => {
+const Talk = forwardRef((props,ref) => {
   const { isLogin, setIsLogin, talkPage, setTalkPage } = useHome();
   const windowWidth = Dimensions.get("window").width;
   const a = 0;
@@ -151,6 +152,9 @@ const Talk = ({ navigation }) => {
       backgroundColor: talkPage ? "gray" : "#30CB89",
     },
   });
+
+  const [chatFriendDataArray, setChatFriendDataArray] = useState([]);
+
   const mockFriendData = [
     {
       name: "soshi2",
@@ -163,11 +167,55 @@ const Talk = ({ navigation }) => {
     {
       name:"daichi",
       id: "mc9sTuiF4zLLkop0txfW2KW9NXb2",
+    },
+    {
+      name:"soshi_R",
+      id: "faoAQkdkk6Q4ebXDpYqq6RCswdc2",
     }
   ];
+
+  const getChatFriendData = async () => {
+    try{
+      const chatDoc = await getDoc(doc(db, "chatData", auth.currentUser.uid));
+      const chatFriendData = chatDoc.data();
+      if(chatFriendData){
+        const chatFriendArray = chatFriendData.friendArray;
+        const chatFriendDataArray = [];
+        for(const friend of chatFriendArray){
+          const friendDoc = await getDoc(doc(db, "users", friend));
+          chatFriendDataArray.push({name:friendDoc.data().name, id:friendDoc.id});
+        }
+        setChatFriendDataArray(chatFriendDataArray);
+      }
+      
+    }catch(e){
+      console.error("Error reading document:", e);
+    }
+
+  }
+
+  const navigation=useNavigation()
+
+
+  useImperativeHandle(ref, () => ({
+    createRoom: (id,name) => {
+      const cloneJSON=chatFriendDataArray.concat();
+      cloneJSON.push({name:name,id:id});
+      setChatFriendDataArray(cloneJSON);
+      navigation.navigate("ChatView", {
+        friend: { userid: id },
+      })
+    },
+  }));
+
+  useEffect(() => {
+     getChatFriendData();
+  }, []);
+
+  
   return (
     //ヘッダー
-    <View style={{ flex: 1, alignItems: "center", height: 1000 }} className="w-full">
+    <View style={{ flex: 1, alignItems: "center"}} className="w-full">
       <ScrollView
         pagingEnabled={true}
         horizontal={true}
@@ -175,14 +223,20 @@ const Talk = ({ navigation }) => {
         style={{ width: windowWidth, paddingTop: "10%" }}
       >
         <View style={{ width: windowWidth }} className="border-b border-silver">
-          {mockFriendData.map((FriendData) => (
+          {chatFriendDataArray.map((FriendData) => (
             <TalkFriendListItemContainer
             FriendData={FriendData}
             />
           ))}
+          {/* <TalkFriendListItemContainer
+            FriendData={ {
+              name:"soshi_R",
+              id: "faoAQkdkk6Q4ebXDpYqq6RCswdc2",
+            }}
+          /> */}
         </View>
       </ScrollView>
     </View>
   );
-};
+});
 export default Talk;
